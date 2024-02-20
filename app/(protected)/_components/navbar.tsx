@@ -12,10 +12,10 @@ export const NavBar = () => {
         <nav className="bg-secondary flex justify-between items-center p-4 rounded-xl w-[600px] shadow-sm">
             <div className="flex gap-x-2">
                 <Button
-                    variant={pathname === "/server" ? "default" : "outline"}
+                    variant={pathname === "/bids" ? "default" : "outline"}
                     asChild
                 >
-                    <Link href="/server">Server</Link>
+                    <Link href="/bids">Create Offer</Link>
                 </Button>
                 <Button
                     variant={pathname === "/client" ? "default" : "outline"}
