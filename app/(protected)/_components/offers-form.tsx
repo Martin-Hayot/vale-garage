@@ -1,11 +1,11 @@
 "use client";
 
 import * as z from "zod";
+import axios from "axios";
 import { OffersSchema } from "@/schemas";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { register } from "@/actions/register";
 
 import {
     Form,
@@ -30,7 +30,6 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Calendar } from "@/components/ui/calendar";
-import { format, set } from "date-fns";
 import {
     Command,
     CommandEmpty,
@@ -38,7 +37,6 @@ import {
     CommandInput,
     CommandItem,
     CommandList,
-    CommandSeparator,
 } from "@/components/ui/command";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -48,6 +46,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { format } from "date-fns";
+import Link from "next/link";
 
 const makes = [
     "Audi",
@@ -201,7 +201,7 @@ const fuelTypes = ["Diesel", "Petrol", "Electric", "Hybrid", "LPG", "CNG"];
 
 const states = ["New", "Used", "Damaged", "Nearly New", "Reconditioned"];
 
-const transmissions = ["Automatic", "Manual"];
+const transmissions = ["4x4", "Front", "Rear", "All Wheel Drive"];
 const carBodies = [
     "Sedan",
     "SUV",
@@ -213,6 +213,25 @@ const carBodies = [
     "Sport",
     "Roadster",
 ];
+
+const colors = [
+    "Beige",
+    "Black",
+    "Blue",
+    "Brown",
+    "Gold",
+    "Green",
+    "Grey",
+    "Orange",
+    "Pink",
+    "Purple",
+    "Red",
+    "Silver",
+    "White",
+    "Yellow",
+];
+
+const gearBoxes = ["Automatic", "Manual"];
 
 export const OffersForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -244,8 +263,19 @@ export const OffersForm = () => {
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
         setSuccess("");
-
-        startTransition(() => {});
+        startTransition(() => {
+            axios
+                .post(
+                    (process.env.NEXT_PUBLIC_API_URL as string) + "/offers",
+                    values
+                )
+                .then((res) => {
+                    setSuccess(res.data.message);
+                })
+                .catch((err) => {
+                    setError(err.response.data);
+                });
+        });
     };
 
     return (
@@ -414,7 +444,15 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-
+                    <FormDescription>
+                        {"Can't find a car ? Create a new one "}
+                        <Link
+                            href="/cars/create"
+                            className="text-black underline"
+                        >
+                            here
+                        </Link>
+                    </FormDescription>
                     <FormField
                         name="description"
                         control={form.control}
@@ -469,14 +507,15 @@ export const OffersForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Mileage</FormLabel>
+                                    <FormLabel>Mileage (Km)</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             disabled={isPending}
                                             placeholder="Mileage of the car"
                                             type="number"
-                                            step={100}
+                                            value={field.value}
+                                            inputMode="numeric"
                                             max={1000000}
                                             min={0}
                                         />
@@ -565,18 +604,19 @@ export const OffersForm = () => {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent className="mr-2">
-                                            <SelectItem
-                                                value="Automatic"
-                                                onSelect={field.onChange}
-                                            >
-                                                Automatic
-                                            </SelectItem>
-                                            <SelectItem
-                                                value="Manual"
-                                                onSelect={field.onChange}
-                                            >
-                                                Manual
-                                            </SelectItem>
+                                            {transmissions.map(
+                                                (transmission) => (
+                                                    <SelectItem
+                                                        key={transmission}
+                                                        value={transmission}
+                                                        onSelect={
+                                                            field.onChange
+                                                        }
+                                                    >
+                                                        {transmission}
+                                                    </SelectItem>
+                                                )
+                                            )}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
@@ -608,27 +648,27 @@ export const OffersForm = () => {
                         />
                         <FormField
                             control={form.control}
-                            name="fuelType"
+                            name="color"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Fuel Type</FormLabel>
+                                    <FormLabel>Color</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
                                             <SelectTrigger className="mr-2">
-                                                <SelectValue placeholder="Fuel type" />
+                                                <SelectValue placeholder="Color" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent className="mr-2">
-                                            {fuelTypes.map((fuelType) => (
+                                            {colors.map((color) => (
                                                 <SelectItem
-                                                    key={fuelType}
-                                                    value={fuelType}
+                                                    key={color}
+                                                    value={color}
                                                     onSelect={field.onChange}
                                                 >
-                                                    {fuelType}
+                                                    {color}
                                                 </SelectItem>
                                             ))}
                                         </SelectContent>
@@ -638,33 +678,30 @@ export const OffersForm = () => {
                             )}
                         />
                         <FormField
-                            name="transmission"
+                            name="gearBox"
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Transmission</FormLabel>
+                                    <FormLabel>Gear Box</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
                                             <SelectTrigger className="mr-2">
-                                                <SelectValue placeholder="Transmission" />
+                                                <SelectValue placeholder="Gear Box" />
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent className="mr-2">
-                                            <SelectItem
-                                                value="Automatic"
-                                                onSelect={field.onChange}
-                                            >
-                                                Automatic
-                                            </SelectItem>
-                                            <SelectItem
-                                                value="Manual"
-                                                onSelect={field.onChange}
-                                            >
-                                                Manual
-                                            </SelectItem>
+                                            {gearBoxes.map((gearBox) => (
+                                                <SelectItem
+                                                    key={gearBox}
+                                                    value={gearBox}
+                                                    onSelect={field.onChange}
+                                                >
+                                                    {gearBox}
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                     <FormMessage />
@@ -672,7 +709,50 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-
+                    <div className="flex flex-col md:flex-row gap-6">
+                        <FormField
+                            name="seats"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Seats</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder="Number of seats"
+                                            type="number"
+                                            step={1}
+                                            max={10}
+                                            min={0}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="doors"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Doors</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder="Number of doors"
+                                            type="number"
+                                            step={1}
+                                            max={10}
+                                            min={0}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                     <FormField
                         control={form.control}
                         name="circulationDate"
@@ -704,14 +784,12 @@ export const OffersForm = () => {
                                         align="start"
                                     >
                                         <Calendar
-                                            mode="single"
+                                            captionLayout="dropdown-buttons"
+                                            fromYear={1950}
+                                            toYear={new Date().getFullYear()}
                                             selected={field.value}
                                             onSelect={field.onChange}
-                                            disabled={(date) =>
-                                                date > new Date() ||
-                                                date < new Date("1900-01-01")
-                                            }
-                                            initialFocus
+                                            onDayClick={field.onChange}
                                         />
                                     </PopoverContent>
                                 </Popover>
@@ -723,7 +801,6 @@ export const OffersForm = () => {
                             </FormItem>
                         )}
                     />
-
                     <div className="flex flex-col md:flex-row justify-start gap-x-6">
                         <FormField
                             name="price"
@@ -738,7 +815,6 @@ export const OffersForm = () => {
                                                 disabled={isPending}
                                                 placeholder="Price of the car"
                                                 type="number"
-                                                step={100}
                                                 max={1000000}
                                                 min={0}
                                             />

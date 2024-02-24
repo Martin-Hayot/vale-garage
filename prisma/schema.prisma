@@ -103,15 +103,14 @@ model Car {
   id    String @id @default(cuid())
   make  String
   model String
-  year  Int
 
   carBids CarBid[]
 
-  @@unique([make, model, year])
+  @@unique([make, model])
 }
 
 model CarBid {
-  id              String   @id @default(cuid())
+  id              String    @id @default(cuid())
   price           Int
   mileage         Int
   state           String
@@ -124,10 +123,10 @@ model CarBid {
   color           String
   doors           Int
   seats           Int
-  minPrice        Int
-  maxPrice        Int
-  startDate       DateTime @default(now())
-  endDate         DateTime
+  minPrice        Int?
+  maxPrice        Int?
+  startDate       DateTime? @default(now())
+  endDate         DateTime?
   images          String[]
 
   carId String
