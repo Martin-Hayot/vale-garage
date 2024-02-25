@@ -1,6 +1,7 @@
 import { currentUser } from "@/lib/auth";
 import { NavBar } from "./_components/navbar";
 import { redirect } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ProtectedLayoutProps {
     children: React.ReactNode;
@@ -12,12 +13,11 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
         redirect("/login");
     }
     return (
-        <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-zinc-800 overflow-y-scroll overflow-x-hidden">
-            <div className="mt-32">
+        <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-zinc-800 ">
+            <div>
                 <NavBar role={user?.role} />
             </div>
-
-            {children}
+            <ScrollArea className="h-[800px]">{children}</ScrollArea>
         </div>
     );
 };

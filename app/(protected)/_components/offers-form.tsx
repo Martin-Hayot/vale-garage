@@ -3,7 +3,7 @@
 import * as z from "zod";
 import axios from "axios";
 import { OffersSchema } from "@/schemas";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -48,196 +48,24 @@ import {
 } from "@/components/ui/select";
 import { format } from "date-fns";
 import Link from "next/link";
+import { Car } from "@prisma/client";
 
-const makes = [
-    "Audi",
-    "BMW",
-    "Chevrolet",
-    "Citroën",
-    "Dacia",
-    "Fiat",
-    "Ford",
-    "Honda",
-    "Hyundai",
-    "Kia",
-    "Mazda",
-    "Mercedes-Benz",
-    "Mitsubishi",
-    "Nissan",
-    "Opel",
-    "Peugeot",
-    "Renault",
-    "Seat",
-    "Skoda",
-    "Suzuki",
-    "Toyota",
-    "Volkswagen",
-    "Volvo",
-];
-
-const models = [
-    {
-        make: "Audi",
-        models: [
-            "A1",
-            "A2",
-            "A3",
-            "A4",
-            "A5",
-            "A6",
-            "A7",
-            "A8",
-            "Q2",
-            "Q3",
-            "Q4",
-            "Q5",
-            "Q6",
-            "Q7",
-            "Q8",
-            "Q9",
-            "R8",
-            "RS3",
-            "RS4",
-            "RS5",
-            "RS6",
-            "RS7",
-            "S1",
-            "S3",
-            "S4",
-            "S5",
-            "S6",
-            "S7",
-            "S8",
-            "SQ2",
-            "SQ5",
-            "SQ7",
-            "SQ8",
-            "TT",
-            "TTS",
-            "TT RS",
-            "e-tron",
-            "e-tron GT",
-            "e-tron S",
-            "e-tron Sportback",
-            "e-tron S Sportback",
-        ],
-    },
-    {
-        make: "BMW",
-        models: [
-            "1 Series",
-            "2 Series",
-            "3 Series",
-            "4 Series",
-            "5 Series",
-            "6 Series",
-            "7 Series",
-            "8 Series",
-            "M2",
-            "M3",
-            "M4",
-            "M5",
-            "M6",
-            "X1",
-            "X2",
-            "X3",
-            "X4",
-            "X5",
-            "X6",
-            "X7",
-            "Z3",
-            "Z4",
-            "i3",
-            "i4",
-            "i8",
-        ],
-    },
-    {
-        make: "Chevrolet",
-        models: [
-            "Alero",
-            "Astro",
-            "Avalanche",
-            "Aveo",
-            "Beretta",
-            "Blazer",
-            "Camaro",
-            "Captiva",
-            "Cavalier",
-            "Chevy Van",
-            "Colorado",
-            "Corsica",
-            "Corvette",
-            "Cruze",
-            "Epica",
-            "Equinox",
-            "Evanda",
-            "Express",
-            "HHR",
-            "Impala",
-            "Kalos",
-            "Lacetti",
-            "Lumina",
-            "Malibu",
-            "Matiz",
-            "Monte Carlo",
-            "Niva",
-            "Nubira",
-            "Orlando",
-            "Rezzo",
-            "S-10",
-            "Silverado",
-            "Spark",
-            "Suburban",
-            "Tacuma",
-            "Tahoe",
-            "Tavera",
-            "TrailBlazer",
-        ],
-    },
-];
-
-const fuelTypes = ["Diesel", "Petrol", "Electric", "Hybrid", "LPG", "CNG"];
-
-const states = ["New", "Used", "Damaged", "Nearly New", "Reconditioned"];
-
-const transmissions = ["4x4", "Front", "Rear", "All Wheel Drive"];
-const carBodies = [
-    "Sedan",
-    "SUV",
-    "Coupe",
-    "Hatchback",
-    "Pickup",
-    "Minivan",
-    "Cabriolet",
-    "Sport",
-    "Roadster",
-];
-
-const colors = [
-    "Beige",
-    "Black",
-    "Blue",
-    "Brown",
-    "Gold",
-    "Green",
-    "Grey",
-    "Orange",
-    "Pink",
-    "Purple",
-    "Red",
-    "Silver",
-    "White",
-    "Yellow",
-];
-
-const gearBoxes = ["Automatic", "Manual"];
+import {
+    CAR_BODIES as carBodies,
+    CAR_COLORS as colors,
+    FUEL_TYPES as fuelTypes,
+    GEARBOX_TYPES as gearBoxes,
+    CAR_STATES as states,
+    TRANSMISSION_TYPES as transmissions,
+} from "@/constants/cars";
 
 export const OffersForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
     const [selectedMake, setSelectedMake] = useState<string>("");
+    const [cars, setCars] = useState<Car[]>([]);
+    const [makes, setMakes] = useState<string[]>([]);
 
     const form = useForm<z.infer<typeof OffersSchema>>({
         resolver: zodResolver(OffersSchema),
@@ -259,6 +87,26 @@ export const OffersForm = () => {
             seats: 0,
         },
     });
+
+    useEffect(() => {
+        const getCars = () => {
+            axios
+                .get((process.env.NEXT_PUBLIC_API_URL as string) + "/cars")
+                .then((res) => {
+                    setCars(res.data);
+                    setMakes(
+                        Array.from(
+                            new Set(res.data.map((car: Car) => car.make))
+                        )
+                    );
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+
+        getCars();
+    }, []);
 
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
@@ -389,49 +237,55 @@ export const OffersForm = () => {
                                                 <CommandEmpty>
                                                     No Model found.
                                                 </CommandEmpty>
-                                                {models.map(
+                                                {makes.map(
                                                     (make) =>
-                                                        make.make ===
+                                                        make ===
                                                             selectedMake && (
                                                             <CommandGroup
-                                                                key={make.make}
-                                                                heading={
-                                                                    make.make
-                                                                }
+                                                                key={make}
+                                                                heading={make}
                                                             >
                                                                 <CommandList className="">
-                                                                    {make.models.map(
-                                                                        (
-                                                                            model
-                                                                        ) => (
-                                                                            <CommandItem
-                                                                                value={
-                                                                                    model
-                                                                                }
-                                                                                key={
-                                                                                    model
-                                                                                }
-                                                                                onSelect={() =>
-                                                                                    field.onChange(
-                                                                                        model
-                                                                                    )
-                                                                                }
-                                                                            >
-                                                                                {
-                                                                                    model
-                                                                                }
-                                                                                <CheckIcon
-                                                                                    className={cn(
-                                                                                        "ml-auto h-4 w-4",
-                                                                                        model ===
-                                                                                            field.value
-                                                                                            ? "opacity-100"
-                                                                                            : "opacity-0"
-                                                                                    )}
-                                                                                />
-                                                                            </CommandItem>
+                                                                    {cars
+                                                                        .filter(
+                                                                            (
+                                                                                car
+                                                                            ) =>
+                                                                                car.make ===
+                                                                                make
                                                                         )
-                                                                    )}
+                                                                        .map(
+                                                                            (
+                                                                                car
+                                                                            ) => (
+                                                                                <CommandItem
+                                                                                    value={
+                                                                                        car.model
+                                                                                    }
+                                                                                    key={
+                                                                                        car.model
+                                                                                    }
+                                                                                    onSelect={() =>
+                                                                                        field.onChange(
+                                                                                            car.model
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    {
+                                                                                        car.model
+                                                                                    }
+                                                                                    <CheckIcon
+                                                                                        className={cn(
+                                                                                            "ml-auto h-4 w-4",
+                                                                                            car.model ===
+                                                                                                field.value
+                                                                                                ? "opacity-100"
+                                                                                                : "opacity-0"
+                                                                                        )}
+                                                                                    />
+                                                                                </CommandItem>
+                                                                            )
+                                                                        )}
                                                                 </CommandList>
                                                             </CommandGroup>
                                                         )
@@ -445,9 +299,9 @@ export const OffersForm = () => {
                         />
                     </div>
                     <FormDescription>
-                        {"Can't find a car ? Create a new one "}
+                        {"Can't find a car model ? Create a new one "}
                         <Link
-                            href="/cars/create"
+                            href="/cars/models"
                             className="text-black underline"
                         >
                             here

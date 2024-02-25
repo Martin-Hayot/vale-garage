@@ -10,18 +10,18 @@ import { useForm } from "react-hook-form";
 import {
     Form,
     FormField,
-    FormControl,
     FormItem,
     FormLabel,
     FormMessage,
-    FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { useRouter } from "next/navigation";
 
 export const CreateCarForm = () => {
+    const router = useRouter();
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
     const [isPending, startTransition] = useTransition();
@@ -45,6 +45,8 @@ export const CreateCarForm = () => {
                 )
                 .then((res) => {
                     setSuccess(res.data.message);
+                    form.reset();
+                    router.refresh();
                 })
                 .catch((err) => {
                     setError(err.response.data);
@@ -64,7 +66,7 @@ export const CreateCarForm = () => {
                                 <FormLabel>Make</FormLabel>
                                 <Input
                                     {...field}
-                                    placeholder="Model"
+                                    placeholder="Make"
                                     type="text"
                                     className="w-full"
                                 />
@@ -93,7 +95,7 @@ export const CreateCarForm = () => {
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <Button disabled={isPending} type="submit" className="w-full">
-                    Send Offer
+                    Create Car Model
                 </Button>
             </form>
         </Form>

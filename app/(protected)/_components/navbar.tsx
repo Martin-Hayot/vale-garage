@@ -19,13 +19,13 @@ export const NavBar = ({ role }: NavBarProps) => {
                     <>
                         <Button
                             variant={
-                                pathname === "/cars/create"
+                                pathname === "/cars/models"
                                     ? "default"
                                     : "outline"
                             }
                             asChild
                         >
-                            <Link href="/cars/create">Create Car Model</Link>
+                            <Link href="/cars/models">Car Models</Link>
                         </Button>
                         <Button
                             variant={
@@ -37,23 +37,8 @@ export const NavBar = ({ role }: NavBarProps) => {
                         >
                             <Link href="/offers/create">Create Offer</Link>
                         </Button>
-                        <Button
-                            variant={
-                                pathname === "/admin" ? "default" : "outline"
-                            }
-                            asChild
-                        >
-                            <Link href="/admin">Admin</Link>
-                        </Button>
                     </>
                 )}
-
-                <Button
-                    variant={pathname === "/client" ? "default" : "outline"}
-                    asChild
-                >
-                    <Link href="/client">Client</Link>
-                </Button>
 
                 <Button
                     variant={pathname === "/settings" ? "default" : "outline"}
