@@ -2,9 +2,12 @@ export const FUEL_TYPES = [
     "Diesel",
     "Petrol",
     "Electric",
-    "Hybrid",
     "LPG",
     "CNG",
+    "Hybrid - Petrol/Electric",
+    "Hybrid - Diesel/Electric",
+    "PHEV",
+    "MHEV",
 ];
 
 export const TRANSMISSION_TYPES = ["4x4", "Front", "Rear"];

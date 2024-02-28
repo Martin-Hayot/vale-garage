@@ -10,7 +10,7 @@ interface ProtectedLayoutProps {
 const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
     const user = await currentUser();
     if (!user) {
-        redirect("/login");
+        redirect("/auth/login");
     }
     return (
         <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-zinc-800 ">
