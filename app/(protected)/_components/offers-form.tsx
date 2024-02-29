@@ -91,7 +91,7 @@ export const OffersForm = () => {
     useEffect(() => {
         const getCars = () => {
             axios
-                .get((process.env.NEXT_PUBLIC_API_URL as string) + "/cars")
+                .get("/api/cars")
                 .then((res) => {
                     setCars(res.data);
                     setMakes(
@@ -113,10 +113,7 @@ export const OffersForm = () => {
         setSuccess("");
         startTransition(() => {
             axios
-                .post(
-                    (process.env.NEXT_PUBLIC_API_URL as string) + "/offers",
-                    values
-                )
+                .post("/api/offers", values)
                 .then((res) => {
                     setSuccess(res.data.message);
                 })

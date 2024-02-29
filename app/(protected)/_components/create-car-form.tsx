@@ -39,10 +39,7 @@ export const CreateCarForm = () => {
         setSuccess("");
         startTransition(() => {
             axios
-                .post(
-                    (process.env.NEXT_PUBLIC_API_URL as string) + "/cars",
-                    values
-                )
+                .post("/api/cars", values)
                 .then((res) => {
                     setSuccess(res.data.message);
                     form.reset();
