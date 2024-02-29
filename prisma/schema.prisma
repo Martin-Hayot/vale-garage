@@ -18,9 +18,8 @@ enum UserRole {
 
 model User {
   id                    String                 @id @default(cuid())
-  firstName             String
-  lastName              String
-  email                 String               @unique
+  name                  String?
+  email                 String                 @unique
   emailVerified         DateTime?
   phoneNumber           String?                @unique
   image                 String?
@@ -30,19 +29,18 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
 
   // New fields for MERCHANT role
-  vatNumber             String?                // VAT number
-  companyName           String?                // Name of the company
-  companyAddress        String?                // Address of the company
-  country               String?                // Country
+  vatNumber      String? // VAT number
+  companyName    String? // Name of the company
+  companyAddress String? // Address of the company
+  country        String? // Country
 
-  accounts              Account[]
-  biddings              Bid[]
+  accounts Account[]
+  biddings Bid[]
 
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  deletedAt             DateTime?              
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 }
-
 
 model Account {
   id                String  @id @default(cuid())
@@ -58,7 +56,7 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  activeAccount     Boolean @default(true)
+  activeAccount Boolean @default(true)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -101,38 +99,38 @@ model TwoFactorConfirmation {
   @@unique([userId])
 }
 
-
 model Car {
-  id String @id @default(cuid())
-  make String
+  id    String @id @default(cuid())
+  make  String
   model String
-  year Int
 
   carBids CarBid[]
 
-  @@unique([make, model, year])
+  @@unique([make, model])
 }
 
 model CarBid {
-  id String @id @default(cuid())
-  price Int
-  mileage Int
-  state String
+  id              String    @id @default(cuid())
+  price           Int
+  mileage         Int
+  state           String
   circulationDate DateTime
-  fuelType String
-  power Int
-  transmission String
-  carBody String
-  gearBox String
-
-  minPrice Int
-  maxPrice Int
-
-  startDate DateTime @default(now())
-  endDate DateTime
+  fuelType        String
+  power           Int
+  transmission    String
+  carBody         String
+  gearBox         String
+  color           String
+  doors           Int
+  seats           Int
+  minPrice        Int?
+  maxPrice        Int?
+  startDate       DateTime? @default(now())
+  endDate         DateTime?
+  images          String[]
 
   carId String
-  car Car @relation(fields: [carId], references: [id], onDelete: Cascade)
+  car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
   bids Bid[]
 
@@ -141,14 +139,14 @@ model CarBid {
 }
 
 model Bid {
-  id String @id @default(cuid())
-  userId String
+  id       String @id @default(cuid())
+  userId   String
   carBidId String
-  price Int
+  price    Int
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  carBid CarBid @relation(fields: [carBidId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  carBid CarBid @relation(fields: [carBidId], references: [id], onDelete: Cascade)
 }
