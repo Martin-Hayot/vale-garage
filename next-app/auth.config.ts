@@ -9,6 +9,7 @@ import type { NextAuthConfig } from "next-auth";
 import { getUserByEmail } from "./data/user";
 
 export default {
+    trustHost: true,
     providers: [
         GitHub({
             clientId: process.env.GITHUB_CLIENT_ID,
