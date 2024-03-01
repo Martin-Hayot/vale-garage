@@ -16,7 +16,7 @@ import {
 
 const Navigation = () => {
     return (
-        <nav className="flex flex-row items-center p-5 justify-evenly border-b border-gray-200">
+        <nav className="flex flex-row items-center p-5 justify-evenly border-b border-gray-200 dark:border-neutral-800">
             <h2 className="text-3xl font-semibold md:pl-12">
                 <Link href="/">Vale Garage</Link>
             </h2>
