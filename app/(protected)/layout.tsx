@@ -13,7 +13,7 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
         redirect("/auth/login");
     }
     return (
-        <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center bg-zinc-800 ">
+        <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center">
             <div>
                 <NavBar role={user?.role} />
             </div>

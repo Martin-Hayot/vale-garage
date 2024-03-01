@@ -85,7 +85,9 @@ export const LoginForm = () => {
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Twp Factor Code</FormLabel>
+                                        <FormLabel className="dark:text-secondary-foreground">
+                                            Twp Factor Code
+                                        </FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
@@ -93,6 +95,7 @@ export const LoginForm = () => {
                                                 autoComplete="one-time-code"
                                                 inputMode="numeric"
                                                 pattern="[0-9]*"
+                                                className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                                 disabled={isPending}
                                             />
                                         </FormControl>
@@ -108,12 +111,15 @@ export const LoginForm = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Email</FormLabel>
+                                            <FormLabel className="dark:text-secondary-foreground">
+                                                Email
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     placeholder="john.doe@example.com"
                                                     disabled={isPending}
+                                                    className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                                     type="email"
                                                 />
                                             </FormControl>
@@ -126,12 +132,15 @@ export const LoginForm = () => {
                                     control={form.control}
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Password</FormLabel>
+                                            <FormLabel className="dark:text-secondary-foreground">
+                                                Password
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     disabled={isPending}
                                                     placeholder="Enter your password"
+                                                    className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                                     type="password"
                                                 />
                                             </FormControl>
@@ -157,7 +166,7 @@ export const LoginForm = () => {
                     <Button
                         disabled={isPending}
                         type="submit"
-                        className="w-full"
+                        className="w-full bg-primary"
                     >
                         {showTwoFactor ? "Confirm" : "Login"}
                     </Button>
