@@ -65,13 +65,16 @@ export const RegisterForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel className="dark:text-secondary-foreground">
+                                        Name
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             disabled={isPending}
                                             placeholder="John Doe"
                                             autoComplete="name"
+                                            className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                             type="text"
                                         />
                                     </FormControl>
@@ -84,12 +87,15 @@ export const RegisterForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className="dark:text-secondary-foreground">
+                                        Email
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             placeholder="john.doe@example.com"
                                             disabled={isPending}
+                                            className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                             type="email"
                                         />
                                     </FormControl>
@@ -102,13 +108,16 @@ export const RegisterForm = () => {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel className="dark:text-secondary-foreground">
+                                        Password
+                                    </FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             disabled={isPending}
                                             autoComplete="new-password"
                                             placeholder="Enter your password"
+                                            className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                             type="password"
                                         />
                                     </FormControl>

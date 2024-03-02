@@ -127,7 +127,7 @@ export const OffersForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-4">
-                    <div className="flex flex-col md:flex-row justify-start gap-x-6">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
                         <FormField
                             control={form.control}
                             name="carMake"
@@ -141,9 +141,11 @@ export const OffersForm = () => {
                                                     variant="outline"
                                                     role="combobox"
                                                     className={cn(
-                                                        "w-[200px] justify-between",
+                                                        "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
                                                         !field.value &&
-                                                            "text-muted-foreground"
+                                                            "text-muted-foreground",
+                                                        field.value &&
+                                                            "text-black"
                                                     )}
                                                 >
                                                     {field.value
@@ -154,8 +156,8 @@ export const OffersForm = () => {
                                             </FormControl>
                                         </PopoverTrigger>
 
-                                        <PopoverContent className="w-full p-0">
-                                            <Command>
+                                        <PopoverContent className="w-full p-0 border-0">
+                                            <Command className="dark:bg-white dark:text-black ">
                                                 <CommandInput
                                                     placeholder="Search Car Make..."
                                                     className="h-9"
@@ -169,6 +171,7 @@ export const OffersForm = () => {
                                                             <CommandItem
                                                                 value={make}
                                                                 key={make}
+                                                                className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                                 onSelect={() => {
                                                                     field.onChange(
                                                                         make
@@ -212,9 +215,11 @@ export const OffersForm = () => {
                                                     variant="outline"
                                                     role="combobox"
                                                     className={cn(
-                                                        "w-[200px] justify-between",
+                                                        "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
                                                         !field.value &&
-                                                            "text-muted-foreground"
+                                                            "text-muted-foreground",
+                                                        field.value &&
+                                                            "text-black"
                                                     )}
                                                 >
                                                     {field.value
@@ -225,8 +230,8 @@ export const OffersForm = () => {
                                             </FormControl>
                                         </PopoverTrigger>
 
-                                        <PopoverContent className="w-full h-96 p-0">
-                                            <Command>
+                                        <PopoverContent className="w-full h-56 p-0 border-0">
+                                            <Command className="dark:bg-white dark:text-black ">
                                                 <CommandInput
                                                     placeholder="Search Car Model..."
                                                     className="h-9"
@@ -262,6 +267,7 @@ export const OffersForm = () => {
                                                                                     key={
                                                                                         car.model
                                                                                     }
+                                                                                    className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                                                     onSelect={() =>
                                                                                         field.onChange(
                                                                                             car.model
@@ -295,11 +301,11 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <FormDescription>
+                    <FormDescription className="dark:text-white">
                         {"Can't find a car model ? Create a new one "}
                         <Link
                             href="/cars/models"
-                            className="text-black underline"
+                            className="dark:text-accent text-primary underline"
                         >
                             here
                         </Link>
@@ -315,13 +321,14 @@ export const OffersForm = () => {
                                         {...field}
                                         placeholder="Description of the car..."
                                         disabled={isPending}
+                                        className="dark:bg-gray-200 dark:text-black border-0"
                                     />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <div className="flex flex-col md:flex-row justify-start gap-x-6">
+                    <div className="flex flex-col md:flex-row justify-start gap-6">
                         <FormField
                             name="carBody"
                             control={form.control}
@@ -333,16 +340,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black ">
                                                 <SelectValue placeholder="Car Body" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="border-0 dark:bg-neutral-200 text-black">
                                             {carBodies.map((carBody) => (
                                                 <SelectItem
                                                     key={carBody}
                                                     value={carBody}
                                                     onSelect={field.onChange}
+                                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                 >
                                                     {carBody}
                                                 </SelectItem>
@@ -365,6 +373,7 @@ export const OffersForm = () => {
                                             disabled={isPending}
                                             placeholder="Mileage of the car"
                                             type="number"
+                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
                                             value={field.value}
                                             inputMode="numeric"
                                             max={1000000}
@@ -376,7 +385,7 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row justify-start gap-x-10">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-10 gap-y-6">
                         <FormField
                             control={form.control}
                             name="state"
@@ -388,16 +397,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                                 <SelectValue placeholder="State of the car" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                             {states.map((state) => (
                                                 <SelectItem
                                                     key={state}
                                                     value={state}
                                                     onSelect={field.onChange}
+                                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                 >
                                                     {state}
                                                 </SelectItem>
@@ -419,16 +429,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                                 <SelectValue placeholder="Fuel type" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                             {fuelTypes.map((fuelType) => (
                                                 <SelectItem
                                                     key={fuelType}
                                                     value={fuelType}
                                                     onSelect={field.onChange}
+                                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                 >
                                                     {fuelType}
                                                 </SelectItem>
@@ -450,16 +461,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                                 <SelectValue placeholder="Transmission" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                             {transmissions.map(
                                                 (transmission) => (
                                                     <SelectItem
                                                         key={transmission}
                                                         value={transmission}
+                                                        className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                         onSelect={
                                                             field.onChange
                                                         }
@@ -475,7 +487,7 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row justify-start gap-x-10">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-10 gap-y-6">
                         <FormField
                             name="power"
                             control={form.control}
@@ -487,8 +499,8 @@ export const OffersForm = () => {
                                             {...field}
                                             disabled={isPending}
                                             placeholder="Power of the car"
+                                            className="border-0 dark:bg-neutral-200 text-black"
                                             type="number"
-                                            step={10}
                                             max={1000}
                                             min={0}
                                         />
@@ -508,16 +520,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                                 <SelectValue placeholder="Color" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                             {colors.map((color) => (
                                                 <SelectItem
                                                     key={color}
                                                     value={color}
                                                     onSelect={field.onChange}
+                                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                 >
                                                     {color}
                                                 </SelectItem>
@@ -539,16 +552,17 @@ export const OffersForm = () => {
                                         defaultValue={field.value}
                                     >
                                         <FormControl>
-                                            <SelectTrigger className="mr-2">
+                                            <SelectTrigger className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                                 <SelectValue placeholder="Gear Box" />
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="mr-2">
+                                        <SelectContent className="mr-2 border-0 dark:bg-neutral-200 text-black">
                                             {gearBoxes.map((gearBox) => (
                                                 <SelectItem
                                                     key={gearBox}
                                                     value={gearBox}
                                                     onSelect={field.onChange}
+                                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-neutral-300 focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                                                 >
                                                     {gearBox}
                                                 </SelectItem>
@@ -573,6 +587,7 @@ export const OffersForm = () => {
                                             disabled={isPending}
                                             placeholder="Number of seats"
                                             type="number"
+                                            className="border-0 dark:bg-neutral-200 text-black"
                                             step={1}
                                             max={10}
                                             min={0}
@@ -594,6 +609,7 @@ export const OffersForm = () => {
                                             disabled={isPending}
                                             placeholder="Number of doors"
                                             type="number"
+                                            className="border-0 dark:bg-neutral-200 text-black"
                                             step={1}
                                             max={10}
                                             min={0}
@@ -616,7 +632,7 @@ export const OffersForm = () => {
                                             <Button
                                                 variant={"outline"}
                                                 className={cn(
-                                                    "w-[240px] pl-3 text-left font-normal",
+                                                    "w-[240px] pl-3 text-left font-normal border-0 dark:bg-neutral-200 text-black hover:bg-neutral-300",
                                                     !field.value &&
                                                         "text-muted-foreground"
                                                 )}
@@ -631,7 +647,7 @@ export const OffersForm = () => {
                                         </FormControl>
                                     </PopoverTrigger>
                                     <PopoverContent
-                                        className="w-auto p-0"
+                                        className="w-auto p-0 border-0 dark:bg-neutral-200 text-black"
                                         align="start"
                                     >
                                         <Calendar
@@ -644,10 +660,6 @@ export const OffersForm = () => {
                                         />
                                     </PopoverContent>
                                 </Popover>
-                                <FormDescription>
-                                    Enter the date of the first day the car was
-                                    put into circulation
-                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -666,6 +678,7 @@ export const OffersForm = () => {
                                                 disabled={isPending}
                                                 placeholder="Price of the car"
                                                 type="number"
+                                                className="border-0 dark:bg-neutral-200 text-black min-w-44"
                                                 max={1000000}
                                                 min={0}
                                             />

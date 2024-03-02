@@ -13,7 +13,7 @@ const CreateOfferPage = async () => {
 
     if (user?.role !== "ADMIN") {
         return (
-            <Card className="w-[600px]">
+            <Card className="w-[300px] dark:bg-neutral-600">
                 <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                     <Car className="mr-2 h-8 w-8 [transform:rotateY(180deg)]" />
                     Create Offer
@@ -30,10 +30,10 @@ const CreateOfferPage = async () => {
     }
 
     return (
-        <Card className="w-[600px]">
+        <Card className="dark:bg-neutral-700 bg-neutral-200">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
-                <Car className="mr-2 h-8 w-8 [transform:rotateY(180deg)]" />
                 Create Offer
+                <Car className="ml-2 h-8 w-8 text-accent" />
             </CardHeader>
             <CardContent>
                 <OffersForm />
