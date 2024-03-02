@@ -1,6 +1,6 @@
 "use client";
 
-import { User2Icon, LogOut } from "lucide-react";
+import { User2Icon, LogOut, Settings } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -12,8 +12,13 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogoutButton } from "@/components/auth/logout-button";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
+import Link from "next/link";
 
-export const UserButton = () => {
+export const UserButton = ({
+    align,
+}: {
+    align?: "center" | "start" | "end" | undefined;
+}) => {
     const user = useCurrentUser();
 
     return (
@@ -29,9 +34,22 @@ export const UserButton = () => {
                     </AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40" align="end">
+            <DropdownMenuContent
+                className="w-40 dark:bg-white dark:text-black "
+                align={align}
+            >
+                <DropdownMenuItem className="dark:hover:bg-gray-200">
+                    <Link
+                        className="flex flex-row items-center"
+                        href="/settings"
+                    >
+                        <Settings className="mr-2 h-4 w-4" />
+                        Settings
+                    </Link>
+                </DropdownMenuItem>
+
                 <LogoutButton>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="dark:hover:bg-gray-200">
                         <LogOut className="mr-2 h-4 w-4" />
                         Logout
                     </DropdownMenuItem>
