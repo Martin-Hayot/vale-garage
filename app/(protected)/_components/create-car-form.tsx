@@ -65,7 +65,7 @@ export const CreateCarForm = () => {
                                     {...field}
                                     placeholder="Make"
                                     type="text"
-                                    className="w-full"
+                                    className="w-full dark:bg-neutral-200 border-0 dark:text-black"
                                 />
                                 <FormMessage />
                             </FormItem>
@@ -81,7 +81,7 @@ export const CreateCarForm = () => {
                                     {...field}
                                     placeholder="Model"
                                     type="text"
-                                    className="w-full"
+                                    className="w-full dark:bg-neutral-200 border-0 dark:text-black"
                                 />
                                 <FormMessage />
                             </FormItem>

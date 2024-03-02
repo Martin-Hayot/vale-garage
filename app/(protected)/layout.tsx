@@ -12,8 +12,8 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
         redirect("/auth/login");
     }
     return (
-        <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center">
-            <ScrollArea className="h-[800px]">{children}</ScrollArea>
+        <div className="h-full w-full flex flex-col items-center mx-auto mt-10">
+            {children}
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navigation from "@/components/navigation/navigation";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
                     >
                         <Navigation />
                         {children}
+                        <Footer />
                     </ThemeProvider>
                 </body>
             </html>

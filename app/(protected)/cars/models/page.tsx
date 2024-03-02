@@ -29,7 +29,7 @@ const CreateCarPage = async () => {
 
     if (user?.role !== "ADMIN") {
         return (
-            <Card className="w-[600px]">
+            <Card className="w-[600px]  dark:bg-neutral-600">
                 <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                     <Car className="mr-2 h-8 w-8 [transform:rotateY(180deg)]" />
                     Car Model
@@ -46,10 +46,10 @@ const CreateCarPage = async () => {
     }
 
     return (
-        <Card className="w-[600px]">
+        <Card className="w-[600px] bg-neutral-200 dark:bg-neutral-700">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
-                <Car className="mr-2 h-8 w-8 [transform:rotateY(180deg)]" />
                 Car Models
+                <Car className="ml-2 h-8 w-8 text-accent" />
             </CardHeader>
             <CardContent className="flex flex-col gap-y-5">
                 <CreateCarForm />

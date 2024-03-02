@@ -141,9 +141,11 @@ export const OffersForm = () => {
                                                     variant="outline"
                                                     role="combobox"
                                                     className={cn(
-                                                        "w-[200px] justify-between",
+                                                        "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground",
                                                         !field.value &&
-                                                            "text-muted-foreground"
+                                                            "text-muted-foreground",
+                                                        field.value &&
+                                                            "text-black"
                                                     )}
                                                 >
                                                     {field.value
@@ -154,8 +156,8 @@ export const OffersForm = () => {
                                             </FormControl>
                                         </PopoverTrigger>
 
-                                        <PopoverContent className="w-full p-0">
-                                            <Command>
+                                        <PopoverContent className="w-full p-0 border-0">
+                                            <Command className="dark:bg-white dark:text-black ">
                                                 <CommandInput
                                                     placeholder="Search Car Make..."
                                                     className="h-9"
@@ -212,9 +214,11 @@ export const OffersForm = () => {
                                                     variant="outline"
                                                     role="combobox"
                                                     className={cn(
-                                                        "w-[200px] justify-between",
+                                                        "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground",
                                                         !field.value &&
-                                                            "text-muted-foreground"
+                                                            "text-muted-foreground",
+                                                        field.value &&
+                                                            "text-black"
                                                     )}
                                                 >
                                                     {field.value
@@ -295,11 +299,11 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <FormDescription>
+                    <FormDescription className="dark:text-white">
                         {"Can't find a car model ? Create a new one "}
                         <Link
                             href="/cars/models"
-                            className="text-black underline"
+                            className="dark:text-accent text-primary underline"
                         >
                             here
                         </Link>
@@ -315,6 +319,7 @@ export const OffersForm = () => {
                                         {...field}
                                         placeholder="Description of the car..."
                                         disabled={isPending}
+                                        className="dark:bg-gray-200 dark:text-black border-0"
                                     />
                                 </FormControl>
                                 <FormMessage />
