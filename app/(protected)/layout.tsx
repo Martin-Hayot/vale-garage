@@ -1,5 +1,4 @@
 import { currentUser } from "@/lib/auth";
-import { NavBar } from "./_components/navbar";
 import { redirect } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -14,9 +13,6 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
     }
     return (
         <div className="h-full w-full flex flex-col gap-y-10 items-center justify-center">
-            <div>
-                <NavBar role={user?.role} />
-            </div>
             <ScrollArea className="h-[800px]">{children}</ScrollArea>
         </div>
     );

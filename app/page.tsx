@@ -19,7 +19,6 @@ export default function Home() {
                     Vale Garage
                 </h1>
                 <p className="text-lg">A car bidding website</p>
-                <ModeToggle />
                 <div>
                     <LoginButton mode="redirect">
                         <Button variant="secondary" size="lg">
