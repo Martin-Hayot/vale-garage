@@ -46,7 +46,7 @@ const CreateCarPage = async () => {
     }
 
     return (
-        <Card className="w-[600px] bg-neutral-200 dark:bg-neutral-700">
+        <Card className=" md:w-[600px] w-[340px] bg-neutral-200 dark:bg-neutral-700">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 Car Models
                 <Car className="ml-2 h-8 w-8 text-accent" />

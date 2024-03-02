@@ -24,7 +24,7 @@ const SettingsPage = () => {
     };
 
     return (
-        <Card className="w-[600px] dark:bg-neutral-600">
+        <Card className="w-[360px] md:w-[600px] dark:bg-neutral-600 bg-neutral-200">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 <Settings className="mr-2 h-8 w-8" />
                 Settings

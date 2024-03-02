@@ -1,21 +1,8 @@
 import Link from "next/link";
 import { UserButton } from "../auth/user-button";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ChevronDown, ChevronUp, Shield } from "lucide-react";
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuTrigger,
-} from "../ui/navigation-menu";
+import { Shield } from "lucide-react";
+import { ModeToggle } from "../mode-toggle";
 
 const NavigationSidebar = ({ setOpen }: { setOpen: Function }) => {
     const user = useCurrentUser();
@@ -25,7 +12,10 @@ const NavigationSidebar = ({ setOpen }: { setOpen: Function }) => {
     };
     return (
         <div className="ml-6 mt-6">
-            {user && <UserButton align="start" />}
+            <div className="flex flex-row gap-x-6">
+                {user && <UserButton align="start" />}
+                <ModeToggle />
+            </div>
 
             <nav className="flex flex-col text-4xl mt-12 gap-y-5 text-nowrap">
                 <Link

@@ -127,7 +127,7 @@ export const OffersForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-4">
-                    <div className="flex flex-col md:flex-row justify-start gap-x-6">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
                         <FormField
                             control={form.control}
                             name="carMake"
@@ -328,7 +328,7 @@ export const OffersForm = () => {
                             </FormItem>
                         )}
                     />
-                    <div className="flex flex-col md:flex-row justify-start gap-x-6">
+                    <div className="flex flex-col md:flex-row justify-start gap-6">
                         <FormField
                             name="carBody"
                             control={form.control}
@@ -385,7 +385,7 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row justify-start gap-x-10">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-10 gap-y-6">
                         <FormField
                             control={form.control}
                             name="state"
@@ -487,7 +487,7 @@ export const OffersForm = () => {
                             )}
                         />
                     </div>
-                    <div className="flex flex-col md:flex-row justify-start gap-x-10">
+                    <div className="flex flex-col md:flex-row justify-start gap-x-10 gap-y-6">
                         <FormField
                             name="power"
                             control={form.control}

@@ -32,8 +32,10 @@ export default async function RootLayout({
                         storageKey="theme"
                     >
                         <Navigation />
-                        {children}
-                        <Footer />
+                        <div className="flex flex-col justify-between mt-10">
+                            {children}
+                            <Footer />
+                        </div>
                     </ThemeProvider>
                 </body>
             </html>
