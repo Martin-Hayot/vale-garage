@@ -30,7 +30,7 @@ const CreateOfferPage = async () => {
     }
 
     return (
-        <Card className="dark:bg-neutral-700 bg-neutral-200">
+        <Card className="dark:bg-neutral-700 bg-neutral-200 min-w-[300px] md:min-w-[500px]">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 Create Offer
                 <Car className="ml-2 h-8 w-8 text-accent" />
