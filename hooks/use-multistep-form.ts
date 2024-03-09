@@ -1,12 +1,10 @@
-import { on } from "events";
 import { useState } from "react";
 import { z } from "zod";
 
 export function useMulitstepForm(
     steps: { id: string; title: string; fields: string[] }[],
     formSchema: z.ZodObject<any>,
-    form: z.infer<typeof formSchema>,
-    onSubmit: (values: any) => void
+    form: z.infer<typeof formSchema>
 ) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     let isLastStep = currentStepIndex === steps.length - 1;
@@ -44,6 +42,7 @@ export function useMulitstepForm(
 
     return {
         currentStepIndex,
+        setCurrentStepIndex,
         step: steps[currentStepIndex],
         isFirstStep: currentStepIndex === 0,
         isLastStep,

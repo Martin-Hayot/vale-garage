@@ -88,13 +88,14 @@ const steps = [
     },
     {
         id: "step-3",
+        title: "Car Images",
+        fields: ["images"],
+    },
+    {
+        id: "step-4",
         title: "Offers Details",
         fields: ["price", "description"],
     },
-    // {
-    //     id: "step-4",
-    //     title: "Offer type",
-    // },
 ];
 
 export const OffersForm = () => {
@@ -126,6 +127,15 @@ export const OffersForm = () => {
         },
     });
 
+    const {
+        currentStepIndex,
+        setCurrentStepIndex,
+        next,
+        back,
+        isFirstStep,
+        isLastStep,
+    } = useMulitstepForm(steps, OffersSchema, form);
+
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
         setSuccess("");
@@ -134,15 +144,17 @@ export const OffersForm = () => {
                 .post("/api/offers", values)
                 .then((res) => {
                     setSuccess(res.data.message);
+                    setTimeout(() => {
+                        form.reset();
+                        setCurrentStepIndex(0);
+                        setSuccess("");
+                    }, 2000);
                 })
                 .catch((err) => {
                     setError(err.response.data);
                 });
         });
     };
-
-    const { currentStepIndex, next, back, isFirstStep, isLastStep } =
-        useMulitstepForm(steps, OffersSchema, form, onSubmit);
 
     useEffect(() => {
         const getCars = () => {
@@ -173,7 +185,7 @@ export const OffersForm = () => {
                             key={index}
                             className={cn(
                                 "flex items-center justify-center w-8 h-8 rounded-full border-2 border-primary-foreground dark:border-primary-background",
-                                index === currentStepIndex
+                                index <= currentStepIndex
                                     ? "bg-primary-foreground dark:bg-primary-background text-black"
                                     : "bg-transparent border-muted-foreground dark:border-muted-background text-muted-foreground dark:text-muted-background"
                             )}
@@ -185,7 +197,7 @@ export const OffersForm = () => {
                                 key={index + 1}
                                 className={cn(
                                     "flex-1 h-0.5 mt-3 bg-primary-foreground dark:bg-primary-background",
-                                    index === currentStepIndex
+                                    index <= currentStepIndex
                                         ? "w-1/2 "
                                         : "w-full bg-muted-foreground dark:bg-muted-background"
                                 )}
@@ -193,6 +205,20 @@ export const OffersForm = () => {
                         )}
                     </Fragment>
                 ))}
+            </div>
+            <div className="pb-5">
+                {steps.map(
+                    (step, index) =>
+                        // show title of the current step
+                        index === currentStepIndex && (
+                            <h1
+                                key={index}
+                                className="text-2xl font-semibold text-left"
+                            >
+                                {step.title}
+                            </h1>
+                        )
+                )}
             </div>
             <Form {...form}>
                 <form
