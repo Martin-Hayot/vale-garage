@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import { Car } from "lucide-react";
-import { OffersForm } from "../../_components/offers-form";
+import { OffersForm } from "../../../../components/forms/offers-form";
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

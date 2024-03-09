@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { currentUser } from "@/lib/auth";
 import { Car } from "lucide-react";
 import { redirect } from "next/navigation";
-import { CreateCarForm } from "../../_components/create-car-form";
+import { CreateCarForm } from "../../../../components/forms/create-car-form";
 import CarsSearch from "@/components/cars-search";
 import { db } from "@/lib/db";
 import { Toaster } from "@/components/ui/toaster";
