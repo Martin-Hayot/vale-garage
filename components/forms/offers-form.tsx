@@ -46,7 +46,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
 
 import { format } from "date-fns";
 import Link from "next/link";
