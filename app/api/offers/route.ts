@@ -136,3 +136,26 @@ export async function POST(req: Request) {
         return new NextResponse("Internal error", { status: 500 });
     }
 }
+
+export async function GET(req: Request) {
+    try {
+        const user = await currentUser();
+        if (!user) {
+            return NextResponse.redirect("/login");
+        }
+
+        const offers = await db.carBid.findMany({
+            orderBy: {
+                createdAt: "desc",
+            },
+            include: {
+                car: true,
+            },
+        });
+
+        return NextResponse.json(offers);
+    } catch (error) {
+        console.log("[OFFERS GET]", error);
+        return new NextResponse("Internal error", { status: 500 });
+    }
+}

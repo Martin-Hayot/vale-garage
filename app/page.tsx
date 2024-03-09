@@ -26,13 +26,13 @@ export default function Home() {
                         </Button>
                     </LoginButton>
                 </div>
-                <div className="pt-32">
-                    <h2 className="text-left text-4xl ml-20 my-6">
-                        New offers
-                    </h2>
-                    <div className="flex items-center justify-center mx-16">
-                        <NewOffers />
-                    </div>
+            </div>
+            <div className="py-16 bg-neutral-800 w-full mt-32">
+                <h2 className="text-center md:text-left text-4xl md:ml-20 pb-16">
+                    New offers
+                </h2>
+                <div className="flex items-center justify-center mx-16 md:mx-32 mb-6">
+                    <NewOffers />
                 </div>
             </div>
         </main>
