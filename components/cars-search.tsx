@@ -63,7 +63,7 @@ const CarsSearch = ({ carsData, canDelete }: CarsSearchProps) => {
     };
     return (
         <div className="flex items-center">
-            <Command className="dark:bg-neutral-900">
+            <Command className="dark:bg-neutral-200 dark:text-black">
                 <CommandInput placeholder="Search a car model" />
                 <CommandList>
                     <CommandEmpty>No results found.</CommandEmpty>
@@ -75,7 +75,7 @@ const CarsSearch = ({ carsData, canDelete }: CarsSearchProps) => {
                                 .map((car) => (
                                     <CommandItem
                                         key={car.model}
-                                        className="w-full flex flex-row items-center justify-between aria-selected:bg-neutral-100 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-white"
+                                        className="w-full dark:text-black flex flex-row items-center justify-between aria-selected:bg-neutral-100 dark:aria-selected:bg-neutral-700 dark:aria-selected:text-white"
                                     >
                                         <div>
                                             <span className="hidden">

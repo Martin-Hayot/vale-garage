@@ -30,7 +30,7 @@ export const OffersSchema = z.object({
     price: z.coerce.number().min(500, { message: "Price is required" }),
     mileage: z.coerce.number().min(1, { message: "Mileage is required" }),
     state: z.string().min(1, { message: "State of the car is required" }),
-    circulationDate: z.coerce.date(),
+    circulationDate: z.coerce.date().max(new Date(), { message: "Too new!" }),
     description: z.string().min(1, { message: "Description is required" }),
     fuelType: z.string().min(1, { message: "Fuel type is required" }),
     transmission: z.string().min(1, { message: "Transmission is required" }),
