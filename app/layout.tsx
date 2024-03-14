@@ -10,8 +10,8 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Vale Garage",
-    description: "A car bidding website",
+    title: "VaLe Garage",
+    description: "a car sales and auction platform",
 };
 
 export default async function RootLayout({
