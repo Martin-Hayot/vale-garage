@@ -24,14 +24,14 @@ export default function Home() {
                     >
                         Search for your dream car
                     </h2>
-                    <div className="flex items-center justify-center mx-16 md:mx-32 text-black">
+                    <div className="flex items-center justify-center mx-16 text-black">
                         <HomePageCarSearch />
                     </div>
                 </div>
             </div>
-            <section id="creations" className="pt-16 mx-12">
-                <div className="container mx-auto my-32 px-6 md:px-0">
-                    <h2 className="text-center lg:text-left text-4xl pb-12 font-semibold">
+            <section id="creations" className="pt-16 mx-32">
+                <div className="my-32 px-6 md:px-0">
+                    <h2 className="text-center lg:text-left text-4xl pb-16 font-semibold">
                         What type of car are you looking for ?
                     </h2>
                     <CarCategories />
