@@ -43,7 +43,7 @@ const Navigation = () => {
     return (
         <header
             className={cn(
-                "w-full fixed z-50 transition-all duration-300 bg-background",
+                "w-full fixed z-50 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
                 isSticky ? "opacity-100 top-0  " : "opacity-0 -translate-y-full"
             )}
         >

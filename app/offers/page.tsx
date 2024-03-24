@@ -1,3 +1,4 @@
+import OffersCard from "@/components/offers/offers-card";
 import OffersList from "@/components/offers/offers-list";
 import OffersSidebar from "@/components/offers/offers-sidebar";
 
@@ -10,9 +11,7 @@ const OffersPage = () => {
 
             <div className="basis-1/2">
                 <OffersList>
-                    <p>Offer 1</p>
-                    <p>Offer 2</p>
-                    <p>Offer 3</p>
+                    <OffersCard />
                 </OffersList>
             </div>
         </div>
