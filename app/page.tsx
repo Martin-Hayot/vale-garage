@@ -6,10 +6,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import CarCategories from "@/components/car-categories";
+import { db } from "@/lib/db";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
-export default function Home() {
+export default async function Home() {
+    const offers = await db.carBid.findMany();
+
     return (
         <main className="flex h-full flex-col items-center justify-center">
             <HeroSection />
@@ -38,11 +41,8 @@ export default function Home() {
                 </div>
             </section>
             <section className="pt-32 xl:pt-16 bg-neutral-200 dark:bg-background w-full">
-                <h2 className="text-center md:text-left text-4xl md:mx-32  pb-12">
-                    New offers
-                </h2>
                 <div className="flex items-center justify-center mx-16 md:mx-32 mb-6">
-                    <NewOffers />
+                    <NewOffers offers={offers} />
                 </div>
             </section>
         </main>

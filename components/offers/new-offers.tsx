@@ -1,11 +1,8 @@
-import * as React from "react";
+"use client";
 
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from "@/components/ui/card";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 import {
     Carousel,
     CarouselContent,
@@ -13,70 +10,79 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import { db } from "@/lib/db";
-import Image from "next/image";
 import { Button } from "../ui/button";
+import OffersCard from "./offers-card";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-const NewOffers = async () => {
-    const offers = await db.carBid.findMany({
-        orderBy: {
-            createdAt: "desc",
-        },
-        include: {
-            car: true,
-        },
-        take: 10, // Limit to 10 new offers
-    });
+interface NewOffersProps {
+    offers: any;
+}
+
+const NewOffers = ({ offers }: NewOffersProps) => {
+    const boxRef = useRef(null);
+
+    useEffect(() => {
+        gsap.set(boxRef.current, { scaleX: 0, transformOrigin: "left" });
+    }, []);
+
+    const handleMouseEnter = () => {
+        gsap.to(boxRef.current, { scaleX: 1, opacity: 1, duration: 0.8 });
+    };
+
+    const handleMouseLeave = () => {
+        gsap.to(boxRef.current, { scaleX: 0, opacity: 0, duration: 0.8 });
+    };
 
     return (
-        <>
-            <Carousel className="w-full 2xl:max-w-[120em]">
-                <CarouselContent>
-                    {offers.map((offer, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="md:basis-1/2 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/4"
-                        >
-                            <div className="pt-4 py-3 bg-neutral-50 rounded-md cursor-pointer">
-                                <h3 className="text-lg font-semibold text-black px-6 pb-4">
-                                    {offer.car.make} {offer.car.model}
-                                </h3>
+        <div>
+            <div className="flex flex-row items-center justify-center lg:justify-between mb-8">
+                <h2 className="text-4xl text-center font-bold text-neutral-900 dark:text-white">
+                    New Offers
+                </h2>
+                <div
+                    className="group flex flex-col"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    <Link
+                        className="hidden lg:block text-2xl font-semibold text-neutral-900 dark:text-white xl:mr-16"
+                        href={"/offers"}
+                    >
+                        See all offers
+                        <ArrowRight className="inline ml-2" />
+                    </Link>
+                    <div
+                        ref={boxRef}
+                        className="h-[2px] opacity-0 bg-accent xl:mr-16"
+                    />
+                </div>
+            </div>
 
-                                <Image
-                                    src="/car-placeholder.jpg"
-                                    width={400}
-                                    height={400}
-                                    alt={`${offer.car.make} ${offer.car.model}`}
-                                    className="w-full object-contain"
-                                />
-
-                                <div className="flex flex-row justify-between px-6 pt-4">
-                                    <p className="text-lg text-black">
-                                        {offer.price} €
-                                    </p>
-                                    <div>
-                                        <p className="text-sm text-gray-500">
-                                            {new Date(
-                                                offer.circulationDate
-                                            ).getFullYear()}{" "}
-                                            - {offer.mileage} km
-                                        </p>
-                                        <p className="text-sm text-gray-500">
-                                            {offer.fuelType} - {offer.gearBox}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-                <div className="flex justify-center mt-10">
-                    <Button className="btn btn-primary">See all offers</Button>
+            <Carousel className="w-[300px] md:w-[600px] lg:w-[900px] xl:w-full 2xl:max-w-[90em]">
+                <div className="flex flex-col">
+                    <CarouselContent className="px-0">
+                        {offers.map((offer, index) => (
+                            <CarouselItem
+                                key={index}
+                                className="md:basis-1/2 lg:basis-1/3 xl:basis-1/3 2xl:basis-1/4"
+                            >
+                                <OffersCard />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <div className="flex flex-row gap-x-6 justify-center items-start mt-10">
+                        <CarouselPrevious className="static translate-y-0" />
+                        <CarouselNext className="static translate-y-0" />
+                    </div>
+                    <div className="lg:hidden flex justify-center mt-10">
+                        <Button className="btn btn-primary">
+                            See all offers
+                        </Button>
+                    </div>
                 </div>
             </Carousel>
-        </>
+        </div>
     );
 };
 
