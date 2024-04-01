@@ -11,7 +11,7 @@ interface OffersCardProps {
 
 const OffersCard = ({ details }: OffersCardProps) => {
     return (
-        <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72">
+        <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72 max-h-72">
             <div className="relative">
                 <div className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3">
                     <Heart className="text-white w-5 h-5" />
@@ -42,7 +42,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                         {details.make + " " + details.model}
                     </h3>
                     <p className="text-blue-500/80 text-xs">
-                        {details.circulationDate.getFullYear()},{" "}
+                        {new Date(details.circulationDate).getFullYear()},{" "}
                         {details.mileage} km
                     </p>
                 </div>

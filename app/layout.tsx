@@ -6,6 +6,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navigation from "@/components/navigation/navigation";
 import Footer from "@/components/footer";
+import QueryProvider from "@/components/providers/query-client-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,11 +32,13 @@ export default async function RootLayout({
                         enableSystem={false}
                         storageKey="theme"
                     >
-                        <Navigation />
-                        <div className="flex flex-col justify-between">
-                            {children}
-                            <Footer />
-                        </div>
+                        <QueryProvider>
+                            <Navigation />
+                            <div className="flex flex-col justify-between">
+                                {children}
+                                <Footer />
+                            </div>
+                        </QueryProvider>
                     </ThemeProvider>
                 </body>
             </html>

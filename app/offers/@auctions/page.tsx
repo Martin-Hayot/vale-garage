@@ -16,20 +16,14 @@ const AuctionsPage = async () => {
 
     return (
         <div className="flex flex-row justify-center">
-            <div className="hidden xl:block pr-16">
-                <OffersSidebar />
-            </div>
-
-            <div className="">
-                <OffersList>
-                    {offers.map((offer) => (
-                        <OffersCard
-                            key={offer.id}
-                            details={{ ...offer.car, ...offer }}
-                        />
-                    ))}
-                </OffersList>
-            </div>
+            <OffersList>
+                {offers.map((offer) => (
+                    <OffersCard
+                        key={offer.id}
+                        details={{ ...offer.car, ...offer }}
+                    />
+                ))}
+            </OffersList>
         </div>
     );
 };
