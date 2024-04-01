@@ -11,7 +11,11 @@ import { db } from "@/lib/db";
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
 export default async function Home() {
-    const offers = await db.carBid.findMany();
+    const offers = await db.carBid.findMany({
+        include: {
+            car: true,
+        },
+    });
 
     return (
         <main className="flex h-full flex-col items-center justify-center">

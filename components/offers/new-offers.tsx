@@ -14,9 +14,12 @@ import { Button } from "../ui/button";
 import OffersCard from "./offers-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Car, CarBid } from "@prisma/client";
+
+type CarOffer = { car: Car } & CarBid;
 
 interface NewOffersProps {
-    offers: any;
+    offers: CarOffer[];
 }
 
 const NewOffers = ({ offers }: NewOffersProps) => {
@@ -62,12 +65,14 @@ const NewOffers = ({ offers }: NewOffersProps) => {
             <Carousel className="w-[300px] md:w-[600px] lg:w-[900px] xl:w-full 2xl:max-w-[90em]">
                 <div className="flex flex-col">
                     <CarouselContent className="px-0">
-                        {offers.map((offer, index) => (
+                        {offers.map((offer, index: number) => (
                             <CarouselItem
                                 key={index}
                                 className="md:basis-1/2 lg:basis-1/3 xl:basis-1/3 2xl:basis-1/4"
                             >
-                                <OffersCard />
+                                <OffersCard
+                                    details={{ ...offer.car, ...offer }}
+                                />
                             </CarouselItem>
                         ))}
                     </CarouselContent>

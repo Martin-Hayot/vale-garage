@@ -3,8 +3,12 @@ import OffersList from "@/components/offers/offers-list";
 import OffersSidebar from "@/components/offers/offers-sidebar";
 import { db } from "@/lib/db";
 
-const OffersPage = async () => {
-    const offers = await db.carBid.findMany();
+const AuctionsPage = async () => {
+    const offers = await db.carBid.findMany({
+        include: {
+            car: true,
+        },
+    });
 
     if (!offers) {
         return <div>No offers found</div>;
@@ -19,7 +23,10 @@ const OffersPage = async () => {
             <div className="">
                 <OffersList>
                     {offers.map((offer) => (
-                        <OffersCard key={offer.id} details={offer} />
+                        <OffersCard
+                            key={offer.id}
+                            details={{ ...offer.car, ...offer }}
+                        />
                     ))}
                 </OffersList>
             </div>
@@ -27,4 +34,4 @@ const OffersPage = async () => {
     );
 };
 
-export default OffersPage;
+export default AuctionsPage;
