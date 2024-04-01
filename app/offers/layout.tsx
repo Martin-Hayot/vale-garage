@@ -13,7 +13,7 @@ const OffersLayout = ({
 }) => {
     return (
         <Tabs defaultValue="sales" className="w-full h-full mt-24">
-            <div className="flex flex-row gap-x-6 border-b border-neutral-800 pb-4 pl-12">
+            <div className="flex flex-row gap-x-6 border-b dark:border-neutral-800 pb-4 pt-1 pl-12">
                 <TabsList className="dark:bg-neutral-800">
                     <TabsTrigger value="sales">Sales</TabsTrigger>
                     <TabsTrigger value="auctions">Auctions</TabsTrigger>
