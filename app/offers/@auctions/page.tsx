@@ -1,6 +1,4 @@
 import OffersCard from "@/components/offers/offers-card";
-import OffersList from "@/components/offers/offers-list";
-import OffersSidebar from "@/components/offers/offers-sidebar";
 import { db } from "@/lib/db";
 
 const AuctionsPage = async () => {
@@ -16,14 +14,14 @@ const AuctionsPage = async () => {
 
     return (
         <div className="flex flex-row justify-center">
-            <OffersList>
+            <div className="grid md:grid-cols-2 md:gap-5 2xl:grid-cols-4 gap-y-5">
                 {offers.map((offer) => (
                     <OffersCard
                         key={offer.id}
                         details={{ ...offer.car, ...offer }}
                     />
                 ))}
-            </OffersList>
+            </div>
         </div>
     );
 };

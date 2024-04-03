@@ -9,13 +9,7 @@ import {
 import { IoMdFunnel } from "react-icons/io";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-
-const SORT_OPTIONS = [
-    { label: "Newest", value: "newest" },
-    { label: "Oldest", value: "oldest" },
-    { label: "Price: Low to High", value: "price_asc" },
-    { label: "Price: High to Low", value: "price_desc" },
-] as const;
+import { SORT_OPTIONS } from "@/constants/filters";
 
 const SortDropdown = () => {
     const [selected, setSelected] = useState<string>(SORT_OPTIONS[0].label);
@@ -24,7 +18,7 @@ const SortDropdown = () => {
 
     return (
         <DropdownMenu open={open} onOpenChange={() => setOpen(!open)}>
-            <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-x-4 font-medium border dark:border-neutral-800 rounded-lg p-2 px-4 dark:hover:bg-neutral-800 transition-all duration-150">
+            <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-x-4 font-medium border dark:border-neutral-800 rounded-md p-2 px-4 dark:hover:bg-neutral-800 transition-all duration-150">
                 Sort by : {selected} <IoMdFunnel />
             </DropdownMenuTrigger>
             <DropdownMenuContent

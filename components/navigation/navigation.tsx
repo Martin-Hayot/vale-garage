@@ -28,7 +28,7 @@ const Navigation = () => {
         const handleScroll = () => {
             const currentScrollPos = window.scrollY;
 
-            if (currentScrollPos > 0) {
+            if (currentScrollPos > 100) {
                 setIsSticky(prevScrollPos > currentScrollPos);
                 setPrevScrollPos(currentScrollPos);
             }

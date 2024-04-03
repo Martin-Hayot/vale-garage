@@ -38,8 +38,8 @@ const NewOffers = ({ offers }: NewOffersProps) => {
     };
 
     return (
-        <div>
-            <div className="flex flex-row items-center justify-center lg:justify-between mb-8">
+        <div className="lg:w-full">
+            <div className="flex flex-row items-center justify-center lg:justify-between mb-16">
                 <h2 className="text-4xl text-center font-bold text-neutral-900 dark:text-white">
                     New Offers
                 </h2>
