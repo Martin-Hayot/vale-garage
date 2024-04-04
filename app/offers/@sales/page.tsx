@@ -30,8 +30,14 @@ const SalesPage = () => {
     }
 
     return (
-        <div className="flex flex-row">
-            <div className="grid md:grid-cols-2 md:gap-5 2xl:grid-cols-4 gap-y-5">
+        <div className="">
+            <div className="flex flex-row justify-between items-center pb-4">
+                <h2 className="font-semibold text-4xl">Sales</h2>
+                <div className="font-semibold text-2xl">
+                    {offers?.length} car found
+                </div>
+            </div>
+            <div className="grid md:grid-cols-2 md:gap-5 xl:grid-cols-3 2xl:grid-cols-4 gap-y-5">
                 {offers && !isPending
                     ? offers.map((offer) => (
                           <OffersCard

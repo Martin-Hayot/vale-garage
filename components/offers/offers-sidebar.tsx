@@ -6,65 +6,58 @@ import {
 } from "@/components/ui/accordion";
 
 import { Slider } from "@/components/ui/slider";
+import { COLOR_OPTIONS } from "@/constants/filters";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "../ui/command";
+import { ScrollArea } from "../ui/scroll-area";
+import { CheckIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useFilters } from "@/store/filters";
 
 const OffersSidebar = () => {
+    const { color, setFilter } = useFilters();
+
     return (
-        <div className="hidden dark:bg-neutral-800 rounded-lg p-5 w-96 lg:block">
-            <ul className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"></ul>
-
-            <Accordion type="multiple" className="animate-none">
-                {/* Color filter */}
-                <AccordionItem value="color">
-                    <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">Color</span>
-                    </AccordionTrigger>
-
-                    <AccordionContent className="pt-6 animate-none">
-                        <ul className="space-y-4"></ul>
-                    </AccordionContent>
-                </AccordionItem>
-
-                {/* Size filters */}
-                <AccordionItem value="size">
-                    <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">Size</span>
-                    </AccordionTrigger>
-
-                    <AccordionContent className="pt-6 animate-none">
-                        <ul className="space-y-4"></ul>
-                    </AccordionContent>
-                </AccordionItem>
-
-                {/* Price filter */}
-                <AccordionItem value="price">
-                    <AccordionTrigger className="py-3 text-sm text-gray-400 hover:text-gray-500">
-                        <span className="font-medium text-gray-900">Price</span>
-                    </AccordionTrigger>
-
-                    <AccordionContent className="pt-6 animate-none">
-                        <ul className="space-y-4">
-                            <li className="flex justify-center flex-col gap-2">
-                                <div>
-                                    <input
-                                        type="radio"
-                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                    />
-                                    <label className="ml-3 text-sm text-gray-600">
-                                        Custom
-                                    </label>
-                                </div>
-
-                                <div className="flex justify-between">
-                                    <p className="font-medium">Price</p>
-                                    <div>0€ - 10000€ €</div>
-                                </div>
-
-                                <Slider min={0} step={5} />
-                            </li>
-                        </ul>
-                    </AccordionContent>
-                </AccordionItem>
-            </Accordion>
+        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg p-5 w-64 lg:block">
+            <div className="flex flex-row items-center justify-between">
+                <h2 className="font-semibold text-2xl">Filters</h2>
+                <Button
+                    variant="link"
+                    type="reset"
+                    className="text-accent text-md"
+                >
+                    Reset
+                </Button>
+            </div>
+            <div>
+                <Command className="dark:bg-neutral-800 bg-neutral-200">
+                    <CommandInput
+                        className="dark:bg-neutral-800"
+                        placeholder="Search Filter..."
+                    />
+                    <CommandGroup>
+                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <h3 className="text-md font-semibold pb-4">
+                                Price
+                            </h3>
+                            <Slider
+                                step={100}
+                                minStepsBetweenThumbs={1}
+                                min={500}
+                                max={50000}
+                                className=""
+                            />
+                        </CommandItem>
+                    </CommandGroup>
+                </Command>
+            </div>
         </div>
     );
 };
