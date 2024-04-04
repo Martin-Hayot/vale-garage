@@ -1,26 +1,50 @@
-import OffersCard from "@/components/offers/offers-card";
-import { db } from "@/lib/db";
+"use client";
 
-const AuctionsPage = async () => {
-    const offers = await db.carBid.findMany({
-        include: {
-            car: true,
+import OffersCard from "@/components/offers/offers-card";
+import OffersSkeleton from "@/components/offers/offers-skeleton";
+import { useFilters } from "@/store/filters";
+import { Car, CarBid } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+type CarSales = CarBid & { car: Car };
+
+const AuctionsPage = () => {
+    const { sort } = useFilters();
+    const {
+        data: offers,
+        isPending,
+        isError,
+    } = useQuery({
+        queryKey: ["auctions", sort],
+        queryFn: async () => {
+            const { data } = await axios.get<CarSales[]>(
+                "/api/offers/auctions",
+                {
+                    params: { sort },
+                }
+            );
+            return data;
         },
     });
 
-    if (!offers) {
-        return <div>No offers found</div>;
+    if (isError) {
+        return <div>Error loading data</div>;
     }
 
     return (
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row">
             <div className="grid md:grid-cols-2 md:gap-5 2xl:grid-cols-4 gap-y-5">
-                {offers.map((offer) => (
-                    <OffersCard
-                        key={offer.id}
-                        details={{ ...offer.car, ...offer }}
-                    />
-                ))}
+                {offers && !isPending
+                    ? offers.map((offer) => (
+                          <OffersCard
+                              key={offer.id}
+                              details={{ ...offer.car, ...offer }}
+                          />
+                      ))
+                    : new Array(20)
+                          .fill(null)
+                          .map((_, index) => <OffersSkeleton key={index} />)}
             </div>
         </div>
     );

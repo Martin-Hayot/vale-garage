@@ -10,11 +10,12 @@ import { IoMdFunnel } from "react-icons/io";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { SORT_OPTIONS } from "@/constants/filters";
+import { useFilters } from "@/store/filters";
 
 const SortDropdown = () => {
-    const [selected, setSelected] = useState<string>(SORT_OPTIONS[0].label);
-    const [filter, setFilter] = useState({ sort: "newest" });
     const [open, setOpen] = useState(false);
+    const [selected, setSelected] = useState("Newest");
+    const { sort, setFilter } = useFilters();
 
     return (
         <DropdownMenu open={open} onOpenChange={() => setOpen(!open)}>
@@ -31,20 +32,17 @@ const SortDropdown = () => {
                             key={option.value}
                             onClick={() => {
                                 setSelected(option.label);
-                                setFilter((prev) => ({
-                                    ...prev,
-                                    sort: option.value,
-                                }));
+                                setFilter("sort", option.value);
                                 setOpen(false);
                             }}
                             className={cn(
                                 "flex flex-row justify-between gap-4 items-center w-full px-4 py-2 text-left text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none focus:bg-neutral-100 dark:focus:bg-neutral-800",
-                                option.value === filter.sort &&
+                                option.value === sort &&
                                     "bg-neutral-100 dark:bg-neutral-800"
                             )}
                         >
                             {option.label}
-                            {option.value === filter.sort && (
+                            {option.value === sort && (
                                 <Check className="w-4 h-4" />
                             )}
                         </button>

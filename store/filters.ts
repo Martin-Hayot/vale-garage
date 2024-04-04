@@ -25,6 +25,17 @@ export type Filters = {
     transmission: TRANSMISSION_OPTIONS;
     state: STATE_OPTIONS;
     fuel: FUEL_OPTIONS;
+    setFilter: (filter: keyof Filters, value: any) => void;
+    setFilters: (filters: Partial<Filters>) => void;
+    filters: {
+        sort: SORT_OPTIONS;
+        color: COLOR_OPTIONS;
+        body: BODY_OPTIONS;
+        gearbox: GEARBOX_OPTIONS;
+        transmission: TRANSMISSION_OPTIONS;
+        state: STATE_OPTIONS;
+        fuel: FUEL_OPTIONS;
+    };
 };
 
 export const useFilters = create<Filters>((set) => ({
@@ -35,6 +46,25 @@ export const useFilters = create<Filters>((set) => ({
     transmission: TRANSMISSION_OPTIONS[0],
     state: STATE_OPTIONS[0],
     fuel: FUEL_OPTIONS[0],
-    setFilter: (filter: keyof Filters, value: any) => set({ [filter]: value }),
-    setFilters: (filters: Partial<Filters>) => set(filters),
+    setFilter: (filter: keyof Filters, value: any) => {
+        set({ [filter]: value });
+        set((state) => ({
+            filters: { ...state.filters, [filter]: value },
+        }));
+    },
+    setFilters: (filters: Partial<Filters>) => {
+        set(filters);
+        set((state) => ({
+            filters: { ...state.filters, ...filters },
+        }));
+    },
+    filters: {
+        sort: "newest",
+        color: COLOR_OPTIONS[0],
+        body: BODY_OPTIONS[0],
+        gearbox: GEARBOX_OPTIONS[0],
+        transmission: TRANSMISSION_OPTIONS[0],
+        state: STATE_OPTIONS[0],
+        fuel: FUEL_OPTIONS[0],
+    },
 }));
