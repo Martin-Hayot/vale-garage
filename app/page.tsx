@@ -44,7 +44,7 @@ export default async function Home() {
                     <CarCategories />
                 </div>
             </section>
-            <section className="pt-32 xl:pt-16 bg-neutral-200 dark:bg-background w-full">
+            <section className="pt-24 xl:pt-16 bg-neutral-50 dark:bg-background w-full">
                 <div className="flex items-center justify-center mx-16 md:mx-32 mb-6">
                     <NewOffers offers={offers} />
                 </div>

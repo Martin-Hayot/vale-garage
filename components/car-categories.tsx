@@ -35,6 +35,24 @@ const categories = [
         image: "/car-type-family.jpg",
         alt: "Economic Cars",
     },
+    {
+        name: "Sports Cars",
+        description: "Powerful & Performant",
+        image: "/hero.jpg",
+        alt: "Sports Cars",
+    },
+    {
+        name: "Economic Cars",
+        description: "Affordable & Reliable",
+        image: "/car-type-family.jpg",
+        alt: "Economic Cars",
+    },
+    {
+        name: "Sports Cars",
+        description: "Powerful & Performant",
+        image: "/hero.jpg",
+        alt: "Sports Cars",
+    },
 ];
 
 const CarCategories = () => {

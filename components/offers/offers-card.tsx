@@ -31,7 +31,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     <TooltipTrigger>
                                         <Fuel className="w-4 h-4 text-green-400" />
                                     </TooltipTrigger>
-                                    <TooltipContent>
+                                    <TooltipContent sideOffset={-100}>
                                         {details.fuelType}
                                     </TooltipContent>
                                 </Tooltip>
@@ -43,7 +43,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     <TooltipTrigger>
                                         <TbManualGearbox className="w-4 h-4 text-violet-300" />
                                     </TooltipTrigger>
-                                    <TooltipContent>
+                                    <TooltipContent sideOffset={-100}>
                                         {details.gearBox}
                                     </TooltipContent>
                                 </Tooltip>
@@ -54,7 +54,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     <TooltipTrigger>
                                         <TbAutomaticGearbox className="w-4 h-4 text-violet-300" />
                                     </TooltipTrigger>
-                                    <TooltipContent>
+                                    <TooltipContent sideOffset={-100}>
                                         {details.gearBox}
                                     </TooltipContent>
                                 </Tooltip>

@@ -25,7 +25,7 @@ const OffersSidebar = () => {
     const { color, setFilter } = useFilters();
 
     return (
-        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg p-5 w-64 lg:block">
+        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg p-5 w-72 lg:block">
             <div className="flex flex-row items-center justify-between">
                 <h2 className="font-semibold text-2xl">Filters</h2>
                 <Button
@@ -38,10 +38,9 @@ const OffersSidebar = () => {
             </div>
             <div>
                 <Command className="dark:bg-neutral-800 bg-neutral-200">
-                    <CommandInput
-                        className="dark:bg-neutral-800"
-                        placeholder="Search Filter..."
-                    />
+                    <div className="hover:bg-neutral-100 transition-colors duration-200 focus-within:bg-neutral-100 dark:focus-within:bg-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700">
+                        <CommandInput placeholder="Search Filter..." />
+                    </div>
                     <CommandGroup>
                         <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
                             <h3 className="text-md font-semibold pb-4">

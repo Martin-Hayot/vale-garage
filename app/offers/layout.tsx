@@ -29,7 +29,7 @@ const OffersLayout = ({
 
     return (
         <div className="w-full h-full mt-24">
-            <div className="flex flex-row gap-x-6 border-b dark:border-neutral-800 pb-4 pt-1 pl-12">
+            <div className="flex flex-row gap-x-6 border-b dark:border-neutral-800 pb-4 pt-1 px-4">
                 <div className="dark:bg-neutral-800 bg-white inline-flex h-[2.8rem] items-center justify-center rounded-md bg-muted p-1 text-muted-foreground border dark:border-none">
                     <div
                         className={cn(
@@ -54,9 +54,11 @@ const OffersLayout = ({
                 </div>
                 <SortDropdown />
             </div>
-            <div className="flex flex-row pl-8 px-6 gap-8 w-full mt-5">
-                <OffersSidebar />
-                <div className="">{tab === "sales" ? sales : auctions}</div>
+            <div className="w-full flex justify-center flex-row mt-8 lg:gap-x-10">
+                <div className="h-full mt-12">
+                    <OffersSidebar />
+                </div>
+                <div>{tab === "sales" ? sales : auctions}</div>
             </div>
         </div>
     );

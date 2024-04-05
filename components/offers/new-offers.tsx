@@ -38,7 +38,7 @@ const NewOffers = ({ offers }: NewOffersProps) => {
     };
 
     return (
-        <div className="lg:w-full">
+        <div>
             <div className="flex flex-row items-center justify-center lg:justify-between mb-16">
                 <h2 className="text-4xl text-center font-bold text-neutral-900 dark:text-white">
                     New Offers
@@ -49,26 +49,23 @@ const NewOffers = ({ offers }: NewOffersProps) => {
                     onMouseLeave={handleMouseLeave}
                 >
                     <Link
-                        className="hidden lg:block text-2xl font-semibold text-neutral-900 dark:text-white xl:mr-16"
+                        className="hidden lg:block text-2xl font-semibold text-neutral-900 dark:text-white"
                         href={"/offers"}
                     >
                         See all offers
                         <ArrowRight className="inline ml-2" />
                     </Link>
-                    <div
-                        ref={boxRef}
-                        className="h-[2px] opacity-0 bg-accent xl:mr-16"
-                    />
+                    <div ref={boxRef} className="h-[2px] opacity-0 bg-accent" />
                 </div>
             </div>
 
-            <Carousel className="w-[300px] md:w-[600px] lg:w-[900px] xl:w-full 2xl:max-w-[90em]">
+            <Carousel className="w-[300px] md:w-[600px] lg:w-[900px] 2xl:w-[1300px]">
                 <div className="flex flex-col">
                     <CarouselContent className="px-0">
                         {offers.map((offer, index: number) => (
                             <CarouselItem
                                 key={index}
-                                className="md:basis-1/2 lg:basis-1/3 xl:basis-1/3 2xl:basis-1/4"
+                                className="md:basis-1/2 lg:basis-[40%] xl:basis-1/3 2xl:basis-1/4"
                             >
                                 <OffersCard
                                     details={{ ...offer.car, ...offer }}

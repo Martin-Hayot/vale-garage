@@ -31,13 +31,12 @@ const SalesPage = () => {
 
     return (
         <div className="">
-            <div className="flex flex-row justify-between items-center pb-4">
-                <h2 className="font-semibold text-4xl">Sales</h2>
+            <div className="flex flex-row justify-end items-end pb-4">
                 <div className="font-semibold text-2xl">
-                    {offers?.length} car found
+                    {offers?.length || "..."} car found
                 </div>
             </div>
-            <div className="grid md:grid-cols-2 md:gap-5 xl:grid-cols-3 2xl:grid-cols-4 gap-y-5">
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">
                 {offers && !isPending
                     ? offers.map((offer) => (
                           <OffersCard

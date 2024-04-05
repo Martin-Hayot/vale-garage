@@ -66,15 +66,6 @@ const Navigation = () => {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <Link href="/biddings" legacyBehavior passHref>
-                                <NavigationMenuLink
-                                    className={navigationMenuTriggerStyle()}
-                                >
-                                    Biddings
-                                </NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
                             <Link href="/about" legacyBehavior passHref>
                                 <NavigationMenuLink
                                     className={navigationMenuTriggerStyle()}
