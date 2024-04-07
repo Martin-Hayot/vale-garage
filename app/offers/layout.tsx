@@ -24,7 +24,11 @@ const OffersLayout = ({
 
     useEffect(() => {
         // todo: add filters to the query
-        router.push(`/offers?tab=${tab}&sort=${filters.sort}`);
+        const priceRange = `${filters.price.min}-${filters.price.max}`;
+        const mileageRange = `${filters.mileage.min}-${filters.mileage.max}`;
+        router.push(
+            `/offers?tab=${tab}&sort=${filters.sort}&price=${priceRange}&mileage=${mileageRange}`
+        );
     }, [router, filters, tab]);
 
     return (

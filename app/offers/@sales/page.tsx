@@ -10,7 +10,7 @@ import axios from "axios";
 type CarSales = CarBid & { car: Car };
 
 const SalesPage = () => {
-    const { sort } = useFilters();
+    const { filters, sort } = useFilters();
     const {
         data: offers,
         isPending,
@@ -18,8 +18,20 @@ const SalesPage = () => {
     } = useQuery({
         queryKey: ["sales", sort],
         queryFn: async () => {
+            const priceRange = `${filters.price.min}-${filters.price.max}`;
+            const mileageRange = `${filters.mileage.min}-${filters.mileage.max}`;
             const { data } = await axios.get<CarSales[]>("/api/offers/sales", {
-                params: { sort },
+                params: {
+                    sort: filters.sort,
+                    color: filters.color,
+                    body: filters.body,
+                    gearbox: filters.gearbox,
+                    transmission: filters.transmission,
+                    state: filters.state,
+                    fuel: filters.fuel,
+                    price: priceRange,
+                    mileage: mileageRange,
+                },
             });
             return data;
         },
@@ -33,7 +45,7 @@ const SalesPage = () => {
         <div className="">
             <div className="flex flex-row justify-end items-end pb-4">
                 <div className="font-semibold text-2xl">
-                    {offers?.length || "..."} car found
+                    {offers?.length || "..."} cars found
                 </div>
             </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10">

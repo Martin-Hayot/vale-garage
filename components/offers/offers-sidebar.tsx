@@ -6,7 +6,14 @@ import {
 } from "@/components/ui/accordion";
 
 import { Slider } from "@/components/ui/slider";
-import { COLOR_OPTIONS, FUEL_OPTIONS } from "@/constants/filters";
+import {
+    COLOR_OPTIONS,
+    FUEL_OPTIONS,
+    PRICE_OPTIONS,
+    MILEAGE_OPTIONS,
+    YEAR_OPTIONS,
+    POWER_OPTIONS,
+} from "@/constants/filters";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import {
@@ -22,7 +29,7 @@ import { cn } from "@/lib/utils";
 import { useFilters } from "@/store/filters";
 
 const OffersSidebar = () => {
-    const { color, setFilter } = useFilters();
+    const { filters, setFilter } = useFilters();
 
     return (
         <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg p-5 w-72 lg:block">
@@ -42,76 +49,125 @@ const OffersSidebar = () => {
                         <CommandInput placeholder="Search Filter..." />
                     </div>
                     <CommandGroup>
-                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                            <h3 className="text-md font-semibold pb-4">
-                                Price | €
-                            </h3>
-                            <Slider
-                                step={100}
-                                minStepsBetweenThumbs={1}
-                                min={500}
-                                max={50000}
-                                className=""
-                            />
-                        </CommandItem>
-                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                            <h3 className="text-md font-semibold pb-4">
-                                Mileage | Km
-                            </h3>
-                            <Slider
-                                step={5000}
-                                minStepsBetweenThumbs={1}
-                                min={0}
-                                max={300000}
-                                className=""
-                            />
-                        </CommandItem>
-                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                            <h3 className="text-md font-semibold pb-4">Year</h3>
-                            <Slider
-                                step={1}
-                                minStepsBetweenThumbs={1}
-                                min={1970}
-                                max={new Date().getFullYear()}
-                                className=""
-                            />
-                        </CommandItem>
-                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                            <h3 className="text-md font-semibold pb-4">
-                                Power | HP
-                            </h3>
-                            <Slider
-                                step={20}
-                                minStepsBetweenThumbs={1}
-                                min={20}
-                                max={500}
-                                className=""
-                            />
-                        </CommandItem>
-                        <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                            <h3 className="text-md font-semibold pb-4">
-                                Fuel Type
-                            </h3>
-                            <div className="flex flex-col gap-y-2 w-full">
-                                {FUEL_OPTIONS.map((option) => (
-                                    <div
-                                        key={option}
-                                        className="flex flex-row-reverse items-center justify-between w-full"
-                                    >
-                                        <Checkbox
-                                            id={option}
-                                            className="border-black dark:border-white aria-checked:bg-blue-600 w-7 h-7"
-                                        />
-                                        <label
-                                            htmlFor={option}
-                                            className="text-md font-medium"
+                        <Accordion type="multiple">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <h3 className="text-md font-semibold pb-4">
+                                    Price | €
+                                </h3>
+                                <Slider
+                                    step={PRICE_OPTIONS.step}
+                                    minStepsBetweenThumbs={1}
+                                    min={PRICE_OPTIONS.min}
+                                    max={PRICE_OPTIONS.max}
+                                    onValueChange={(value) => {
+                                        setFilter("price", {
+                                            min: value[0],
+                                            max: value[1],
+                                        });
+                                    }}
+                                    className=""
+                                />
+                            </CommandItem>
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <h3 className="text-md font-semibold pb-4">
+                                    Mileage | Km
+                                </h3>
+                                <Slider
+                                    step={MILEAGE_OPTIONS.step}
+                                    minStepsBetweenThumbs={1}
+                                    min={MILEAGE_OPTIONS.min}
+                                    max={MILEAGE_OPTIONS.max}
+                                    onValueChange={(value) => {
+                                        setFilter("mileage", {
+                                            min: value[0],
+                                            max: value[1],
+                                        });
+                                    }}
+                                    className=""
+                                />
+                            </CommandItem>
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <h3 className="text-md font-semibold pb-4">
+                                    Year
+                                </h3>
+                                <Slider
+                                    step={YEAR_OPTIONS.step}
+                                    minStepsBetweenThumbs={1}
+                                    min={YEAR_OPTIONS.min}
+                                    max={YEAR_OPTIONS.max}
+                                    className=""
+                                />
+                            </CommandItem>
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <h3 className="text-md font-semibold pb-4">
+                                    Power | HP
+                                </h3>
+                                <Slider
+                                    step={POWER_OPTIONS.step}
+                                    minStepsBetweenThumbs={1}
+                                    min={POWER_OPTIONS.min}
+                                    max={POWER_OPTIONS.max}
+                                    className=""
+                                />
+                            </CommandItem>
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <h3 className="text-md font-semibold pb-4">
+                                    Fuel Type
+                                </h3>
+                                <div className="flex flex-col gap-y-2 w-full">
+                                    {FUEL_OPTIONS.map((option) => (
+                                        <div
+                                            key={option}
+                                            className="flex flex-row-reverse items-center justify-between w-full"
                                         >
-                                            {option}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        </CommandItem>
+                                            <Checkbox
+                                                id={option}
+                                                checked={filters.fuel.includes(
+                                                    option
+                                                )}
+                                                defaultChecked={
+                                                    filters.fuel[0] === option
+                                                }
+                                                onCheckedChange={(value) => {
+                                                    if (value) {
+                                                        setFilter("fuel", [
+                                                            ...filters.fuel,
+                                                            option,
+                                                        ]);
+                                                    } else {
+                                                        setFilter(
+                                                            "fuel",
+                                                            filters.fuel.filter(
+                                                                (f) =>
+                                                                    f !== option
+                                                            )
+                                                        );
+                                                    }
+                                                }}
+                                                className="border-black dark:border-white aria-checked:bg-blue-600 w-7 h-7"
+                                            />
+                                            <label
+                                                htmlFor={option}
+                                                className="text-md font-medium"
+                                            >
+                                                {option}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CommandItem>
+                            <CommandItem className="dark:text-white w-full transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                                <AccordionItem value="item-1">
+                                    <AccordionTrigger>
+                                        Is it accessible?
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        Yes. It adheres to the WAI-ARIA design
+                                        pattern.
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </CommandItem>
+                        </Accordion>
                     </CommandGroup>
                 </Command>
                 <Button

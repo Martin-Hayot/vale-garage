@@ -4,8 +4,8 @@ export const FUEL_TYPES = [
     "Electric",
     "LPG",
     "CNG",
-    "Hybrid - Petrol/Electric",
-    "Hybrid - Diesel/Electric",
+    "Hybrid Petrol",
+    "Hybrid Diesel",
     "PHEV",
     "MHEV",
 ] as const;
