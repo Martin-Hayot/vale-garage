@@ -4,11 +4,11 @@ export const FUEL_TYPES = [
     "Electric",
     "LPG",
     "CNG",
-    "Hybrid - Petrol/Electric",
-    "Hybrid - Diesel/Electric",
+    "Hybrid Petrol",
+    "Hybrid Diesel",
     "PHEV",
     "MHEV",
-];
+] as const;
 
 export const TRANSMISSION_TYPES = ["4x4", "Front", "Rear"];
 
@@ -22,7 +22,7 @@ export const CAR_BODIES = [
     "Cabriolet",
     "Sport",
     "Roadster",
-];
+] as const;
 
 export const CAR_COLORS = [
     "Beige",
@@ -39,7 +39,7 @@ export const CAR_COLORS = [
     "Silver",
     "White",
     "Yellow",
-];
+] as const;
 
 export const CAR_STATES = [
     "New",
@@ -47,6 +47,6 @@ export const CAR_STATES = [
     "Damaged",
     "Nearly New",
     "Reconditioned",
-];
+] as const;
 
-export const GEARBOX_TYPES = ["Automatic", "Manual"];
+export const GEARBOX_TYPES = ["Automatic", "Manual"] as const;

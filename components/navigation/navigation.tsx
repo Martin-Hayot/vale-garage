@@ -28,7 +28,7 @@ const Navigation = () => {
         const handleScroll = () => {
             const currentScrollPos = window.scrollY;
 
-            if (currentScrollPos > 0) {
+            if (currentScrollPos > 100) {
                 setIsSticky(prevScrollPos > currentScrollPos);
                 setPrevScrollPos(currentScrollPos);
             }
@@ -43,7 +43,7 @@ const Navigation = () => {
     return (
         <header
             className={cn(
-                "w-full fixed z-50 transition-all duration-300 bg-background",
+                "w-full fixed z-50 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
                 isSticky ? "opacity-100 top-0  " : "opacity-0 -translate-y-full"
             )}
         >
@@ -62,15 +62,6 @@ const Navigation = () => {
                                     className={navigationMenuTriggerStyle()}
                                 >
                                     Offers
-                                </NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <Link href="/biddings" legacyBehavior passHref>
-                                <NavigationMenuLink
-                                    className={navigationMenuTriggerStyle()}
-                                >
-                                    Biddings
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>

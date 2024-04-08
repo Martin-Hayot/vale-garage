@@ -6,10 +6,17 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import CarCategories from "@/components/car-categories";
+import { db } from "@/lib/db";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
-export default function Home() {
+export default async function Home() {
+    const offers = await db.carBid.findMany({
+        include: {
+            car: true,
+        },
+    });
+
     return (
         <main className="flex h-full flex-col items-center justify-center">
             <HeroSection />
@@ -24,25 +31,22 @@ export default function Home() {
                     >
                         Search for your dream car
                     </h2>
-                    <div className="flex items-center justify-center mx-16 md:mx-32 text-black">
+                    <div className="flex items-center justify-center mx-16 text-black">
                         <HomePageCarSearch />
                     </div>
                 </div>
             </div>
-            <section id="creations" className="pt-16 mx-12">
-                <div className="container mx-auto my-32 px-6 md:px-0">
-                    <h2 className="text-center lg:text-left text-4xl pb-12 font-semibold">
+            <section id="creations" className="pt-16 mx-32">
+                <div className="my-32 px-6 md:px-0">
+                    <h2 className="text-center lg:text-left text-4xl pb-16 font-semibold">
                         What type of car are you looking for ?
                     </h2>
                     <CarCategories />
                 </div>
             </section>
-            <section className="pt-32 xl:pt-16 bg-neutral-200 dark:bg-background w-full">
-                <h2 className="text-center md:text-left text-4xl md:mx-32  pb-12">
-                    New offers
-                </h2>
+            <section className="pt-24 xl:pt-16 bg-neutral-50 dark:bg-background w-full">
                 <div className="flex items-center justify-center mx-16 md:mx-32 mb-6">
-                    <NewOffers />
+                    <NewOffers offers={offers} />
                 </div>
             </section>
         </main>
