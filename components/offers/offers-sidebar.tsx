@@ -110,60 +110,65 @@ const OffersSidebar = () => {
                                     className=""
                                 />
                             </CommandItem>
-                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                                <h3 className="text-md font-semibold pb-4">
-                                    Fuel Type
-                                </h3>
-                                <div className="flex flex-col gap-y-2 w-full">
-                                    {FUEL_OPTIONS.map((option) => (
-                                        <div
-                                            key={option}
-                                            className="flex flex-row-reverse items-center justify-between w-full"
-                                        >
-                                            <Checkbox
-                                                id={option}
-                                                checked={filters.fuel.includes(
-                                                    option
-                                                )}
-                                                defaultChecked={
-                                                    filters.fuel[0] === option
-                                                }
-                                                onCheckedChange={(value) => {
-                                                    if (value) {
-                                                        setFilter("fuel", [
-                                                            ...filters.fuel,
-                                                            option,
-                                                        ]);
-                                                    } else {
-                                                        setFilter(
-                                                            "fuel",
-                                                            filters.fuel.filter(
-                                                                (f) =>
-                                                                    f !== option
-                                                            )
-                                                        );
-                                                    }
-                                                }}
-                                                className="border-black dark:border-white aria-checked:bg-blue-600 w-7 h-7"
-                                            />
-                                            <label
-                                                htmlFor={option}
-                                                className="text-md font-medium"
-                                            >
-                                                {option}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CommandItem>
                             <CommandItem className="dark:text-white w-full transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-                                <AccordionItem value="item-1">
+                                <AccordionItem
+                                    className="w-full"
+                                    value="item-1"
+                                >
                                     <AccordionTrigger>
-                                        Is it accessible?
+                                        <h3 className="text-md font-semibold">
+                                            Fuel Type
+                                        </h3>
                                     </AccordionTrigger>
                                     <AccordionContent>
-                                        Yes. It adheres to the WAI-ARIA design
-                                        pattern.
+                                        <div className="flex flex-col gap-y-2 w-full">
+                                            {FUEL_OPTIONS.map((option) => (
+                                                <div
+                                                    key={option}
+                                                    className="flex flex-row-reverse items-center justify-between w-full"
+                                                >
+                                                    <Checkbox
+                                                        id={option}
+                                                        checked={filters.fuel.includes(
+                                                            option
+                                                        )}
+                                                        defaultChecked={
+                                                            filters.fuel[0] ===
+                                                            option
+                                                        }
+                                                        onCheckedChange={(
+                                                            value
+                                                        ) => {
+                                                            if (value) {
+                                                                setFilter(
+                                                                    "fuel",
+                                                                    [
+                                                                        ...filters.fuel,
+                                                                        option,
+                                                                    ]
+                                                                );
+                                                            } else {
+                                                                setFilter(
+                                                                    "fuel",
+                                                                    filters.fuel.filter(
+                                                                        (f) =>
+                                                                            f !==
+                                                                            option
+                                                                    )
+                                                                );
+                                                            }
+                                                        }}
+                                                        className="border-black dark:border-white aria-checked:bg-blue-600 w-7 h-7"
+                                                    />
+                                                    <label
+                                                        htmlFor={option}
+                                                        className="text-md font-medium"
+                                                    >
+                                                        {option}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </AccordionContent>
                                 </AccordionItem>
                             </CommandItem>
