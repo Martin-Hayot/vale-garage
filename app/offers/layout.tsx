@@ -58,11 +58,13 @@ const OffersLayout = ({
                 </div>
                 <SortDropdown />
             </div>
-            <div className="w-full flex justify-center flex-row mt-8 lg:gap-x-10">
+            <div className="w-full flex justify-center flex-row mt-8 lg:gap-x-10 mb-64">
                 <div className="h-full mt-12">
                     <OffersSidebar />
                 </div>
-                <div>{tab === "sales" ? sales : auctions}</div>
+                <div className="w-full max-w-[1200px]">
+                    {tab === "sales" ? sales : auctions}
+                </div>
             </div>
         </div>
     );

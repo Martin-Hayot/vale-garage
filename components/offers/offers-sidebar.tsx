@@ -117,7 +117,7 @@ const OffersSidebar = () => {
                                 >
                                     <AccordionTrigger className="hover:no-underline">
                                         <h3 className="text-md font-semibold">
-                                            Year
+                                            Circulation Date
                                         </h3>
                                     </AccordionTrigger>
                                     <AccordionContent className="py-2">

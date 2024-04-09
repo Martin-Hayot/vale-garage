@@ -27,8 +27,8 @@ export const FUEL_OPTIONS = ["any", ...FUEL_TYPES] as const;
 export const GEARBOX_OPTIONS = ["any", ...GEARBOX_TYPES] as const;
 
 export const PRICE_OPTIONS = {
-    min: 500,
-    max: 50000,
+    min: 0,
+    max: 60000,
     step: 100,
 } as const;
 
@@ -45,7 +45,7 @@ export const YEAR_OPTIONS = {
 } as const;
 
 export const POWER_OPTIONS = {
-    min: 20,
+    min: 1,
     max: 500,
     step: 20,
 } as const;
