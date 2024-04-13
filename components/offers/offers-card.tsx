@@ -67,6 +67,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                         height={480}
                         alt="car offer image"
                         className="w-full rounded-xl object-cover h-[200px]"
+                        draggable={false}
                     />
                 </div>
 

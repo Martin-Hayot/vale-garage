@@ -22,7 +22,7 @@ export const BODY_OPTIONS = ["any", ...CAR_BODIES] as const;
 
 export const STATE_OPTIONS = ["any", ...CAR_STATES] as const;
 
-export const FUEL_OPTIONS = ["any", ...FUEL_TYPES] as const;
+export const FUEL_OPTIONS = ["any", ...FUEL_TYPES];
 
 export const GEARBOX_OPTIONS = ["any", ...GEARBOX_TYPES] as const;
 
@@ -30,22 +30,22 @@ export const PRICE_OPTIONS = {
     min: 0,
     max: 60000,
     step: 100,
-} as const;
+};
 
 export const MILEAGE_OPTIONS = {
     min: 0,
     max: 300000,
     step: 5000,
-} as const;
+};
 
 export const YEAR_OPTIONS = {
     min: 1970,
     max: new Date().getFullYear(),
     step: 1,
-} as const;
+};
 
 export const POWER_OPTIONS = {
     min: 1,
     max: 500,
     step: 20,
-} as const;
+};

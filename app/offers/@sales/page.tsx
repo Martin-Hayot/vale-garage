@@ -8,7 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useDebounce } from "@uidotdev/usehooks";
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import OffersDrawer from "@/components/offers/offers-drawer";
 
 type CarSales = CarBid & { car: Car };
 
@@ -84,16 +85,18 @@ const SalesPage = () => {
             </div>
             <div
                 className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10"
-                style={{ opacity: 0 }}
+                style={{ display: isLoading ? "none" : "grid" }}
                 ref={dataRef}
             >
                 {offers &&
                     !isPending &&
                     offers.map((offer) => (
-                        <OffersCard
-                            key={offer.id}
+                        <OffersDrawer
                             details={{ ...offer.car, ...offer }}
-                        />
+                            key={offer.id}
+                        >
+                            <OffersCard details={{ ...offer.car, ...offer }} />
+                        </OffersDrawer>
                     ))}
             </div>
         </div>

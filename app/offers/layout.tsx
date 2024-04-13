@@ -2,9 +2,10 @@
 
 import OffersSidebar from "@/components/offers/offers-sidebar";
 import SortDropdown from "@/components/offers/sort-dropdown";
+import { MILEAGE_OPTIONS, PRICE_OPTIONS } from "@/constants/filters";
 import { cn } from "@/lib/utils";
+import { useDrawer } from "@/store/drawer";
 import { useFilters } from "@/store/filters";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
@@ -16,24 +17,80 @@ const OffersLayout = ({
     sales: ReactNode;
     auctions: ReactNode;
 }) => {
+    const { filters, setFilters } = useFilters();
+
     const searchParams = useSearchParams();
     const selectedTab = searchParams.get("tab") || "sales";
+    const selectedSort = searchParams.get("sort") as
+        | "newest"
+        | "oldest"
+        | "price_asc"
+        | "price_desc"
+        | undefined;
+    const selectedPrice = searchParams.get("price");
+    const selectedMileage = searchParams.get("mileage");
+    const selectedFuels = searchParams.get("fuel");
     const [tab, setTab] = useState(selectedTab);
     const router = useRouter();
-    const { filters } = useFilters();
+    const { id } = useDrawer();
+
+    useEffect(() => {
+        if (selectedSort) {
+            setFilters({
+                sort: selectedSort,
+            });
+        }
+        if (selectedPrice) {
+            const [min, max] = selectedPrice.split("-");
+            setFilters({
+                price: {
+                    min: parseInt(min),
+                    max: parseInt(max),
+                    step: PRICE_OPTIONS.step,
+                },
+            });
+        }
+        if (selectedMileage) {
+            const [min, max] = selectedMileage.split("-");
+            setFilters({
+                mileage: {
+                    min: parseInt(min),
+                    max: parseInt(max),
+                    step: MILEAGE_OPTIONS.step,
+                },
+            });
+        }
+        if (selectedFuels) {
+            setFilters({
+                fuel: selectedFuels.split(","),
+            });
+        }
+    }, [
+        selectedPrice,
+        selectedMileage,
+        selectedFuels,
+        selectedSort,
+        setFilters,
+    ]);
 
     useEffect(() => {
         // todo: add filters to the query
         const priceRange = `${filters.price.min}-${filters.price.max}`;
         const mileageRange = `${filters.mileage.min}-${filters.mileage.max}`;
+
         router.push(
-            `/offers?tab=${tab}&sort=${filters.sort}&price=${priceRange}&mileage=${mileageRange}`
+            `/offers?tab=${tab}&drawer=${id}&sort=${
+                filters.sort
+            }&price=${priceRange}&mileage=${mileageRange}&fuel=${filters.fuel.join(
+                ","
+            )}`,
+            { scroll: false }
         );
-    }, [router, filters, tab]);
+    }, [router, filters, tab, id, selectedSort]);
 
     return (
         <div className="w-full h-full mt-24">
-            <div className="flex flex-row gap-x-6 border-b dark:border-neutral-800 pb-4 pt-1 px-4">
+            <div className="flex flex-row justify-center gap-x-6 border-b dark:border-neutral-800 pb-4 pt-1 px-4">
                 <div className="dark:bg-neutral-800 bg-white inline-flex h-[2.8rem] items-center justify-center rounded-md bg-muted p-1 text-muted-foreground border dark:border-none">
                     <div
                         className={cn(
@@ -59,7 +116,7 @@ const OffersLayout = ({
                 <SortDropdown />
             </div>
             <div className="w-full flex justify-center flex-row mt-8 lg:gap-x-10 mb-64">
-                <div className="h-full mt-12">
+                <div className="h-full">
                     <OffersSidebar />
                 </div>
                 <div className="w-full max-w-[1200px]">
