@@ -3,7 +3,7 @@
 import { Slider } from "@/components/ui/slider";
 import { Filters, useFilters } from "@/store/filters";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import {
     MILEAGE_OPTIONS,
     POWER_OPTIONS,
@@ -37,6 +37,10 @@ const FiltersSlider = ({
         filters[filterType].min,
         filters[filterType].max,
     ]);
+
+    useEffect(() => {
+        setSliderValue([filters[filterType].min, filters[filterType].max]);
+    }, [filters, filterType]);
 
     switch (filterType) {
         case "price":

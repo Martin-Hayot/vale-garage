@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Accordion,
     AccordionContent,
@@ -23,14 +25,13 @@ import {
     CommandInput,
     CommandItem,
 } from "../ui/command";
-import { ScrollArea } from "../ui/scroll-area";
-import { CheckIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useFilters } from "@/store/filters";
 import FiltersSlider from "./filters-slider";
+import { useRouter } from "next/navigation";
 
 const OffersSidebar = () => {
-    const { filters, setFilter } = useFilters();
+    const { filters, setFilter, resetFilters } = useFilters();
+    const router = useRouter();
 
     return (
         <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg py-5 px-4 w-72 lg:block">
@@ -38,7 +39,10 @@ const OffersSidebar = () => {
                 <h2 className="font-semibold text-2xl">Filters</h2>
                 <Button
                     variant="link"
-                    type="reset"
+                    onClick={() => {
+                        resetFilters();
+                        router.refresh();
+                    }}
                     className="text-accent text-md"
                 >
                     Reset
@@ -50,7 +54,7 @@ const OffersSidebar = () => {
                         <CommandInput placeholder="Search Filter..." />
                     </div>
                     <CommandGroup>
-                        <Accordion className="w-full " type="multiple">
+                        <Accordion className="w-full" type="multiple">
                             <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
                                 <AccordionItem
                                     className="w-full border-none"
