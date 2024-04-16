@@ -25,21 +25,8 @@ const SalesPage = () => {
     } = useQuery({
         queryKey: ["sales", searchParams],
         queryFn: async () => {
-            const priceRange = `${filters.price.min}-${filters.price.max}`;
-            const mileageRange = `${filters.mileage.min}-${filters.mileage.max}`;
-            const { data } = await axios.get<CarSales[]>("/api/offers/sales", {
-                params: {
-                    sort: filters.sort,
-                    color: filters.color,
-                    body: filters.body,
-                    gearbox: filters.gearbox,
-                    transmission: filters.transmission,
-                    state: filters.state,
-                    fuel: filters.fuel,
-                    price: priceRange,
-                    mileage: mileageRange,
-                },
-            });
+            console.log(window.location.href);
+            const { data } = await axios.get<CarSales[]>("/api/offers/sales");
             setTimeout(() => {}, 1000);
             return data;
         },

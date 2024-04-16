@@ -1,3 +1,9 @@
+import {
+    MILEAGE_OPTIONS,
+    POWER_OPTIONS,
+    PRICE_OPTIONS,
+    YEAR_OPTIONS,
+} from "@/constants/filters";
 import { db } from "@/lib/db";
 import { Filters } from "@/store/filters";
 import { NextResponse } from "next/server";
@@ -7,20 +13,29 @@ export const GET = async (req: Request) => {
     const sort = searchParams.get("sort") as Filters["sort"] | "newest";
     const priceRange = searchParams.get("price");
     const mileageRange = searchParams.get("mileage");
+    const yearRange = searchParams.get("year");
+    const powerRange = searchParams.get("power");
 
     let orderBy = {};
 
-    if (!priceRange) {
-        return new Response("Price range is required", { status: 400 });
-    }
+    const [minPrice, maxPrice] = priceRange?.split("-").map(Number) || [
+        PRICE_OPTIONS.min,
+        PRICE_OPTIONS.max,
+    ];
 
-    if (!mileageRange) {
-        return new Response("Mileage range is required", { status: 400 });
-    }
+    const [minMileage, maxMileage] = mileageRange?.split("-").map(Number) || [
+        MILEAGE_OPTIONS.min,
+        MILEAGE_OPTIONS.max,
+    ];
 
-    const [minPrice, maxPrice] = priceRange.split("-").map(Number);
+    const [minYear, maxYear] = yearRange?.split("-").map((item) => {
+        return new Date(item);
+    }) || [new Date(YEAR_OPTIONS.min), new Date(YEAR_OPTIONS.max)];
 
-    const [minMileage, maxMileage] = mileageRange.split("-").map(Number);
+    const [minPower, maxPower] = powerRange?.split("-").map(Number) || [
+        POWER_OPTIONS.min,
+        POWER_OPTIONS.max,
+    ];
 
     switch (sort) {
         case "newest":
@@ -48,6 +63,14 @@ export const GET = async (req: Request) => {
             mileage: {
                 gte: minMileage,
                 lte: maxMileage,
+            },
+            circulationDate: {
+                gte: minYear,
+                lte: maxYear,
+            },
+            power: {
+                gte: minPower,
+                lte: maxPower,
             },
         },
         orderBy: orderBy,
