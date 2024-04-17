@@ -7,7 +7,6 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 
-import { Slider } from "@/components/ui/slider";
 import {
     COLOR_OPTIONS,
     FUEL_OPTIONS,
@@ -34,7 +33,7 @@ const OffersSidebar = () => {
     const router = useRouter();
 
     return (
-        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg py-5 px-4 w-72 lg:block">
+        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-b-lg py-5 px-4 w-96 xl:block">
             <div className="flex flex-row items-center justify-between">
                 <h2 className="font-semibold text-2xl">Filters</h2>
                 <Button
@@ -48,7 +47,7 @@ const OffersSidebar = () => {
                     Reset
                 </Button>
             </div>
-            <div>
+            <div className="mt-2">
                 <Command className="dark:bg-neutral-800 bg-neutral-200 ">
                     <div className="hover:bg-neutral-100 transition-colors duration-200 focus-within:bg-neutral-100 dark:focus-within:bg-neutral-700 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                         <CommandInput placeholder="Search Filter..." />

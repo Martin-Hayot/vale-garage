@@ -29,8 +29,13 @@ export const GET = async (req: Request) => {
     ];
 
     const [minYear, maxYear] = yearRange?.split("-").map((item) => {
-        return new Date(item);
-    }) || [new Date(YEAR_OPTIONS.min), new Date(YEAR_OPTIONS.max)];
+        let date = new Date(item);
+        date.setFullYear(date.getFullYear(), 11, 31); // Set to December 31
+        return date;
+    }) || [
+        new Date(YEAR_OPTIONS.min).setFullYear(YEAR_OPTIONS.min, 11, 31),
+        new Date(YEAR_OPTIONS.max).setFullYear(YEAR_OPTIONS.max, 11, 31),
+    ];
 
     const [minPower, maxPower] = powerRange?.split("-").map(Number) || [
         POWER_OPTIONS.min,
@@ -65,8 +70,8 @@ export const GET = async (req: Request) => {
                 lte: maxMileage,
             },
             circulationDate: {
-                gte: minYear,
-                lte: maxYear,
+                gte: new Date(minYear),
+                lte: new Date(maxYear),
             },
             power: {
                 gte: minPower,
@@ -77,8 +82,8 @@ export const GET = async (req: Request) => {
         include: { car: true },
     });
 
-    if (!sales) {
-        return new Response("No sales found", { status: 404 });
+    if (sales.length === 0) {
+        return new Response("No cars found", { status: 404 });
     }
 
     return NextResponse.json(sales);

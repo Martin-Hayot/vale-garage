@@ -5,29 +5,35 @@ import OffersSkeleton from "@/components/offers/offers-skeleton";
 import { useFilters } from "@/store/filters";
 import { Car, CarBid } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useDebounce } from "@uidotdev/usehooks";
+import axios, { AxiosError } from "axios";
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
-import OffersDrawer from "@/components/offers/offers-drawer";
+import { useDebounce } from "@uidotdev/usehooks";
+import { useEffect, useRef } from "react";
 
 type CarSales = CarBid & { car: Car };
 
 const SalesPage = () => {
-    const { filters, sort } = useFilters();
-    const searchParams = useDebounce(filters, 400);
+    const { filters } = useFilters();
+    const url = new URL(window.location.href);
+    let searchParams = new URLSearchParams(url.search);
+
+    // remove drawer search param from url because it causes a re-render
+    searchParams.delete("drawer");
+
     const {
         data: offers,
-        refetch,
         isPending,
         isLoading,
-        isError,
-    } = useQuery({
-        queryKey: ["sales", searchParams],
+        error,
+    } = useQuery<CarSales[], AxiosError>({
+        queryKey: ["sales", searchParams.toString()],
         queryFn: async () => {
-            console.log(window.location.href);
-            const { data } = await axios.get<CarSales[]>("/api/offers/sales");
-            setTimeout(() => {}, 1000);
+            const url = new URL(window.location.href);
+            const searchParams = new URLSearchParams(url.search);
+            const params = Object.fromEntries(searchParams);
+            const { data } = await axios.get<CarSales[]>("/api/offers/sales", {
+                params,
+            });
             return data;
         },
     });
@@ -47,21 +53,25 @@ const SalesPage = () => {
             gsap.to(skeletonRef.current, { opacity: 1, duration: 1 });
             gsap.to(dataRef.current, { opacity: 0, duration: 1 });
         }
-    }, [offers, isPending, isLoading]);
+    }, [offers, isLoading, isPending]);
 
-    if (isError) {
-        return <div>Error loading data</div>;
+    if (error) {
+        return (
+            <div className="text-4xl mt-10 font-semibold pl-14">
+                {(error.response?.data as string)?.toString()}...
+            </div>
+        );
     }
 
     return (
-        <div className="">
-            <div className="flex flex-row justify-end items-end pb-4">
+        <div className="mt-5">
+            <div className="flex flex-row justify-end items-end pb-4 pr-8">
                 <div className="font-semibold text-2xl">
                     {offers?.length || "..."} cars found
                 </div>
             </div>
             <div
-                className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10"
+                className="offers-grid gap-6 mx-4"
                 style={{ opacity: 1 }}
                 ref={skeletonRef}
             >
@@ -70,20 +80,13 @@ const SalesPage = () => {
                         .fill(null)
                         .map((_, index) => <OffersSkeleton key={index} />)}
             </div>
-            <div
-                className="grid md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10"
-                style={{ display: isLoading ? "none" : "grid" }}
-                ref={dataRef}
-            >
+            <div className="offers-grid gap-6 mx-4" ref={dataRef}>
                 {offers &&
                     !isPending &&
                     offers.map((offer) => (
-                        <OffersDrawer
-                            details={{ ...offer.car, ...offer }}
-                            key={offer.id}
-                        >
+                        <div className="place-self-center" key={offer.id}>
                             <OffersCard details={{ ...offer.car, ...offer }} />
-                        </OffersDrawer>
+                        </div>
                     ))}
             </div>
         </div>
