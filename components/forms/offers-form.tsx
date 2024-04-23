@@ -61,6 +61,7 @@ import {
 } from "@/constants/cars";
 import { useMulitstepForm } from "@/hooks/use-multistep-form";
 import FormsButton from "./forms-button";
+import FileUpload from "./file-upload-modal";
 
 const steps = [
     {
@@ -218,6 +219,9 @@ export const OffersForm = () => {
                             </h1>
                         )
                 )}
+            </div>
+            <div className="mb-8">
+                <FileUpload />
             </div>
             <Form {...form}>
                 <form
@@ -834,6 +838,25 @@ export const OffersForm = () => {
 
                         {currentStepIndex === 2 && (
                             <>
+                                <FormField
+                                    name="images"
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Images</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="file"
+                                                    id="dropzone-file"
+                                                    multiple
+                                                    disabled={isPending}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
                                 <FormField
                                     name="description"
                                     control={form.control}

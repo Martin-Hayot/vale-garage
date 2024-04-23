@@ -22,7 +22,7 @@ export const BODY_OPTIONS = ["any", ...CAR_BODIES] as const;
 
 export const STATE_OPTIONS = ["any", ...CAR_STATES] as const;
 
-export const FUEL_OPTIONS = ["any", ...FUEL_TYPES];
+export const FUEL_OPTIONS = ["any", ...FUEL_TYPES] as const;
 
 export const GEARBOX_OPTIONS = ["any", ...GEARBOX_TYPES] as const;
 

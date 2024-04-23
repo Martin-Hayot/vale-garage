@@ -33,7 +33,7 @@ const OffersSidebar = () => {
     const router = useRouter();
 
     return (
-        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-b-lg py-5 px-4 w-96 xl:block">
+        <div className="hidden dark:bg-neutral-800 bg-neutral-200 rounded-lg py-5 px-4 w-96 lg:block">
             <div className="flex flex-row items-center justify-between">
                 <h2 className="font-semibold text-2xl">Filters</h2>
                 <Button

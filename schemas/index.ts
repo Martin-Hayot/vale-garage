@@ -48,10 +48,10 @@ export const OffersSchema = z.object({
     color: z.string().min(1, { message: "Color is required" }),
     doors: z.coerce.number().min(1, { message: "Doors is required" }),
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
-
+    images: z.array(z.string()),
     // Optional
     isBidding: z.optional(z.boolean()),
-    images: z.optional(z.array(z.string())),
+
     minPrice: z.optional(z.coerce.number()),
     maxPrice: z.optional(z.coerce.number()),
     startDate: z.optional(z.date()),
