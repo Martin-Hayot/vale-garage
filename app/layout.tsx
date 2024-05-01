@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navigation from "@/components/navigation/navigation";
 import Footer from "@/components/footer";
 import QueryProvider from "@/components/providers/query-client-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default async function RootLayout({
                             <Navigation />
                             <div className="flex flex-col justify-between">
                                 {children}
+                                <Toaster />
                                 <Footer />
                             </div>
                         </QueryProvider>

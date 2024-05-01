@@ -67,7 +67,7 @@ const steps = [
     {
         id: "step-1",
         title: "Car Model",
-        fields: ["carMake", "carModel"],
+        fields: ["carMake", "carModel", "images"],
     },
     {
         id: "step-2",
@@ -124,6 +124,7 @@ export const OffersForm = () => {
             color: "",
             doors: 0,
             seats: 0,
+            images: [],
         },
     });
 
@@ -220,9 +221,6 @@ export const OffersForm = () => {
                         )
                 )}
             </div>
-            <div className="mb-8">
-                <FileUpload />
-            </div>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -232,6 +230,20 @@ export const OffersForm = () => {
                         {currentStepIndex === 0 && (
                             <>
                                 <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="images"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <FileUpload
+                                                        field={field as any}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                     <FormField
                                         control={form.control}
                                         name="carMake"

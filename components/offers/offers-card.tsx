@@ -38,7 +38,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
             }}
         >
             <TooltipProvider>
-                <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72 max-h-72 outline-none">
+                <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72 max-h-72 outline-none shadow-sm">
                     <div className="relative">
                         <div className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3">
                             <Heart className="text-white w-5 h-5" />
