@@ -67,7 +67,7 @@ const steps = [
     {
         id: "step-1",
         title: "Car Model",
-        fields: ["carMake", "carModel", "images"],
+        fields: ["carMake", "carModel"],
     },
     {
         id: "step-2",
@@ -105,6 +105,7 @@ export const OffersForm = () => {
     const [selectedMake, setSelectedMake] = useState<string>("");
     const [cars, setCars] = useState<Car[]>([]);
     const [makes, setMakes] = useState<string[]>([]);
+    const [filesUrl, setFilesUrl] = useState<string[]>([]);
 
     const form = useForm<z.infer<typeof OffersSchema>>({
         resolver: zodResolver(OffersSchema),
@@ -230,20 +231,6 @@ export const OffersForm = () => {
                         {currentStepIndex === 0 && (
                             <>
                                 <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="images"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormControl>
-                                                    <FileUpload
-                                                        field={field as any}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
                                     <FormField
                                         control={form.control}
                                         name="carMake"
@@ -851,24 +838,29 @@ export const OffersForm = () => {
                         {currentStepIndex === 2 && (
                             <>
                                 <FormField
-                                    name="images"
                                     control={form.control}
+                                    name="images"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Images</FormLabel>
+                                            <FileUpload
+                                                field={field as any}
+                                                setFilesUrl={setFilesUrl}
+                                            />
                                             <FormControl>
                                                 <Input
+                                                    type="hidden"
                                                     {...field}
-                                                    type="file"
-                                                    id="dropzone-file"
-                                                    multiple
-                                                    disabled={isPending}
+                                                    value={filesUrl}
                                                 />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
+                            </>
+                        )}
+                        {currentStepIndex === 3 && (
+                            <>
                                 <FormField
                                     name="description"
                                     control={form.control}

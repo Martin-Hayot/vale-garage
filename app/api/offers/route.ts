@@ -29,8 +29,12 @@ export async function POST(req: Request) {
             seats,
             state,
             doors,
+            images,
         } = OffersSchema.parse(await req.json());
 
+        if (images.length == 0) {
+            return new NextResponse("Images are required", { status: 400 });
+        }
         if (!price) {
             return new NextResponse("Price is required", { status: 400 });
         }
@@ -116,6 +120,7 @@ export async function POST(req: Request) {
                 seats,
                 doors,
                 state,
+                images,
                 car: {
                     connect: {
                         id: car.id,

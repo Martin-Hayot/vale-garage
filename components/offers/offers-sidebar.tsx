@@ -240,12 +240,6 @@ const OffersSidebar = () => {
                         </Accordion>
                     </CommandGroup>
                 </Command>
-                <Button
-                    className="mx-auto w-full bg-blue-600 hover:bg-blue-700 mt-5"
-                    size={"lg"}
-                >
-                    Apply
-                </Button>
             </div>
         </div>
     );

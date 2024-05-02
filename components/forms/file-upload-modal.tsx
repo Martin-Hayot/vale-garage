@@ -22,9 +22,10 @@ import { ControllerRenderProps } from "react-hook-form";
 
 interface FileUploadProps {
     field: ControllerRenderProps;
+    setFilesUrl: (filesUrl: string[]) => void;
 }
 
-const FileUpload = ({ field }: FileUploadProps) => {
+const FileUpload = ({ field, setFilesUrl }: FileUploadProps) => {
     const [files, setFiles] = useState<File[]>([]);
     const [fileError, setFileError] = useState<string | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -103,6 +104,7 @@ const FileUpload = ({ field }: FileUploadProps) => {
             });
 
             field.onChange(filesUrl);
+            setFilesUrl(filesUrl);
             toast({
                 variant: "default",
                 description: "Files uploaded successfully",

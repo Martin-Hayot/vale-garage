@@ -48,7 +48,9 @@ export const OffersSchema = z.object({
     color: z.string().min(1, { message: "Color is required" }),
     doors: z.coerce.number().min(1, { message: "Doors is required" }),
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
-    images: z.array(z.string()),
+    images: z
+        .array(z.string())
+        .min(1, { message: "At least one image is required" }),
     // Optional
     isBidding: z.optional(z.boolean()),
 

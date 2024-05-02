@@ -13,6 +13,8 @@ import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
 import Link from "next/link";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import Carousel from "../Carousel";
 
 type CarDetails = Car & CarBid;
 
@@ -83,7 +85,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                         </div>
                         <DrawerTrigger>
                             <Image
-                                src="/car_placeholder2.jpg"
+                                src={details.images[0]}
                                 width={720}
                                 height={480}
                                 alt="car offer image"
@@ -95,7 +97,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                     <DrawerTrigger>
                         <div className="p-3 flex flex-row justify-between items-center gap-y-1 text-start">
                             <div>
-                                <h3 className="font-semibold text-sm ">
+                                <h3 className="font-semibold text-md ">
                                     {details.make + " " + details.model}
                                 </h3>
                                 <p className="text-blue-500/80 text-xs">
@@ -110,27 +112,89 @@ const OffersCard = ({ details }: OffersCardProps) => {
                     </DrawerTrigger>
                 </div>
             </TooltipProvider>
-            <DrawerContent className="border-0 h-[80%] outline-none focus-within:ring-0">
-                <div className="px-8 pt-2 pb-8 w-7">
-                    <Link href={`/offers/${details.id}`}>
-                        <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
-                    </Link>
-                </div>
-                <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
-                    <Image
-                        src={"/car_placeholder2.jpg"}
-                        alt={details.make}
-                        width={720}
-                        height={480}
-                        className="rounded-lg"
-                        draggable={false}
-                    />
-                    <div>
-                        <h2 className="font-semibold text-4xl">
-                            {details.make + " " + details.model}
-                        </h2>
+            <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
+                <ScrollArea>
+                    <div className="px-8 pt-2 pb-8 w-7">
+                        <Link href={`/offers/${details.id}`}>
+                            <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
+                        </Link>
                     </div>
-                </div>
+                    <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
+                        <Image
+                            src={details.images[0]}
+                            alt={details.make}
+                            width={720}
+                            height={480}
+                            className="rounded-lg"
+                            draggable={false}
+                        />
+                        <div>
+                            <h2 className="font-semibold text-4xl">
+                                {details.make + " " + details.model}
+                            </h2>
+                            <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
+                                <p>
+                                    {new Date(
+                                        details.circulationDate
+                                    ).getFullYear()}
+                                </p>
+                                <p>{details.mileage} km</p>
+                            </div>
+
+                            <div className="flex flex-col gap-x-2 w-full">
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Price:</p>
+                                    <p>{details.price} €</p>
+                                </div>
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">State:</p>
+                                    <p>{details.state}</p>
+                                </div>
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Fuel Type:</p>
+                                    <p>{details.fuelType}</p>
+                                </div>
+
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Power:</p>
+                                    <p>{details.power} HP</p>
+                                </div>
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Gear Box:</p>
+                                    <p>{details.gearBox}</p>
+                                </div>
+
+                                {/*not seen on drawer */}
+                                {/* <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Car Body:</p>
+                                    <p>{details.carBody}</p>
+                                </div>
+
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Color:</p>
+                                    <p>{details.color}</p>
+                                </div>
+
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Doors:</p>
+                                    <p>{details.doors}</p>
+                                </div>
+
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">Seats:</p>
+                                    <p>{details.seats}</p>
+                                </div>
+
+                                <div className="flex flex-row gap-x-4">
+                                    <p className="font-semibold">
+                                        Transmission:
+                                    </p>
+                                    <p>{details.transmission}</p>
+                                </div> */}
+                            </div>
+                        </div>
+                    </div>
+                </ScrollArea>
             </DrawerContent>
         </Drawer>
     );
