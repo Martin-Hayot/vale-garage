@@ -28,7 +28,7 @@ const Navigation = () => {
         const handleScroll = () => {
             const currentScrollPos = window.scrollY;
 
-            if (currentScrollPos > 100) {
+            if (currentScrollPos > 150) {
                 setIsSticky(prevScrollPos > currentScrollPos);
                 setPrevScrollPos(currentScrollPos);
             }
@@ -43,8 +43,8 @@ const Navigation = () => {
     return (
         <header
             className={cn(
-                "w-full fixed z-50 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
-                isSticky ? "opacity-100 top-0  " : "opacity-0 -translate-y-full"
+                "w-full sticky z-50 top-0 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
+                isSticky ? "opacity-100 " : "opacity-0 -translate-y-full"
             )}
         >
             <nav className="flex flex-row items-center p-5 justify-between lg:justify-evenly border-b border-gray-200 dark:border-neutral-800">
@@ -109,13 +109,18 @@ const Navigation = () => {
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] dark:bg-neutral-900">
-                                        <Link href="/offers/create">
+                                        <Link href="/admin/dashboard">
+                                            <ListItem title="Dashboard">
+                                                Manage users and offers
+                                            </ListItem>
+                                        </Link>
+                                        <Link href="/admin/offers/create">
                                             <ListItem title="Create Car Offers">
                                                 Create normal or time gated car
                                                 offers
                                             </ListItem>
                                         </Link>
-                                        <Link href="/cars/models">
+                                        <Link href="/admin/cars/models">
                                             <ListItem title="Car Models">
                                                 Manage Car Models
                                             </ListItem>

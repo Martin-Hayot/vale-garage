@@ -133,7 +133,7 @@ const OffersLayout = ({
     useEffect(updateUrl, [router, filters, tab, id]);
 
     return (
-        <div className="w-full h-full mt-[82px]">
+        <div className="w-full h-full">
             <div className="flex flex-row justify-center gap-x-6 border-b dark:bg-neutral-900 dark:border-neutral-800 py-3 px-4">
                 <div className="dark:bg-neutral-800 bg-white inline-flex h-[2.8rem] items-center justify-center rounded-md bg-muted p-1 text-muted-foreground border dark:border-none">
                     <TabButton
@@ -152,7 +152,9 @@ const OffersLayout = ({
                 <SortDropdown />
             </div>
             <div className="w-full flex flex-row justify-center gap-x-2 mb-64 mt-10">
-                <OffersSidebar />
+                <div>
+                    <OffersSidebar />
+                </div>
                 <div className="flex flex-row justify-center items-start w-full basis-1/2">
                     <div className="w-full max-w-[1420px]">
                         {tab === "sales" ? sales : auctions}

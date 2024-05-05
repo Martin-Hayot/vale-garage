@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import CarCategories from "@/components/car-categories";
 import { db } from "@/lib/db";
+import Footer from "@/components/footer";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 

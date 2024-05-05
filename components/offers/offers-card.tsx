@@ -14,7 +14,7 @@ import { useDrawer } from "@/store/drawer";
 import { Maximize2 } from "lucide-react";
 import Link from "next/link";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import Carousel from "../Carousel";
+import Carousel from "../carousel";
 
 type CarDetails = Car & CarBid;
 
@@ -113,59 +113,54 @@ const OffersCard = ({ details }: OffersCardProps) => {
                 </div>
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
-                <ScrollArea>
-                    <div className="px-8 pt-2 pb-8 w-7">
-                        <Link href={`/offers/${details.id}`}>
-                            <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
-                        </Link>
+                <div className="px-8 pt-2 pb-8 w-7">
+                    <Link href={`/offers/${details.id}`}>
+                        <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
+                    </Link>
+                </div>
+                <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
+                    <div className="w-full lg:w-[50%]">
+                        <Carousel images={details.images} />
                     </div>
-                    <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
-                        <Image
-                            src={details.images[0]}
-                            alt={details.make}
-                            width={720}
-                            height={480}
-                            className="rounded-lg"
-                            draggable={false}
-                        />
-                        <div>
-                            <h2 className="font-semibold text-4xl">
-                                {details.make + " " + details.model}
-                            </h2>
-                            <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
-                                <p>
-                                    {new Date(
-                                        details.circulationDate
-                                    ).getFullYear()}
-                                </p>
-                                <p>{details.mileage} km</p>
+
+                    <div>
+                        <h2 className="font-semibold text-4xl">
+                            {details.make + " " + details.model}
+                        </h2>
+                        <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
+                            <p>
+                                {new Date(
+                                    details.circulationDate
+                                ).getFullYear()}
+                            </p>
+                            <p>{details.mileage} km</p>
+                        </div>
+
+                        <div className="flex flex-col gap-x-2 w-full">
+                            <div className="flex flex-row gap-x-4">
+                                <p className="font-semibold">Price:</p>
+                                <p>{details.price} €</p>
+                            </div>
+                            <div className="flex flex-row gap-x-4">
+                                <p className="font-semibold">State:</p>
+                                <p>{details.state}</p>
+                            </div>
+                            <div className="flex flex-row gap-x-4">
+                                <p className="font-semibold">Fuel Type:</p>
+                                <p>{details.fuelType}</p>
                             </div>
 
-                            <div className="flex flex-col gap-x-2 w-full">
-                                <div className="flex flex-row gap-x-4">
-                                    <p className="font-semibold">Price:</p>
-                                    <p>{details.price} €</p>
-                                </div>
-                                <div className="flex flex-row gap-x-4">
-                                    <p className="font-semibold">State:</p>
-                                    <p>{details.state}</p>
-                                </div>
-                                <div className="flex flex-row gap-x-4">
-                                    <p className="font-semibold">Fuel Type:</p>
-                                    <p>{details.fuelType}</p>
-                                </div>
+                            <div className="flex flex-row gap-x-4">
+                                <p className="font-semibold">Power:</p>
+                                <p>{details.power} HP</p>
+                            </div>
+                            <div className="flex flex-row gap-x-4">
+                                <p className="font-semibold">Gear Box:</p>
+                                <p>{details.gearBox}</p>
+                            </div>
 
-                                <div className="flex flex-row gap-x-4">
-                                    <p className="font-semibold">Power:</p>
-                                    <p>{details.power} HP</p>
-                                </div>
-                                <div className="flex flex-row gap-x-4">
-                                    <p className="font-semibold">Gear Box:</p>
-                                    <p>{details.gearBox}</p>
-                                </div>
-
-                                {/*not seen on drawer */}
-                                {/* <div className="flex flex-row gap-x-4">
+                            {/*not seen on drawer */}
+                            {/* <div className="flex flex-row gap-x-4">
                                     <p className="font-semibold">Car Body:</p>
                                     <p>{details.carBody}</p>
                                 </div>
@@ -191,10 +186,9 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     </p>
                                     <p>{details.transmission}</p>
                                 </div> */}
-                            </div>
                         </div>
                     </div>
-                </ScrollArea>
+                </div>
             </DrawerContent>
         </Drawer>
     );

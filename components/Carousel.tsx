@@ -1,73 +1,50 @@
-import { useState, useEffect } from "react";
+"use client";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
-export default function Carousel({
-    autoSlide = false,
-    autoSlideInterval = 3000,
-    slides,
-}: {
-    autoSlide?: boolean;
-    autoSlideInterval?: number;
-    slides: string[];
-}) {
-    const [curr, setCurr] = useState(0);
+interface CarouselProps {
+    images: string[];
+}
 
-    const prev = () =>
-        setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1));
-    const next = () =>
-        setCurr((curr) => (curr === slides.length - 1 ? 0 : curr + 1));
-
-    useEffect(() => {
-        if (!autoSlide) return;
-        const slideInterval = setInterval(next, autoSlideInterval);
-        return () => clearInterval(slideInterval);
-    }, []);
-
+const Carousel = ({ images }: CarouselProps) => {
+    const [imageIndex, setImageIndex] = useState(0);
     return (
-        <div className="overflow-hidden relative">
+        <div className="w-full h-full relative">
+            <Image
+                src={images[imageIndex]}
+                width={720}
+                height={480}
+                alt="car images"
+                className="object-cover w-full h-full block rounded-lg"
+            />
             <div
-                className="flex transition-transform ease-out duration-500"
-                style={{ transform: `translateX(-${curr * 100}%)` }}
+                className="absolute items-center flex top-0 bottom-0 h-full hover:backdrop-brightness-75 transition-all duration-150 left-0 p-2 cursor-pointer"
+                onClick={() => {
+                    if (imageIndex > 0) {
+                        setImageIndex(imageIndex - 1);
+                    } else {
+                        setImageIndex(images.length - 1);
+                    }
+                }}
             >
-                {slides.map((img, i) => (
-                    <Image
-                        src={img}
-                        alt="car images"
-                        className="w-full"
-                        width={720}
-                        height={480}
-                        key={i}
-                    />
-                ))}
+                <ChevronLeft className=" stroke-white" />
             </div>
-            <div className="absolute inset-0 flex items-center justify-between p-4">
-                <button
-                    onClick={prev}
-                    className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
-                >
-                    <ChevronLeft size={40} />
-                </button>
-                <button
-                    onClick={next}
-                    className="p-1 rounded-full shadow bg-white/80 text-gray-800 hover:bg-white"
-                >
-                    <ChevronRight size={40} />
-                </button>
-            </div>
-
-            <div className="absolute bottom-4 right-0 left-0">
-                <div className="flex items-center justify-center gap-2">
-                    {slides.map((_, i) => (
-                        <div
-                            className={`
-              transition-all w-3 h-3 bg-white rounded-full
-              ${curr === i ? "p-2" : "bg-opacity-50"}
-            `}
-                        />
-                    ))}
-                </div>
+            <div
+                className="absolute items-center flex top-0 bottom-0 h-full hover:backdrop-brightness-75 transition-all duration-150 right-0 p-2 cursor-pointer"
+                onClick={() => {
+                    if (imageIndex < images.length - 1) {
+                        setImageIndex(imageIndex + 1);
+                    } else {
+                        setImageIndex(0);
+                    }
+                }}
+            >
+                <ChevronRight className="stroke-white" />
             </div>
         </div>
     );
-}
+};
+
+export default Carousel;
