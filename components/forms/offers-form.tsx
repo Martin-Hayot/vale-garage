@@ -423,7 +423,7 @@ export const OffersForm = () => {
                                         "Can't find a car model ? Create a new one "
                                     }
                                     <Link
-                                        href="/cars/models"
+                                        href="/admin/cars/models"
                                         className="dark:text-accent text-primary underline"
                                     >
                                         here
