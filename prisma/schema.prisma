@@ -129,6 +129,12 @@ model CarBid {
   endDate         DateTime?
   images          String[]
 
+
+  onlyForMerchants Boolean @default(false)
+  active Boolean @default(true)
+  sold  Boolean @default(false)
+  isArchived Boolean @default(false)
+
   carId String
   car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
