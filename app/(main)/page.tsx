@@ -3,11 +3,11 @@ import HeroSection from "@/components/hero-section";
 import NewOffers from "@/components/offers/new-offers";
 import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import CarCategories from "@/components/car-categories";
 import { db } from "@/lib/db";
-import Footer from "@/components/footer";
+import { getUserLikes } from "@/data/likes";
+import { currentUser } from "@/lib/auth";
+import { useLikes } from "@/store/likes";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 

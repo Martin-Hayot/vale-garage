@@ -76,7 +76,7 @@ const CarCategories = () => {
                                 ? "hidden lg:block"
                                 : "lg:block"
                         )}
-                        key={category.name}
+                        key={index}
                     >
                         <Image
                             src={category.image}

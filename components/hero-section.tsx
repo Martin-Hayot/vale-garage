@@ -7,7 +7,7 @@ const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
 const HeroSection = () => {
     return (
-        <section className="relative w-full h-[1000px] overflow-x-hidden">
+        <section className="relative w-full h-[1000px] overflow-x-hidden overflow-y-hidden">
             <Image
                 src="/hero-cover.jpeg"
                 alt="Car in a garage"

@@ -1,3 +1,5 @@
+"use client";
+
 import { Fuel, Heart } from "lucide-react";
 import { TbAutomaticGearbox, TbManualGearbox } from "react-icons/tb";
 import Image from "next/image";
@@ -13,8 +15,10 @@ import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
 import Link from "next/link";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import Carousel from "../carousel";
+import { useLikes } from "@/store/likes";
+import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 type CarDetails = Car & CarBid;
 
@@ -24,8 +28,17 @@ interface OffersCardProps {
 
 const OffersCard = ({ details }: OffersCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
-    let params = new URLSearchParams(window.location.search);
-    let drawer = params.get("drawer");
+    const { addLike, removeLike, likes, getLikes } = useLikes();
+    let params;
+    let drawer;
+    if (typeof window !== "undefined") {
+        params = new URLSearchParams(window.location.search);
+        drawer = params.get("drawer");
+    }
+
+    useEffect(() => {
+        getLikes();
+    }, [getLikes]);
 
     return (
         <Drawer
@@ -42,8 +55,30 @@ const OffersCard = ({ details }: OffersCardProps) => {
             <TooltipProvider>
                 <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72 max-h-72 outline-none shadow-sm">
                     <div className="relative">
-                        <div className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3">
-                            <Heart className="text-white w-5 h-5" />
+                        <div
+                            onClick={() => {
+                                if (
+                                    likes.find(
+                                        (like) => like.carBidId === details.id
+                                    )
+                                ) {
+                                    removeLike(details.id);
+                                } else {
+                                    addLike(details.id);
+                                }
+                            }}
+                            className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3 hover:scale-105 transition-all duration-100"
+                        >
+                            <Heart
+                                className={cn(
+                                    "text-white w-5 h-5",
+                                    likes.find(
+                                        (like) => like.carBidId === details.id
+                                    )
+                                        ? " fill-red-500 text-red-500"
+                                        : "text-neutral-300"
+                                )}
+                            />
                         </div>
                         <div className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 right-3 flex flex-row gap-x-2">
                             {(details.fuelType === "Diesel" ||
