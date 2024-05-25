@@ -6,52 +6,40 @@ import { useState } from "react";
 
 const categories = [
     {
-        name: "Family Cars",
+        name: "Family",
         description: "Safe, spacious and comfortable",
         image: "/car-type-family.jpg",
         alt: "Family Cars",
     },
     {
-        name: "Sports Cars",
+        name: "Sports",
         description: "Powerful & Performant",
         image: "/hero.jpg",
         alt: "Sports Cars",
     },
     {
-        name: "Electric Cars",
+        name: "Electric",
         description: "Eco-friendly & Efficient",
-        image: "/car-type-family.jpg",
+        image: "/car-type-electric.jpg",
         alt: "Electric Cars",
     },
     {
-        name: "Economic Cars",
+        name: "Economic",
         description: "Affordable & Reliable",
-        image: "/car-type-family.jpg",
+        image: "/car-type-economic.jpg",
         alt: "Economic Cars",
     },
     {
-        name: "Economic Cars",
-        description: "Affordable & Reliable",
-        image: "/car-type-family.jpg",
-        alt: "Economic Cars",
+        name: "Utility",
+        description: "Practical & Versatile",
+        image: "/car-type-utility.jpg",
+        alt: "Utility Cars",
     },
     {
-        name: "Sports Cars",
-        description: "Powerful & Performant",
-        image: "/hero.jpg",
-        alt: "Sports Cars",
-    },
-    {
-        name: "Economic Cars",
-        description: "Affordable & Reliable",
-        image: "/car-type-family.jpg",
-        alt: "Economic Cars",
-    },
-    {
-        name: "Sports Cars",
-        description: "Powerful & Performant",
-        image: "/hero.jpg",
-        alt: "Sports Cars",
+        name: "Cabriolet",
+        description: "Refreshing & Fun",
+        image: "/car-type-cabriolet.jpg",
+        alt: "Utility Cars",
     },
 ];
 
@@ -66,12 +54,12 @@ const CarCategories = () => {
     };
 
     return (
-        <div>
-            <div className="lg:grid lg:gap-10 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 justify-center text-white w-full space-y-6 lg:space-y-0">
+        <div className="w-full">
+            <div className="lg:grid lg:gap-10 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 justify-center text-white w-full space-y-6 lg:space-y-0">
                 {categories.map((category, index) => (
                     <div
                         className={cn(
-                            "group relative overflow-hidden h-64 lg:h-full min-w-1/4",
+                            "group relative overflow-hidden h-64 lg:h-96 min-w-1/4",
                             index >= 3 && seeMore
                                 ? "hidden lg:block"
                                 : "lg:block"
@@ -87,7 +75,7 @@ const CarCategories = () => {
                         />
                         <div className="absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-b from-transparent to-neutral-900/75 group-hover:bg-gradient-to-b group-hover:from-transparent group-hover:to-primary/80 "></div>
                         <div className="absolute px-4 md:px-10 duration-200 w-full bottom-8 ">
-                            <h3 className="text-xl md:text-3xl font-bold md:mb-4">
+                            <h3 className="text-xl md:text-3xl font-bold md:mb-2">
                                 {category.name}
                             </h3>
                             <p className="w-full text-sm md:text-xl font-semibold">

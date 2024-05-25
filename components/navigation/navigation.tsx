@@ -17,6 +17,8 @@ import { MobileToggle } from "../mobile-toggle";
 import { ModeToggle } from "../mode-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserButton } from "../auth/user-button";
+import { Heart } from "lucide-react";
+import { Button } from "../ui/button";
 
 const Navigation = () => {
     const user = useCurrentUser();
@@ -114,22 +116,26 @@ const Navigation = () => {
                                                 Manage users and offers
                                             </ListItem>
                                         </Link>
-                                        <Link href="/admin/offers/create">
-                                            <ListItem title="Create Car Offers">
-                                                Create normal or time gated car
-                                                offers
+                                        <Link href="/admin/offers">
+                                            <ListItem title="Manage Offers">
+                                                Edit, delete or archive offers
                                             </ListItem>
                                         </Link>
-                                        <Link href="/admin/cars/models">
-                                            <ListItem title="Car Models">
-                                                Manage Car Models
+                                        <Link href="/admin/users">
+                                            <ListItem title="Manage Users Accounts">
+                                                Manage normal customers and
+                                                merchants accounts
                                             </ListItem>
                                         </Link>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         )}
+                        <Link href="/likes">
+                            <Heart className="w-5 h-5 hover:fill-red-500 hover:text-red-500 transition-all duration-100" />
+                        </Link>
                         <ModeToggle />
+
                         {user && <UserButton align="end" />}
                     </NavigationMenuList>
                 </NavigationMenu>

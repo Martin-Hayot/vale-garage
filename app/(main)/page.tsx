@@ -5,9 +5,6 @@ import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import CarCategories from "@/components/car-categories";
 import { db } from "@/lib/db";
-import { getUserLikes } from "@/data/likes";
-import { currentUser } from "@/lib/auth";
-import { useLikes } from "@/store/likes";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
@@ -42,7 +39,7 @@ export default async function Home() {
                     <NewOffers offers={offers} />
                 </div>
             </section>
-            <section id="creations" className=" mx-32">
+            <section id="creations" className="lg:mx-32">
                 <div className="my-32 px-6 md:px-0">
                     <h2 className="text-center lg:text-left text-4xl pb-16 font-semibold">
                         What type of car are you looking for ?
