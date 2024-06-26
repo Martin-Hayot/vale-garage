@@ -10,8 +10,12 @@ const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
 export default async function Home() {
     const offers = await db.carBid.findMany({
+        where: {
+            status: "ACTIVE",
+        },
         include: {
             car: true,
+            offerImages: true,
         },
     });
 

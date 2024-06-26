@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent, useState } from "react";
 import { Input } from "../ui/input";
 import {
@@ -18,18 +20,14 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
-import { ControllerRenderProps } from "react-hook-form";
+import { useImages } from "@/store/images";
 
-interface FileUploadProps {
-    field: ControllerRenderProps;
-    setFilesUrl: (filesUrl: string[]) => void;
-}
-
-const FileUpload = ({ field, setFilesUrl }: FileUploadProps) => {
+const FileUpload = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [fileError, setFileError] = useState<string | undefined>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { toast } = useToast();
+    const { images, setImages } = useImages();
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
@@ -59,58 +57,72 @@ const FileUpload = ({ field, setFilesUrl }: FileUploadProps) => {
 
     const handleSubmit = async () => {
         setIsLoading(true);
-        let filesUrl = [] as string[];
+        let imagesUrl = [];
+
         if (files.length !== 0) {
-            files.forEach(async (file) => {
-                const checksum = await computeSHA256(file);
-                const signedURLResult = await getSignedURL({
-                    fileType: file.type,
-                    fileSize: file.size,
-                    checksum: checksum,
-                });
-                if (signedURLResult.error !== undefined) {
-                    console.error(signedURLResult.error);
-                    return;
-                }
-
-                const { url } = signedURLResult;
-
-                const res = await axios.put(url, file, {
-                    headers: {
-                        "Content-Type": file.type,
-                    },
-                });
-
-                if (res.status !== 200) {
-                    console.error(res.statusText);
-                    toast({
-                        variant: "destructive",
-                        description:
-                            "An error occured while uploading the file",
-                        action: (
-                            <ToastAction
-                                onClick={handleSubmit}
-                                altText="Try again"
-                            >
-                                Try Again
-                            </ToastAction>
-                        ),
-                        duration: 5000,
+            const uploadPromises = files.map(async (file) => {
+                try {
+                    const checksum = await computeSHA256(file);
+                    const signedURLResult = await getSignedURL({
+                        fileType: file.type,
+                        fileSize: file.size,
+                        checksum: checksum,
                     });
-                    return;
+
+                    if (signedURLResult.error !== undefined) {
+                        console.error(signedURLResult.error);
+                        return null; // Skip this file upload
+                    }
+
+                    const { url } = signedURLResult;
+                    const res = await axios.put(url, file, {
+                        headers: {
+                            "Content-Type": file.type,
+                        },
+                    });
+
+                    if (res.status !== 200) {
+                        console.error(res.statusText);
+                        toast({
+                            variant: "destructive",
+                            description:
+                                "An error occurred while uploading the file",
+                            action: (
+                                <ToastAction
+                                    onClick={handleSubmit}
+                                    altText="Try again"
+                                >
+                                    Try Again
+                                </ToastAction>
+                            ),
+                            duration: 5000,
+                        });
+                        return null; // Skip this file upload
+                    }
+
+                    return url.split("?")[0]; // Return the image URL without query parameters
+                } catch (error) {
+                    console.error(
+                        "An error occurred during file upload",
+                        error
+                    );
+                    return null; // Skip this file upload on error
                 }
-                const imageUrl = url.split("?")[0];
-                filesUrl.push(imageUrl);
             });
 
-            field.onChange(filesUrl);
-            setFilesUrl(filesUrl);
-            toast({
-                variant: "default",
-                description: "Files uploaded successfully",
-                duration: 5000,
-            });
+            const uploadedImages = await Promise.all(uploadPromises);
+            imagesUrl = uploadedImages.filter((url) => url !== null); // Filter out nulls (failed uploads)
+
+            if (imagesUrl.length > 0) {
+                setImages(imagesUrl);
+                toast({
+                    variant: "default",
+                    description: "Files uploaded successfully",
+                    duration: 5000,
+                });
+            }
         }
+
         setFiles([]);
         setIsLoading(false);
     };
@@ -120,7 +132,7 @@ const FileUpload = ({ field, setFilesUrl }: FileUploadProps) => {
             <Dialog>
                 <DialogTrigger disabled={isLoading}>
                     <div className="bg-primary text-primary-foreground rounded px-4 py-2">
-                        {isLoading && !field.value ? (
+                        {isLoading && !images ? (
                             <Loader2 className="animate-spin" />
                         ) : (
                             "Upload Images"

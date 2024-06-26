@@ -5,17 +5,24 @@ import Image from "next/image";
 import { useState } from "react";
 
 interface CarouselProps {
-    images: string[];
+    images: {
+        id: string;
+        carBidId: string;
+        url: string;
+        order: number;
+    }[];
 }
 
 const Carousel = ({ images }: CarouselProps) => {
     const [imageIndex, setImageIndex] = useState(0);
     return (
-        <div className="w-full h-full relative">
+        <div className="w-full h-full relative prevent-select">
             <Image
-                src={images[imageIndex]}
-                width={720}
-                height={480}
+                src={
+                    images.filter((image) => image.order === imageIndex)[0].url
+                }
+                width={1280}
+                height={720}
                 alt="car images"
                 className="object-cover w-full h-full block rounded-lg"
             />

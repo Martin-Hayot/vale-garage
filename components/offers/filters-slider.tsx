@@ -73,7 +73,7 @@ const FiltersSlider = ({
             />
             <div className="flex flex-row gap-x-6 relative">
                 <Input
-                    className="w-1/2 border-none bg-neutral-700 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="w-1/2 border-none dark:bg-neutral-700 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     type="text"
                     value={Number(sliderValue[0]).toString()}
                     onChange={(e) =>
@@ -83,7 +83,7 @@ const FiltersSlider = ({
 
                 <Input
                     type="text"
-                    className="w-1/2 border-none bg-neutral-700 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="w-1/2 border-none dark:bg-neutral-700 outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     value={Number(sliderValue[1]).toString()}
                     onChange={(e) =>
                         setSliderValue([sliderValue[0], +e.target.value])

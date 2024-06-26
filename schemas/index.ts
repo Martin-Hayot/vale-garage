@@ -30,6 +30,7 @@ export const NewPasswordSchema = z.object({
 
 export const SettingsSchema = z.object({
     name: z.optional(z.string()),
+    isTwoFactorEnabled: z.boolean(),
 });
 
 export const OffersSchema = z.object({
@@ -48,16 +49,6 @@ export const OffersSchema = z.object({
     color: z.string().min(1, { message: "Color is required" }),
     doors: z.coerce.number().min(1, { message: "Doors is required" }),
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
-    images: z
-        .array(z.string())
-        .min(1, { message: "At least one image is required" }),
-    // Optional
-    isBidding: z.optional(z.boolean()),
-
-    minPrice: z.optional(z.coerce.number()),
-    maxPrice: z.optional(z.coerce.number()),
-    startDate: z.optional(z.date()),
-    endDate: z.optional(z.date()),
 });
 
 export const CreateCarSchema = z.object({

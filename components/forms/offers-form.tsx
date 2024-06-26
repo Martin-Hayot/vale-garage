@@ -38,7 +38,7 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
     Select,
     SelectContent,
@@ -47,8 +47,9 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import Link from "next/link";
+import Image from "next/image";
 import { Car } from "@prisma/client";
 
 import {
@@ -62,6 +63,8 @@ import {
 import { useMulitstepForm } from "@/hooks/use-multistep-form";
 import FormsButton from "./forms-button";
 import FileUpload from "./file-upload-modal";
+import DragAndDropImageSorter from "./drag&drop-image-sorter";
+import { useImages } from "@/store/images";
 
 const steps = [
     {
@@ -89,7 +92,7 @@ const steps = [
     {
         id: "step-3",
         title: "Car Images",
-        fields: ["images"],
+        fields: [],
     },
     {
         id: "step-4",
@@ -105,7 +108,8 @@ export const OffersForm = () => {
     const [selectedMake, setSelectedMake] = useState<string>("");
     const [cars, setCars] = useState<Car[]>([]);
     const [makes, setMakes] = useState<string[]>([]);
-    const [filesUrl, setFilesUrl] = useState<string[]>([]);
+
+    const { images, setObjects } = useImages();
 
     const form = useForm<z.infer<typeof OffersSchema>>({
         resolver: zodResolver(OffersSchema),
@@ -125,7 +129,6 @@ export const OffersForm = () => {
             color: "",
             doors: 0,
             seats: 0,
-            images: [],
         },
     });
 
@@ -136,14 +139,19 @@ export const OffersForm = () => {
         back,
         isFirstStep,
         isLastStep,
+        // @ts-ignore
     } = useMulitstepForm(steps, OffersSchema, form);
 
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
         setSuccess("");
+        console.log("submit", values);
         startTransition(() => {
             axios
-                .post("/api/offers", values)
+                .post("/api/offers", {
+                    ...values,
+                    images: images,
+                })
                 .then((res) => {
                     setSuccess(res.data.message);
                     setTimeout(() => {
@@ -156,6 +164,8 @@ export const OffersForm = () => {
                     setError(err.response.data);
                 });
         });
+
+        setObjects([]);
     };
 
     useEffect(() => {
@@ -837,26 +847,14 @@ export const OffersForm = () => {
 
                         {currentStepIndex === 2 && (
                             <>
-                                <FormField
-                                    control={form.control}
-                                    name="images"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FileUpload
-                                                field={field as any}
-                                                setFilesUrl={setFilesUrl}
-                                            />
-                                            <FormControl>
-                                                <Input
-                                                    type="hidden"
-                                                    {...field}
-                                                    value={filesUrl}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                                <FileUpload />
+
+                                {JSON.stringify(images)}
+                                {images.length > 0 && (
+                                    <DragAndDropImageSorter
+                                        key={JSON.stringify(images)}
+                                    />
+                                )}
                             </>
                         )}
                         {currentStepIndex === 3 && (

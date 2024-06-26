@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
 export function useMulitstepForm(
     steps: { id: string; title: string; fields: string[] }[],
     formSchema: z.ZodObject<any>,
-    form: z.infer<typeof formSchema>
+    form: UseFormReturn<typeof formSchema>
 ) {
     const [currentStepIndex, setCurrentStepIndex] = useState(0);
     let isLastStep = currentStepIndex === steps.length - 1;
@@ -13,7 +14,8 @@ export function useMulitstepForm(
 
     async function next() {
         const fields = steps[currentStepIndex].fields;
-        const output = await form.trigger(fields as FieldName[], {
+        // @ts-ignore
+        const output = await form.trigger(fields, {
             shouldFocus: true,
         });
 

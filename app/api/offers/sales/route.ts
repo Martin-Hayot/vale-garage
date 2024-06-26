@@ -8,6 +8,8 @@ import { db } from "@/lib/db";
 import { Filters } from "@/store/filters";
 import { NextResponse } from "next/server";
 
+type status = "ACTIVE" | "INACTIVE" | "ARCHIVED";
+
 export const GET = async (req: Request) => {
     const { searchParams } = new URL(req.url);
     const sort = searchParams.get("sort") as Filters["sort"] | "newest";
@@ -15,6 +17,7 @@ export const GET = async (req: Request) => {
     const mileageRange = searchParams.get("mileage");
     const yearRange = searchParams.get("year");
     const powerRange = searchParams.get("power");
+    const status = searchParams.get("status") as status;
 
     let orderBy = {};
 
@@ -77,9 +80,10 @@ export const GET = async (req: Request) => {
                 gte: minPower,
                 lte: maxPower,
             },
+            status: status,
         },
         orderBy: orderBy,
-        include: { car: true },
+        include: { car: true, offerImages: true },
     });
 
     if (sales.length === 0) {

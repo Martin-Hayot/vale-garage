@@ -3,7 +3,7 @@
 import { Fuel, Heart } from "lucide-react";
 import { TbAutomaticGearbox, TbManualGearbox } from "react-icons/tb";
 import Image from "next/image";
-import { Car, CarBid } from "@prisma/client";
+import { Car, CarBid, OfferImages } from "@prisma/client";
 import {
     Tooltip,
     TooltipContent,
@@ -14,13 +14,12 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
-import Link from "next/link";
 import Carousel from "../carousel";
 import { useLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 
-type CarDetails = Car & CarBid;
+type CarDetails = Car & CarBid & { offerImages: OfferImages[] };
 
 interface OffersCardProps {
     details: CarDetails;
@@ -35,6 +34,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
         params = new URLSearchParams(window.location.search);
         drawer = params.get("drawer");
     }
+    console.log(details);
 
     useEffect(() => {
         getLikes();
@@ -53,7 +53,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
             }}
         >
             <TooltipProvider>
-                <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col w-72 max-h-72 outline-none shadow-sm">
+                <div className="dark:bg-neutral-800 bg-neutral-200/50 rounded-xl flex flex-col max-w-72 w-72 max-h-72 outline-none shadow-sm prevent-select">
                     <div className="relative">
                         <div
                             onClick={() => {
@@ -120,7 +120,11 @@ const OffersCard = ({ details }: OffersCardProps) => {
                         </div>
                         <DrawerTrigger>
                             <Image
-                                src={details.images[0]}
+                                src={
+                                    details.offerImages.filter(
+                                        (image) => image.order === 0
+                                    )[0].url
+                                }
                                 width={720}
                                 height={480}
                                 alt="car offer image"
@@ -149,13 +153,13 @@ const OffersCard = ({ details }: OffersCardProps) => {
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
                 <div className="px-8 pt-2 pb-8 w-7">
-                    <Link href={`/offers/${details.id}`}>
+                    <a href={`/offers/${details.id}`}>
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
-                    </Link>
+                    </a>
                 </div>
                 <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
-                    <div className="w-full lg:w-[50%]">
-                        <Carousel images={details.images} />
+                    <div className="w-full lg:w-[50%] max-h-[600px]">
+                        <Carousel images={details.offerImages} />
                     </div>
 
                     <div>

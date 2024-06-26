@@ -16,6 +16,12 @@ enum UserRole {
   ADMIN
 }
 
+enum OfferStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
 model User {
   id                    String                 @id @default(cuid())
   name                  String?
@@ -141,19 +147,16 @@ model CarBid {
   maxPrice        Int?
   startDate       DateTime? @default(now())
   endDate         DateTime?
-  images          String[]
-
 
   onlyForMerchants Boolean @default(false)
-  active Boolean @default(true)
-  sold  Boolean @default(false)
-  isArchived Boolean @default(false)
+  status         OfferStatus @default(ACTIVE) 
 
   carId String
   car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
   bids Bid[]
   likes Like[]
+  offerImages OfferImages[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -170,4 +173,15 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model OfferImages {
+  id      String @id @default(cuid())
+  carBidId String
+  url  String
+  order   Int    // Field to store the order of the image
+
+  carBid CarBid @relation(fields: [carBidId], references: [id], onDelete: Cascade)
+
+  @@unique([carBidId, order]) // Ensure unique combination of carBidId and order
 }
