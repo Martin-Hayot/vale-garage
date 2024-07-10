@@ -27,3 +27,9 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
 
     return { success: "Settings updated" };
 };
+
+export const getSettingsByUserId = async (userId: string) => {
+    return await db.user.findUnique({
+        where: { id: userId },
+    });
+};

@@ -72,3 +72,11 @@ export const OffersFilterValidator = z.object({
     seats: z.optional(z.number()),
     circulationDate: z.optional(z.date()),
 });
+
+export const MerchantsSchema = z.object({
+    name: z.string().min(1, { message: "Company name is required" }),
+    vatNumber: z
+        .string()
+        .min(1, { message: "VAT number is required" })
+        .max(12, { message: "VAT number is too long" }),
+});

@@ -3,11 +3,11 @@
 import { SettingsSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { settings } from "@/actions/settings";
+import { settings, getSettingsByUserId } from "@/actions/settings";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Settings } from "lucide-react";
+import { CheckCircle, Settings } from "lucide-react";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog";
+import { MerchantsForm } from "./merchants-form";
 
 export const SettingsForm = () => {
     const { update, data } = useSession();
@@ -38,6 +45,17 @@ export const SettingsForm = () => {
             isTwoFactorEnabled: data?.user.isTwoFactorEnabled || false,
         },
     });
+
+    useEffect(() => {
+        if (data?.user) {
+            getSettingsByUserId(data.user.id).then((settings) => {
+                form.reset({
+                    name: settings?.name || "",
+                    isTwoFactorEnabled: settings?.isTwoFactorEnabled,
+                });
+            });
+        }
+    }, [form, data?.user]);
 
     const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
         setError("");
@@ -60,7 +78,7 @@ export const SettingsForm = () => {
     };
 
     return (
-        <Card className="w-[600px] bg-neutral-700">
+        <Card className="w-[300px] md:w-[500px] lg:w-[600px]  bg-neutral-700">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 <Settings className="mr-2 h-8 w-8" />
                 Settings
@@ -83,7 +101,7 @@ export const SettingsForm = () => {
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                className="w-72"
+                                                className="w-44 md:w-72 bg-neutral-200 text-black"
                                                 placeholder="John Doe"
                                                 disabled={isPending}
                                                 type="text"
@@ -127,6 +145,7 @@ export const SettingsForm = () => {
                                     />
                                 )}
                         </div>
+
                         <FormError message={error} />
                         <FormSuccess message={success} />
                         <Button
@@ -138,6 +157,34 @@ export const SettingsForm = () => {
                         </Button>
                     </form>
                 </Form>
+                <div className="mt-6">
+                    {data?.user.role === "MERCHANT" ? (
+                        <div className="flex flex-row justify-between items-center bg-green-300 bg-opacity-20 p-3 rounded">
+                            <p className="text-">
+                                You already have a merchant account
+                            </p>
+                            <CheckCircle className="h-6 w-6 text-green-600 " />
+                        </div>
+                    ) : (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button type="button">
+                                    Become a B2B Merchant
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogTitle>Become a B2B Merchant</DialogTitle>
+                                <MerchantsForm />
+                            </DialogContent>
+                        </Dialog>
+                    )}
+                </div>
+                <div className="mt-10 space-x-4">
+                    <Button variant="outline">Sign out</Button>
+                    <Button className="" variant="destructive">
+                        Delete Account
+                    </Button>
+                </div>
             </CardContent>
         </Card>
     );

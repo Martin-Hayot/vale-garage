@@ -35,10 +35,8 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
 
   // New fields for MERCHANT role
-  vatNumber      String? // VAT number
-  companyName    String? // Name of the company
-  companyAddress String? // Address of the company
-  country        String? // Country
+  companyId String?
+  company Company? @relation(fields: [companyId], references: [id])
 
   accounts Account[]
   biddings Bid[]
@@ -68,6 +66,16 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Company {
+  id      String @id @default(cuid())
+  name    String
+  address String
+  country String
+  vatNumber String
+
+  users User[]
 }
 
 model Like {

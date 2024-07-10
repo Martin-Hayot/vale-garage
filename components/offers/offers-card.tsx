@@ -18,6 +18,7 @@ import Carousel from "../carousel";
 import { useLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 type CarDetails = Car & CarBid & { offerImages: OfferImages[] };
 
@@ -28,17 +29,19 @@ interface OffersCardProps {
 const OffersCard = ({ details }: OffersCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
     const { addLike, removeLike, likes, getLikes } = useLikes();
+    const user = useCurrentUser();
     let params;
     let drawer;
     if (typeof window !== "undefined") {
         params = new URLSearchParams(window.location.search);
         drawer = params.get("drawer");
     }
-    console.log(details);
 
     useEffect(() => {
-        getLikes();
-    }, [getLikes]);
+        if (user) {
+            getLikes();
+        }
+    }, [getLikes, user]);
 
     return (
         <Drawer
@@ -57,6 +60,10 @@ const OffersCard = ({ details }: OffersCardProps) => {
                     <div className="relative">
                         <div
                             onClick={() => {
+                                if (!user) {
+                                    window.location.href = "/login";
+                                    return;
+                                }
                                 if (
                                     likes.find(
                                         (like) => like.carBidId === details.id
@@ -158,7 +165,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                     </a>
                 </div>
                 <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
-                    <div className="w-full lg:w-[50%] max-h-[600px]">
+                    <div className="w-full lg:w-[50%] max-h-56 md:max-h-96 lg:max-h-[600px] xl:max-h-[600px]">
                         <Carousel images={details.offerImages} />
                     </div>
 
@@ -227,6 +234,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 </div> */}
                         </div>
                     </div>
+                    <div></div>
                 </div>
             </DrawerContent>
         </Drawer>

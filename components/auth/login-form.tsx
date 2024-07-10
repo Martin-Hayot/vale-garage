@@ -21,6 +21,12 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useSearchParams } from "next/navigation";
+import {
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSeparator,
+    InputOTPSlot,
+} from "@/components/ui/input-otp";
 import Link from "next/link";
 
 export const LoginForm = () => {
@@ -85,19 +91,27 @@ export const LoginForm = () => {
                                 control={form.control}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="dark:text-secondary-foreground">
-                                            Twp Factor Code
+                                        <FormLabel className="dark:text-secondary-foreground w-full text-center block text-lg mb-4">
+                                            Two Factor Code
                                         </FormLabel>
                                         <FormControl>
-                                            <Input
+                                            <InputOTP
+                                                maxLength={6}
                                                 {...field}
-                                                placeholder="123456"
-                                                autoComplete="one-time-code"
-                                                inputMode="numeric"
-                                                pattern="[0-9]*"
-                                                className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
-                                                disabled={isPending}
-                                            />
+                                                className="text-black justify-center"
+                                            >
+                                                <InputOTPGroup>
+                                                    <InputOTPSlot index={0} />
+                                                    <InputOTPSlot index={1} />
+                                                    <InputOTPSlot index={2} />
+                                                </InputOTPGroup>
+                                                <InputOTPSeparator />
+                                                <InputOTPGroup>
+                                                    <InputOTPSlot index={3} />
+                                                    <InputOTPSlot index={4} />
+                                                    <InputOTPSlot index={5} />
+                                                </InputOTPGroup>
+                                            </InputOTP>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
