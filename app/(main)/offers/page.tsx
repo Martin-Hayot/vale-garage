@@ -21,6 +21,18 @@ import MainBar from "@/components/offers/offers-main-bar";
 
 type CarSales = CarBid & { car: Car } & { offerImages: OfferImages[] };
 
+type validFuels =
+    | "Diesel"
+    | "Petrol"
+    | "Electric"
+    | "LPG"
+    | "CNG"
+    | "any"
+    | "Hybrid Petrol"
+    | "Hybrid Diesel"
+    | "PHEV"
+    | "MHEV";
+
 const SalesPage = () => {
     const { filters, setFilters } = useFilters();
     const searchParams = useSearchParams();
@@ -86,7 +98,22 @@ const SalesPage = () => {
             });
         }
         if (selectedFuels) {
-            setFilters({ fuel: selectedFuels.split(",") });
+            const validFuelTypes: validFuels[] = [
+                "Diesel",
+                "Petrol",
+                "Electric",
+                "LPG",
+                "CNG",
+                "any",
+                "Hybrid Petrol",
+                "Hybrid Diesel",
+                "PHEV",
+                "MHEV",
+            ];
+            const filteredFuels = selectedFuels
+                .split(",")
+                .filter((fuel) => validFuelTypes.includes(fuel as validFuels));
+            setFilters({ fuel: filteredFuels as validFuels[] });
         }
     };
 

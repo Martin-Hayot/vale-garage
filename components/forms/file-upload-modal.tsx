@@ -114,7 +114,10 @@ const FileUpload = () => {
             imagesUrl = uploadedImages.filter((url) => url !== null); // Filter out nulls (failed uploads)
 
             if (imagesUrl.length > 0) {
-                setImages(imagesUrl);
+                const validImagesUrl = imagesUrl.filter(
+                    (url): url is string => url !== null
+                );
+                setImages(validImagesUrl);
                 toast({
                     variant: "default",
                     description: "Files uploaded successfully",
