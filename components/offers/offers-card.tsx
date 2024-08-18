@@ -14,7 +14,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
-import Carousel from "@/components/carousel";
+import Carousel from "@/components/Carousel";
 import { useLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
