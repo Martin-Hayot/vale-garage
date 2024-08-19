@@ -1,26 +1,49 @@
+import {
+    MILEAGE_OPTIONS,
+    POWER_OPTIONS,
+    PRICE_OPTIONS,
+    YEAR_OPTIONS,
+} from "@/constants/filters";
 import { db } from "@/lib/db";
 import { Filters } from "@/store/filters";
 import { NextResponse } from "next/server";
+
+type status = "ACTIVE" | "INACTIVE" | "ARCHIVED";
 
 export const GET = async (req: Request) => {
     const { searchParams } = new URL(req.url);
     const sort = searchParams.get("sort") as Filters["sort"] | "newest";
     const priceRange = searchParams.get("price");
     const mileageRange = searchParams.get("mileage");
+    const yearRange = searchParams.get("year");
+    const powerRange = searchParams.get("power");
+    const status = searchParams.get("status") as status;
 
     let orderBy = {};
 
-    if (!priceRange) {
-        return new Response("Price range is required", { status: 400 });
-    }
+    const [minPrice, maxPrice] = priceRange?.split("-").map(Number) || [
+        PRICE_OPTIONS.min,
+        PRICE_OPTIONS.max,
+    ];
 
-    if (!mileageRange) {
-        return new Response("Mileage range is required", { status: 400 });
-    }
+    const [minMileage, maxMileage] = mileageRange?.split("-").map(Number) || [
+        MILEAGE_OPTIONS.min,
+        MILEAGE_OPTIONS.max,
+    ];
 
-    const [minPrice, maxPrice] = priceRange.split("-").map(Number);
+    const [minYear, maxYear] = yearRange?.split("-").map((item) => {
+        let date = new Date(item);
+        date.setFullYear(date.getFullYear(), 11, 31); // Set to December 31
+        return date;
+    }) || [
+        new Date(YEAR_OPTIONS.min).setFullYear(YEAR_OPTIONS.min, 11, 31),
+        new Date(YEAR_OPTIONS.max).setFullYear(YEAR_OPTIONS.max, 11, 31),
+    ];
 
-    const [minMileage, maxMileage] = mileageRange.split("-").map(Number);
+    const [minPower, maxPower] = powerRange?.split("-").map(Number) || [
+        POWER_OPTIONS.min,
+        POWER_OPTIONS.max,
+    ];
 
     switch (sort) {
         case "newest":
@@ -49,13 +72,22 @@ export const GET = async (req: Request) => {
                 gte: minMileage,
                 lte: maxMileage,
             },
+            circulationDate: {
+                gte: new Date(minYear),
+                lte: new Date(maxYear),
+            },
+            power: {
+                gte: minPower,
+                lte: maxPower,
+            },
+            status: status,
         },
         orderBy: orderBy,
-        include: { car: true },
+        include: { car: true, offerImages: true },
     });
 
-    if (!sales) {
-        return new Response("No sales found", { status: 404 });
+    if (sales.length === 0) {
+        return new Response("No cars found", { status: 404 });
     }
 
     return NextResponse.json(sales);

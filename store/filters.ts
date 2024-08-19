@@ -39,6 +39,7 @@ export type Filters = {
     year: YEAR_OPTIONS;
     setFilter: (filter: keyof Filters, value: any) => void;
     setFilters: (filters: Partial<Filters>) => void;
+    resetFilters: () => void;
     filters: {
         sort: SORT_OPTIONS;
         color: COLOR_OPTIONS;
@@ -77,6 +78,23 @@ export const useFilters = create<Filters>((set) => ({
         set((state) => ({
             filters: { ...state.filters, ...filters },
         }));
+    },
+    resetFilters: () => {
+        set({
+            filters: {
+                sort: "newest",
+                color: COLOR_OPTIONS[0],
+                body: BODY_OPTIONS[0],
+                gearbox: GEARBOX_OPTIONS[0],
+                transmission: TRANSMISSION_OPTIONS[0],
+                state: STATE_OPTIONS[0],
+                fuel: [FUEL_OPTIONS[0]],
+                price: PRICE_OPTIONS,
+                mileage: MILEAGE_OPTIONS,
+                power: POWER_OPTIONS,
+                year: YEAR_OPTIONS,
+            },
+        });
     },
     filters: {
         sort: "newest",

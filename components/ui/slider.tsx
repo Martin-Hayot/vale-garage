@@ -67,25 +67,6 @@ const Slider = React.forwardRef(
                 </SliderPrimitive.Track>
                 {localValues.map((value, index) => (
                     <React.Fragment key={index}>
-                        <div
-                            className="absolute"
-                            style={{
-                                left: `calc(${
-                                    ((value - min) / (max - min)) * 80
-                                }% + 0px)`,
-                                top: `10px`,
-                            }}
-                        >
-                            <span
-                                className={cn(
-                                    "text-sm z-10 p-1 rounded-md transition-all duration-200",
-                                    activateBackground &&
-                                        "bg-white dark:bg-background "
-                                )}
-                            >
-                                {formatLabel ? formatLabel(value) : value}
-                            </span>
-                        </div>
                         <SliderPrimitive.Thumb
                             className="block h-4 w-4 rounded-full border-0 bg-blue-700 shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                             onTouchStart={handleTouch}

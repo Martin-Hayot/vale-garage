@@ -1,3 +1,11 @@
+import {
+    BODY_OPTIONS,
+    COLOR_OPTIONS,
+    FUEL_OPTIONS,
+    GEARBOX_OPTIONS,
+    STATE_OPTIONS,
+    TRANSMISSION_OPTIONS,
+} from "@/constants/filters";
 import * as z from "zod";
 
 export const LoginSchema = z.object({
@@ -22,6 +30,7 @@ export const NewPasswordSchema = z.object({
 
 export const SettingsSchema = z.object({
     name: z.optional(z.string()),
+    isTwoFactorEnabled: z.boolean(),
 });
 
 export const OffersSchema = z.object({
@@ -40,17 +49,34 @@ export const OffersSchema = z.object({
     color: z.string().min(1, { message: "Color is required" }),
     doors: z.coerce.number().min(1, { message: "Doors is required" }),
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
-
-    // Optional
-    isBidding: z.optional(z.boolean()),
-    images: z.optional(z.array(z.string())),
-    minPrice: z.optional(z.coerce.number()),
-    maxPrice: z.optional(z.coerce.number()),
-    startDate: z.optional(z.date()),
-    endDate: z.optional(z.date()),
 });
 
 export const CreateCarSchema = z.object({
     make: z.string().min(1, { message: "Make is required" }),
     model: z.string().min(1, { message: "Model is required" }),
+});
+
+export const OffersFilterValidator = z.object({
+    make: z.optional(z.string()),
+    model: z.optional(z.string()),
+    price: z.tuple([z.number(), z.number()]),
+    mileage: z.tuple([z.number(), z.number()]),
+    power: z.tuple([z.number(), z.number()]),
+    state: z.array(z.enum(STATE_OPTIONS)),
+    fuelType: z.array(z.enum(FUEL_OPTIONS)),
+    transmission: z.array(z.enum(TRANSMISSION_OPTIONS)),
+    carBody: z.array(z.enum(BODY_OPTIONS)),
+    gearBox: z.array(z.enum(GEARBOX_OPTIONS)),
+    color: z.array(z.enum(COLOR_OPTIONS)),
+    doors: z.optional(z.number()),
+    seats: z.optional(z.number()),
+    circulationDate: z.optional(z.date()),
+});
+
+export const MerchantsSchema = z.object({
+    name: z.string().min(1, { message: "Company name is required" }),
+    vatNumber: z
+        .string()
+        .min(1, { message: "VAT number is required" })
+        .max(12, { message: "VAT number is too long" }),
 });

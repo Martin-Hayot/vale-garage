@@ -14,9 +14,10 @@ import { Button } from "../ui/button";
 import OffersCard from "./offers-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Car, CarBid } from "@prisma/client";
+import { Car, CarBid, OfferImages } from "@prisma/client";
+import { useLikes } from "@/store/likes";
 
-type CarOffer = { car: Car } & CarBid;
+type CarOffer = { car: Car } & CarBid & { offerImages: OfferImages[] };
 
 interface NewOffersProps {
     offers: CarOffer[];
@@ -24,6 +25,7 @@ interface NewOffersProps {
 
 const NewOffers = ({ offers }: NewOffersProps) => {
     const boxRef = useRef(null);
+    const { getLikes, likes } = useLikes();
 
     useEffect(() => {
         gsap.set(boxRef.current, { scaleX: 0, transformOrigin: "left" });

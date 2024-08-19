@@ -13,7 +13,9 @@ export async function POST(req: Request) {
         if (user.role !== "ADMIN") {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        const body = await req.json();
 
+        const { images } = body;
         const {
             price,
             power,
@@ -29,8 +31,11 @@ export async function POST(req: Request) {
             seats,
             state,
             doors,
-        } = OffersSchema.parse(await req.json());
+        } = OffersSchema.parse(body);
 
+        if (images.length == 0) {
+            return new NextResponse("Images are required", { status: 400 });
+        }
         if (!price) {
             return new NextResponse("Price is required", { status: 400 });
         }
@@ -119,6 +124,11 @@ export async function POST(req: Request) {
                 car: {
                     connect: {
                         id: car.id,
+                    },
+                },
+                offerImages: {
+                    createMany: {
+                        data: images,
                     },
                 },
             },

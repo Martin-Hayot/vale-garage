@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,13 +14,14 @@ import { useFilters } from "@/store/filters";
 
 const SortDropdown = () => {
     const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState("Newest");
     const { sort, setFilter } = useFilters();
+
+    let sortLabel = SORT_OPTIONS.find((option) => option.value === sort);
 
     return (
         <DropdownMenu open={open} onOpenChange={() => setOpen(!open)}>
             <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-x-4 font-medium border dark:border-neutral-800 rounded-md p-2 px-4 dark:hover:bg-neutral-800 transition-all duration-150">
-                Sort by : {selected} <IoMdFunnel />
+                Sort by : {sortLabel?.label} <IoMdFunnel />
             </DropdownMenuTrigger>
             <DropdownMenuContent
                 align="end"
@@ -31,7 +32,6 @@ const SortDropdown = () => {
                         <button
                             key={option.value}
                             onClick={() => {
-                                setSelected(option.label);
                                 setFilter("sort", option.value);
                                 setOpen(false);
                             }}

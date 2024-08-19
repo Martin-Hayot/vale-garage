@@ -16,6 +16,12 @@ enum UserRole {
   ADMIN
 }
 
+enum OfferStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
 model User {
   id                    String                 @id @default(cuid())
   name                  String?
@@ -29,13 +35,12 @@ model User {
   twoFactorConfirmation TwoFactorConfirmation?
 
   // New fields for MERCHANT role
-  vatNumber      String? // VAT number
-  companyName    String? // Name of the company
-  companyAddress String? // Address of the company
-  country        String? // Country
+  companyId String?
+  company Company? @relation(fields: [companyId], references: [id])
 
   accounts Account[]
   biddings Bid[]
+  likes Like[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -61,6 +66,29 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Company {
+  id      String @id @default(cuid())
+  name    String
+  address String
+  country String
+  vatNumber String
+
+  users User[]
+}
+
+model Like {
+  id       String @id @default(cuid())
+  userId   String
+  carBidId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  carBid CarBid @relation(fields: [carBidId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, carBidId])
 }
 
 model VerificationToken {
@@ -127,12 +155,16 @@ model CarBid {
   maxPrice        Int?
   startDate       DateTime? @default(now())
   endDate         DateTime?
-  images          String[]
+
+  onlyForMerchants Boolean @default(false)
+  status         OfferStatus @default(ACTIVE) 
 
   carId String
   car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
   bids Bid[]
+  likes Like[]
+  offerImages OfferImages[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -149,4 +181,15 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model OfferImages {
+  id      String @id @default(cuid())
+  carBidId String
+  url  String
+  order   Int    // Field to store the order of the image
+
+  carBid CarBid @relation(fields: [carBidId], references: [id], onDelete: Cascade)
+
+  @@unique([carBidId, order]) // Ensure unique combination of carBidId and order
 }

@@ -17,6 +17,8 @@ import { MobileToggle } from "../mobile-toggle";
 import { ModeToggle } from "../mode-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserButton } from "../auth/user-button";
+import { Heart } from "lucide-react";
+import { Button } from "../ui/button";
 
 const Navigation = () => {
     const user = useCurrentUser();
@@ -28,7 +30,7 @@ const Navigation = () => {
         const handleScroll = () => {
             const currentScrollPos = window.scrollY;
 
-            if (currentScrollPos > 100) {
+            if (currentScrollPos > 150) {
                 setIsSticky(prevScrollPos > currentScrollPos);
                 setPrevScrollPos(currentScrollPos);
             }
@@ -43,8 +45,8 @@ const Navigation = () => {
     return (
         <header
             className={cn(
-                "w-full fixed z-50 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
-                isSticky ? "opacity-100 top-0  " : "opacity-0 -translate-y-full"
+                "w-full sticky z-50 top-0 transition-all duration-300 bg-neutral-100 dark:bg-neutral-900",
+                isSticky ? "opacity-100 " : "opacity-0 -translate-y-full"
             )}
         >
             <nav className="flex flex-row items-center p-5 justify-between lg:justify-evenly border-b border-gray-200 dark:border-neutral-800">
@@ -109,22 +111,31 @@ const Navigation = () => {
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] dark:bg-neutral-900">
-                                        <Link href="/offers/create">
-                                            <ListItem title="Create Car Offers">
-                                                Create normal or time gated car
-                                                offers
+                                        <Link href="/admin/dashboard">
+                                            <ListItem title="Dashboard">
+                                                Manage users and offers
                                             </ListItem>
                                         </Link>
-                                        <Link href="/cars/models">
-                                            <ListItem title="Car Models">
-                                                Manage Car Models
+                                        <Link href="/admin/offers">
+                                            <ListItem title="Manage Offers">
+                                                Edit, delete or archive offers
+                                            </ListItem>
+                                        </Link>
+                                        <Link href="/admin/users">
+                                            <ListItem title="Manage Users Accounts">
+                                                Manage normal customers and
+                                                merchants accounts
                                             </ListItem>
                                         </Link>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         )}
+                        <Link href="/likes">
+                            <Heart className="w-5 h-5 hover:fill-red-500 hover:text-red-500 transition-all duration-100" />
+                        </Link>
                         <ModeToggle />
+
                         {user && <UserButton align="end" />}
                     </NavigationMenuList>
                 </NavigationMenu>
