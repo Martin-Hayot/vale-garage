@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
@@ -18,7 +18,6 @@ import { ModeToggle } from "../mode-toggle";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { UserButton } from "../auth/user-button";
 import { Heart } from "lucide-react";
-import { Button } from "../ui/button";
 
 const Navigation = () => {
     const user = useCurrentUser();
