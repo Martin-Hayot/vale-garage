@@ -2,6 +2,8 @@ import { Poppins } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
@@ -36,12 +38,17 @@ const HeroSection = () => {
                     seeking premium value.
                 </p>
                 <div className="flex flex-row gap-6">
-                    <Button
-                        size="lg"
-                        className="w-56 h-16 rounded-md text-xl font-semibold"
-                    >
-                        See offers
-                    </Button>
+                    <Link href={"/offers"}>
+                        <Button
+                            size="lg"
+                            className="px-5 py-4 mt-6 text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out shadow-lg transform hover:scale-105"
+                        >
+                            See offers
+                            <div>
+                                <ArrowUpRight className="w-7 h-7 ml-4 -mr-2" />
+                            </div>
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </section>

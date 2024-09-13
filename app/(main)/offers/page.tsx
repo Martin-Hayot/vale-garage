@@ -190,7 +190,11 @@ const SalesPage = () => {
                             <div>
                                 <div className="flex flex-row justify-end items-end pb-4 pr-8">
                                     <div className="font-semibold text-2xl">
-                                        {offers?.length || "..."} cars found
+                                        {offers?.length ?? "..."} car
+                                        {offers?.length && offers.length >= 1
+                                            ? ""
+                                            : "s"}{" "}
+                                        found
                                     </div>
                                 </div>
                                 <div
