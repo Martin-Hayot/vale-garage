@@ -33,8 +33,12 @@ const HeroSection = () => {
                         font.className
                     )}
                 >
-                    Find your dream car at a dream price with our special blend
-                    of auctions and sales, for individuals and B2B clients
+                    Find your dream car at a dream price <br />
+                    For{" "}
+                    <span className="text-accent text-xl">
+                        individuals{" "}
+                    </span>{" "}
+                    and <span className="text-accent text-xl">B2B</span> clients
                     seeking premium value.
                 </p>
                 <div className="flex flex-row gap-6">

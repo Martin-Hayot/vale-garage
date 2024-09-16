@@ -2,6 +2,17 @@
 
 import OffersCard from "@/components/offers/offers-card";
 import OffersSkeleton from "@/components/offers/offers-skeleton";
+
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import { useFilters } from "@/store/filters";
 import { Car, CarBid, OfferImages } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +29,8 @@ import {
     YEAR_OPTIONS,
 } from "@/constants/filters";
 import MainBar from "@/components/offers/offers-main-bar";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 
 type CarSales = CarBid & { car: Car } & { offerImages: OfferImages[] };
 
@@ -40,6 +53,9 @@ const SalesPage = () => {
     const [tab, setTab] = useState(selectedTab);
     const router = useRouter();
     const { id } = useDrawer();
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
     const updateFilters = () => {
         const selectedSort = searchParams.get("sort") as
@@ -128,29 +144,39 @@ const SalesPage = () => {
                 filters.sort
             }&price=${priceRange}&mileage=${mileageRange}&year=${yearRange}&power=${powerRange}&fuel=${filters.fuel.join(
                 ","
-            )}`,
+            )}&page=${currentPage}`,
             { scroll: false }
         );
     };
 
     useEffect(updateFilters, [searchParams, setFilters]);
-    useEffect(updateUrl, [router, filters, tab, id]);
-
+    useEffect(updateUrl, [router, filters, tab, id, currentPage]);
+    type response = {
+        data: CarSales[];
+        meta: {
+            totalItems: number;
+            currentPage: number;
+            totalPages: number;
+        };
+    };
     const {
         data: offers,
         isPending,
         isLoading,
         error,
-    } = useQuery<CarSales[], AxiosError>({
-        queryKey: ["sales", searchParams.toString()],
+    } = useQuery<response, AxiosError>({
+        queryKey: ["sales", searchParams.toString(), currentPage],
         queryFn: async () => {
             const url = new URL(window.location.href);
             const searchParams = new URLSearchParams(url.search);
             const params = Object.fromEntries(searchParams);
             params.status = "ACTIVE";
-            const { data } = await axios.get<CarSales[]>("/api/offers/sales", {
+            params.page = currentPage.toString();
+            params.limit = itemsPerPage.toString();
+            const { data } = await axios.get("/api/offers/sales", {
                 params,
             });
+
             return data;
         },
     });
@@ -172,6 +198,10 @@ const SalesPage = () => {
         }
     }, [offers, isLoading, isPending]);
 
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
+
     return (
         <div>
             <MainBar tab={tab} setTab={setTab} />
@@ -190,8 +220,9 @@ const SalesPage = () => {
                             <div>
                                 <div className="flex flex-row justify-end items-end pb-4 pr-8">
                                     <div className="font-semibold text-2xl">
-                                        {offers?.length ?? "..."} car
-                                        {offers?.length && offers.length >= 1
+                                        {offers?.data.length ?? "..."} car
+                                        {offers?.data.length &&
+                                        offers.data.length >= 1
                                             ? ""
                                             : "s"}{" "}
                                         found
@@ -220,7 +251,7 @@ const SalesPage = () => {
                                 >
                                     {offers &&
                                         !isPending &&
-                                        offers.map((offer) => (
+                                        offers.data.map((offer) => (
                                             <div
                                                 className="place-self-center"
                                                 key={offer.id}
@@ -234,6 +265,93 @@ const SalesPage = () => {
                                             </div>
                                         ))}
                                 </div>
+                            </div>
+                            <div className="mt-40">
+                                <Pagination>
+                                    <PaginationContent>
+                                        <PaginationItem>
+                                            <Button
+                                                className="bg-transparent"
+                                                onClick={() =>
+                                                    handlePageChange(
+                                                        currentPage + 1
+                                                    )
+                                                }
+                                                disabled={
+                                                    offers &&
+                                                    offers.data.length <
+                                                        itemsPerPage
+                                                }
+                                            >
+                                                <ChevronLeft className="mr-2 w-5 h-5" />
+                                                Previous
+                                            </Button>
+                                        </PaginationItem>
+                                        <PaginationItem>
+                                            <PaginationLink>
+                                                {currentPage}
+                                            </PaginationLink>
+                                        </PaginationItem>
+                                        {offers?.meta?.totalPages &&
+                                            offers.meta.totalPages > 1 &&
+                                            Array.from(
+                                                {
+                                                    length: Math.min(
+                                                        3,
+                                                        offers.meta.totalPages
+                                                    ),
+                                                },
+                                                (_, index) =>
+                                                    currentPage + index
+                                            ).map((page) => (
+                                                <PaginationItem key={page}>
+                                                    <PaginationLink
+                                                        onClick={() =>
+                                                            handlePageChange(
+                                                                page
+                                                            )
+                                                        }
+                                                    >
+                                                        {page}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            ))}
+                                        {offers?.meta?.totalPages &&
+                                            offers.meta.totalPages > 4 && (
+                                                <>
+                                                    <PaginationLink
+                                                        onClick={() =>
+                                                            handlePageChange(
+                                                                offers.meta
+                                                                    .totalPages
+                                                            )
+                                                        }
+                                                    >
+                                                        {offers.meta.totalPages}
+                                                    </PaginationLink>
+                                                    <PaginationEllipsis />
+                                                </>
+                                            )}
+                                        <PaginationItem>
+                                            <Button
+                                                className="bg-transparent"
+                                                onClick={() =>
+                                                    handlePageChange(
+                                                        currentPage + 1
+                                                    )
+                                                }
+                                                disabled={
+                                                    offers &&
+                                                    offers.data.length <
+                                                        itemsPerPage
+                                                }
+                                            >
+                                                Next
+                                                <ChevronRight className="ml-2 w-5 h-5" />
+                                            </Button>
+                                        </PaginationItem>
+                                    </PaginationContent>
+                                </Pagination>
                             </div>
                         </div>
                     </div>
