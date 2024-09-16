@@ -3,6 +3,8 @@
 import { cn } from "@/lib/utils";
 import OffersSearchBar from "./offers-searchbar";
 import SortDropdown from "./sort-dropdown";
+import { MobileToggle } from "../mobile-toggle";
+import { MobileFiltersToggle } from "../mobile-filters-toggle";
 
 const TabButton = ({
     tab,
@@ -33,9 +35,12 @@ interface MainBarProps {
 
 const MainBar = ({ tab, setTab }: MainBarProps) => {
     return (
-        <div className="w-full h-full">
-            <div className="flex flex-row justify-center gap-x-6 border-b dark:bg-neutral-900 dark:border-neutral-800 py-3 px-4">
-                <div className="dark:bg-neutral-800 bg-white inline-flex h-[2.8rem] items-center justify-center rounded-md bg-muted p-1 text-muted-foreground border dark:border-none">
+        <div className="border-b dark:bg-neutral-900 dark:border-neutral-800 py-3 px-4 flex justify-center ">
+            <div className="flex flex-row  gap-x-6 w-[80%] max-w-[1200px]">
+                <div>
+                    <MobileFiltersToggle />
+                </div>
+                <div className="hidden dark:bg-neutral-800 bg-white lg:inline-flex h-[2.8rem] items-center justify-center rounded-md bg-muted p-1 text-muted-foreground border dark:border-none">
                     <TabButton
                         tab="sales"
                         currentTab={tab}
@@ -49,7 +54,9 @@ const MainBar = ({ tab, setTab }: MainBarProps) => {
                         label="Auctions"
                     />
                 </div>
-                <OffersSearchBar />
+                <div className="hidden">
+                    <OffersSearchBar />
+                </div>
                 <SortDropdown />
             </div>
         </div>

@@ -42,7 +42,7 @@ const NewOffers = ({ offers }: NewOffersProps) => {
     return (
         <div>
             <div className="flex flex-row items-center justify-center lg:justify-between mb-16">
-                <h2 className="text-4xl text-center font-bold text-neutral-900 dark:text-white">
+                <h2 className="text-4xl pt-10 md:pt-0 text-center font-bold text-neutral-900 dark:text-white">
                     New Offers
                 </h2>
                 <div

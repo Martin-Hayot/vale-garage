@@ -20,7 +20,7 @@ const SortDropdown = () => {
 
     return (
         <DropdownMenu open={open} onOpenChange={() => setOpen(!open)}>
-            <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-x-4 font-medium border dark:border-neutral-800 rounded-md p-2 px-4 dark:hover:bg-neutral-800 transition-all duration-150">
+            <DropdownMenuTrigger className="group inline-flex justify-center items-center gap-x-4 font-medium border dark:border-neutral-800 rounded-md p-2 px-4 dark:hover:bg-neutral-800 hover:bg-neutral-100 transition-all duration-150">
                 Sort by : {sortLabel?.label} <IoMdFunnel />
             </DropdownMenuTrigger>
             <DropdownMenuContent

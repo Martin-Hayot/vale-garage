@@ -18,6 +18,8 @@ export const GET = async (req: Request) => {
     const yearRange = searchParams.get("year");
     const powerRange = searchParams.get("power");
     const status = searchParams.get("status") as status;
+    const page = Number(searchParams.get("page")) || 1;
+    const limit = Number(searchParams.get("limit")) || 12;
 
     let orderBy = {};
 
@@ -62,6 +64,28 @@ export const GET = async (req: Request) => {
             return new Response("Invalid sort option", { status: 400 });
     }
 
+    const totalItems = await db.carBid.count({
+        where: {
+            price: {
+                gte: minPrice,
+                lte: maxPrice,
+            },
+            mileage: {
+                gte: minMileage,
+                lte: maxMileage,
+            },
+            circulationDate: {
+                gte: new Date(minYear),
+                lte: new Date(maxYear),
+            },
+            power: {
+                gte: minPower,
+                lte: maxPower,
+            },
+            status: status,
+        },
+    });
+
     const sales = await db.carBid.findMany({
         where: {
             price: {
@@ -83,6 +107,8 @@ export const GET = async (req: Request) => {
             status: status,
         },
         orderBy: orderBy,
+        skip: (page - 1) * limit,
+        take: limit,
         include: { car: true, offerImages: true },
     });
 
@@ -90,5 +116,12 @@ export const GET = async (req: Request) => {
         return new Response("No cars found", { status: 404 });
     }
 
-    return NextResponse.json(sales);
+    return NextResponse.json({
+        data: sales,
+        meta: {
+            totalItems,
+            currentPage: page,
+            totalPages: Math.ceil(totalItems / limit),
+        },
+    });
 };
