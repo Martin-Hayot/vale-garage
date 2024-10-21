@@ -34,10 +34,14 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             existingUser.email
         );
 
-        await sendVerificationEmail(
+        const res = await sendVerificationEmail(
             verificationToken.email,
             verificationToken.token
         );
+
+        if (res?.error) {
+            return { error: "Error sending verification email" };
+        }
         return { success: "Comfirmation email sent!" };
     }
 

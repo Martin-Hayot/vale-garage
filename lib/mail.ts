@@ -14,23 +14,28 @@ export const sendTwoFactorEmail = async (email: string, token: string) => {
 };
 
 export const sendVerificationEmail = async (email: string, token: string) => {
-    const confirmLink = `${
-        process.env.NODE_ENV == "production"
-            ? process.env.NEXT_PUBLIC_WEBSITE_URL
-            : process.env.NEXT_PUBLIC_DEV_WEBSITE_URL
-    }/auth/new-verification?token=${token}`;
+    try {
+        const confirmLink = `${
+            process.env.NODE_ENV == "production"
+                ? process.env.NEXT_PUBLIC_WEBSITE_URL
+                : process.env.NEXT_PUBLIC_DEV_WEBSITE_URL
+        }/auth/new-verification?token=${token}`;
 
-    const user = await getUserByEmail(email);
+        const user = await getUserByEmail(email);
 
-    await resend.emails.send({
-        from: "noreply@martinhayot.com",
-        to: email,
-        subject: "Verify your email",
-        react: EmailVerificationTemplate({
-            name: user?.name || "",
-            href: confirmLink,
-        }),
-    });
+        await resend.emails.send({
+            from: "noreply@martinhayot.com",
+            to: email,
+            subject: "Verify your email",
+            react: EmailVerificationTemplate({
+                name: user?.name || "",
+                href: confirmLink,
+            }),
+        });
+    } catch (error) {
+        console.error("Error sending verification email:", error);
+        return { error: "Error sending verification email" };
+    }
 };
 
 export const sendPasswordResetEmail = async (email: string, token: string) => {
