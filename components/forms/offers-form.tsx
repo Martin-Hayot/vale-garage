@@ -91,7 +91,7 @@ const steps = [
     },
     {
         id: "step-3",
-        title: "Car Images",
+        title: "Car Images & Models",
         fields: [],
     },
     {
@@ -855,6 +855,8 @@ export const OffersForm = () => {
                                         key={JSON.stringify(images)}
                                     />
                                 )}
+
+                                {/* <FileUpload /> */}
                             </>
                         )}
                         {currentStepIndex === 3 && (
