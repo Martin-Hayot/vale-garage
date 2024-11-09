@@ -31,6 +31,8 @@ import {
 import MainBar from "@/components/offers/offers-main-bar";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import useWebSocket from "@/hooks/use-websocket";
+import { useWebSocketStore } from "@/store/websocket";
 
 type CarSales = CarBid & { car: Car } & { offerImages: OfferImages[] };
 
@@ -53,6 +55,9 @@ const SalesPage = () => {
     const [tab, setTab] = useState(selectedTab);
     const router = useRouter();
     const { id } = useDrawer();
+
+    const { sendMessage } = useWebSocket("ws://localhost:8080/ws/auction", tab);
+    const isConnected = useWebSocketStore((state) => state.isConnected);
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -206,8 +211,12 @@ const SalesPage = () => {
         <div>
             <MainBar tab={tab} setTab={setTab} />
             {tab === "auctions" && (
-                <div className="flex justify-center text-4xl my-48">
-                    Coming soon...
+                <div>
+                    {isConnected ? (
+                        <div>Connected to WebSocket</div>
+                    ) : (
+                        <div>Not connected to WebSocket</div>
+                    )}
                 </div>
             )}
             {tab === "sales" && (
