@@ -9,7 +9,7 @@ interface OffersFormProps {
 
 const DashboardCard = ({ Form, title, Icon }: OffersFormProps) => {
     return (
-        <Card className="dark:bg-neutral-600 bg-neutral-200 min-w-[300px] md:min-w-[500px] min-h-[200px] p-4 h-[27em] overflow-auto">
+        <Card className="dark:bg-neutral-600 bg-neutral-200 ">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 {title}
                 {Icon}

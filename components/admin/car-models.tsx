@@ -26,11 +26,11 @@ const CarModels = async () => {
                 <Car className="ml-2 h-8 w-8 text-accent" />
             </CardHeader>
             <CardContent className="flex flex-col gap-y-5">
-                <div className="flex flex-row justify-center items-center gap-x-5">
-                    <div className="w-96">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-5">
+                    <div className="sm:w-96">
                         <CreateCarForm />
                     </div>
-                    <div className="flex-grow">
+                    <div className="sm:w-96 md:flex-grow">
                         <CarsSearch
                             carsData={cars.map((car) => ({
                                 ...car,

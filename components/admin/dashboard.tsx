@@ -6,29 +6,32 @@ import { Car, GavelIcon } from "lucide-react";
 
 export function Dashboard() {
     return (
-        <div className="py-8">
-            <main className="max-w-6xl space-y-8">
+        <div className="flex flex-col flex-grow p-8">
+            <div className="space-y-8">
                 {/* Row 1: Car Offers & Auctions */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 flex-wrap">
-                    <DashboardCard
-                        Form={OffersForm}
-                        Icon={<Car className="ml-2 h-8 w-8 text-accent" />}
-                        title="Car Offers"
-                    />
-                    <DashboardCard
-                        Form={AuctionsForm}
-                        Icon={
-                            <GavelIcon className="ml-2 h-8 w-8 text-accent" />
-                        }
-                        title="Auctions"
-                    />
+                <div className="flex flex-col xl:flex-row gap-8">
+                    <div className="flex-1 flex flex-col">
+                        <DashboardCard
+                            Form={OffersForm}
+                            Icon={<Car className="ml-2 h-8 w-8 text-accent" />}
+                            title="Car Offers"
+                        />
+                    </div>
+                    <div className="flex-1 flex flex-col">
+                        <DashboardCard
+                            Form={AuctionsForm}
+                            Icon={
+                                <GavelIcon className="ml-2 h-8 w-8 text-accent" />
+                            }
+                            title="Auctions"
+                        />
+                    </div>
                 </div>
 
                 {/* Row 2: Car Models */}
-                <div className="">
-                    <CarModels />
-                </div>
-            </main>
+
+                <CarModels />
+            </div>
         </div>
     );
 }
