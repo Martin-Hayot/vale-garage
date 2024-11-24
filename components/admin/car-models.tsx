@@ -20,19 +20,27 @@ const getCars = async () => {
 const CarModels = async () => {
     const cars = await getCars();
     return (
-        <Card className=" md:w-[600px] w-[340px] bg-neutral-200 dark:bg-neutral-700">
+        <Card className="bg-neutral-200 dark:bg-neutral-600">
             <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
                 Car Models
                 <Car className="ml-2 h-8 w-8 text-accent" />
             </CardHeader>
             <CardContent className="flex flex-col gap-y-5">
-                <CreateCarForm />
-
-                <CarsSearch
-                    carsData={cars.map((car) => ({ ...car, id: uuidv4() }))}
-                    canDelete
-                />
-                <Toaster />
+                <div className="flex flex-row justify-center items-center gap-x-5">
+                    <div className="w-96">
+                        <CreateCarForm />
+                    </div>
+                    <div className="flex-grow">
+                        <CarsSearch
+                            carsData={cars.map((car) => ({
+                                ...car,
+                                id: uuidv4(),
+                            }))}
+                            canDelete
+                        />
+                    </div>
+                    <Toaster />
+                </div>
             </CardContent>
         </Card>
     );

@@ -38,9 +38,9 @@ interface AdminDashboardLayoutProps {
 
 const AdminDashboardLayout = ({ children }: AdminDashboardLayoutProps) => {
     return (
-        <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <div className="flex w-full h-full flex-col bg-muted/40">
             <AdminSidebarNavigation />
-            <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+            <div className="flex flex-col sm:gap-4 sm:pl-14">
                 <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
                     <Sheet>
                         <SheetTrigger asChild>
@@ -123,9 +123,7 @@ const AdminDashboardLayout = ({ children }: AdminDashboardLayoutProps) => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </header>
-                <main className="flex-1 overflow-y-auto px-4 sm:px-6">
-                    {children}
-                </main>
+                <main className="px-4 sm:px-6">{children}</main>
             </div>
         </div>
     );

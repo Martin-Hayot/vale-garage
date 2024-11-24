@@ -22,6 +22,13 @@ enum OfferStatus {
   ARCHIVED
 }
 
+enum AuctionStatus {
+  SCHEDULED
+  ACTIVE
+  ENDED
+}
+
+
 model User {
   id                    String                 @id @default(cuid())
   name                  String?
@@ -151,24 +158,37 @@ model CarBid {
   color           String
   doors           Int
   seats           Int
+  isAuction       Boolean   @default(false)
   minPrice        Int?
   maxPrice        Int?
+  reservePrice    Int?
+  bidIncrement    Int?      @default(100)
   startDate       DateTime? @default(now())
   endDate         DateTime?
+  currentBid      Int?      @default(0)
+  currentBidderId String?
+  biddersCount    Int?      @default(0)
+  winnerId        String?
+  
+  onlyForMerchants Boolean   @default(false)
+  auctionState    AuctionStatus? @default(SCHEDULED)
+  status          OfferStatus @default(ACTIVE)
 
-  onlyForMerchants Boolean @default(false)
-  status         OfferStatus @default(ACTIVE) 
+  carId           String
+  car             Car        @relation(fields: [carId], references: [id], onDelete: Cascade)
 
-  carId String
-  car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
+  bids            Bid[]
+  likes           Like[]
+  offerImages     OfferImages[]
 
-  bids Bid[]
-  likes Like[]
-  offerImages OfferImages[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@index([isAuction])
+  @@index([isAuction, startDate, endDate])
 }
+
+
 
 model Bid {
   id       String @id @default(cuid())
@@ -181,6 +201,8 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, carBidId, price])
 }
 
 model OfferImages {
