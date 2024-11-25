@@ -107,7 +107,7 @@ export async function POST(req: Request) {
             return new NextResponse("Car not found", { status: 404 });
         }
 
-        const carBid = await db.carBid.create({
+        const carBid = await db.sales.create({
             data: {
                 price,
                 power,

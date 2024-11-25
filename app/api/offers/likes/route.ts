@@ -38,7 +38,8 @@ export const POST = async (req: Request) => {
         const existingLike = await db.like.findFirst({
             where: {
                 userId: user.id,
-                carBidId: carBidId,
+                auctionId: carBidId,
+                saleId: carBidId,
             },
         });
 

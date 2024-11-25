@@ -96,8 +96,15 @@ const steps = [
     },
     {
         id: "step-4",
-        title: "Offers Details",
-        fields: ["price", "description"],
+        title: "Auction Details",
+        fields: [
+            "startDate",
+            "endDate",
+            "minPrice",
+            "maxPrice",
+            ,
+            "description",
+        ],
     },
 ];
 

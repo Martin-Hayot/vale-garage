@@ -14,10 +14,10 @@ import { Button } from "../ui/button";
 import OffersCard from "./offers-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages } from "@prisma/client";
 import { useLikes } from "@/store/likes";
 
-type CarOffer = { car: Car } & CarBid & { offerImages: OfferImages[] };
+type CarOffer = { car: Car } & Sales & { offerImages: OfferImages[] };
 
 interface NewOffersProps {
     offers: CarOffer[];
