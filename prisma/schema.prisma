@@ -204,8 +204,8 @@ model Auctions {
   startPrice      Int
   maxPrice        Int
   reservePrice    Int
+  currentBid      Int
   bidIncrement    Int      @default(100)
-  currentBid      Int      @default(0)
   currentBidderId String?
   biddersCount    Int      @default(0)
   winnerId        String?

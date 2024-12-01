@@ -231,6 +231,7 @@ export async function POST(req: Request) {
                 onlyForMerchants,
                 bidIncrement,
                 maxPrice,
+                currentBid: startPrice,
                 car: {
                     connect: {
                         id: car.id,
@@ -313,9 +314,9 @@ export const GET = async (req: Request) => {
             return new Response("Invalid sort option", { status: 400 });
     }
 
-    const totalItems = await db.sales.count({
+    const totalItems = await db.auctions.count({
         where: {
-            price: {
+            currentBid: {
                 gte: minPrice,
                 lte: maxPrice,
             },
@@ -335,9 +336,9 @@ export const GET = async (req: Request) => {
         },
     });
 
-    const sales = await db.sales.findMany({
+    const auctions = await db.auctions.findMany({
         where: {
-            price: {
+            currentBid: {
                 gte: minPrice,
                 lte: maxPrice,
             },
@@ -361,12 +362,12 @@ export const GET = async (req: Request) => {
         include: { car: true, offerImages: true },
     });
 
-    if (sales.length === 0) {
+    if (auctions.length === 0) {
         return new Response("No cars found", { status: 404 });
     }
 
     return NextResponse.json({
-        data: sales,
+        data: auctions,
         meta: {
             totalItems,
             currentPage: page,

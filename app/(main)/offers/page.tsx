@@ -33,6 +33,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import useWebSocket from "@/hooks/use-websocket";
 import { useWebSocketStore } from "@/store/websocket";
+import OffersPagination from "@/components/offers/offers-pagination";
 
 type CarSales = Sales & { car: Car } & { offerImages: OfferImages[] };
 
@@ -276,91 +277,13 @@ const SalesPage = () => {
                                 </div>
                             </div>
                             <div className="mt-40">
-                                <Pagination>
-                                    <PaginationContent>
-                                        <PaginationItem>
-                                            <Button
-                                                className="bg-transparent"
-                                                onClick={() =>
-                                                    handlePageChange(
-                                                        currentPage + 1
-                                                    )
-                                                }
-                                                disabled={
-                                                    offers &&
-                                                    offers.data.length <
-                                                        itemsPerPage
-                                                }
-                                            >
-                                                <ChevronLeft className="mr-2 w-5 h-5" />
-                                                Previous
-                                            </Button>
-                                        </PaginationItem>
-                                        <PaginationItem>
-                                            <PaginationLink>
-                                                {currentPage}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                        {offers?.meta?.totalPages &&
-                                            offers.meta.totalPages > 1 &&
-                                            Array.from(
-                                                {
-                                                    length: Math.min(
-                                                        3,
-                                                        offers.meta.totalPages
-                                                    ),
-                                                },
-                                                (_, index) =>
-                                                    currentPage + index
-                                            ).map((page) => (
-                                                <PaginationItem key={page}>
-                                                    <PaginationLink
-                                                        onClick={() =>
-                                                            handlePageChange(
-                                                                page
-                                                            )
-                                                        }
-                                                    >
-                                                        {page}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                            ))}
-                                        {offers?.meta?.totalPages &&
-                                            offers.meta.totalPages > 4 && (
-                                                <>
-                                                    <PaginationLink
-                                                        onClick={() =>
-                                                            handlePageChange(
-                                                                offers.meta
-                                                                    .totalPages
-                                                            )
-                                                        }
-                                                    >
-                                                        {offers.meta.totalPages}
-                                                    </PaginationLink>
-                                                    <PaginationEllipsis />
-                                                </>
-                                            )}
-                                        <PaginationItem>
-                                            <Button
-                                                className="bg-transparent"
-                                                onClick={() =>
-                                                    handlePageChange(
-                                                        currentPage + 1
-                                                    )
-                                                }
-                                                disabled={
-                                                    offers &&
-                                                    offers.data.length <
-                                                        itemsPerPage
-                                                }
-                                            >
-                                                Next
-                                                <ChevronRight className="ml-2 w-5 h-5" />
-                                            </Button>
-                                        </PaginationItem>
-                                    </PaginationContent>
-                                </Pagination>
+                                <OffersPagination
+                                    currentPage={currentPage}
+                                    totalPages={offers?.meta?.totalPages}
+                                    handlePageChange={handlePageChange}
+                                    itemsPerPage={itemsPerPage}
+                                    dataLength={offers?.data.length}
+                                />
                             </div>
                         </div>
                     </div>
