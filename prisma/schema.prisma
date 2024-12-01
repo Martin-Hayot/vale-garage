@@ -44,9 +44,10 @@ model User {
   companyId String?
   company   Company? @relation(fields: [companyId], references: [id])
 
-  accounts Account[]
-  biddings Bid[]
-  likes    Like[]
+  accounts     Account[]
+  biddings     Bid[]
+  auctionLikes AuctionLike[]
+  saleLikes    SaleLike[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -84,19 +85,29 @@ model Company {
   users User[]
 }
 
-model Like {
-  id        String  @id @default(cuid())
+model AuctionLike {
+  id        String @id @default(cuid())
   userId    String
-  auctionId String?
-  saleId    String?
+  auctionId String
 
-  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  auction Auctions? @relation(fields: [auctionId], references: [id], onDelete: Cascade)
-  sale    Sales?    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auction Auctions @relation(fields: [auctionId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
   @@unique([userId, auctionId])
+}
+
+model SaleLike {
+  id     String @id @default(cuid())
+  userId String
+  saleId String
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sale Sales @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
   @@unique([userId, saleId])
 }
 
@@ -167,7 +178,7 @@ model Sales {
   carId String
   car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
-  likes       Like[]
+  saleLikes   SaleLike[]
   offerImages OfferImages[]
 
   createdAt DateTime @default(now())
@@ -188,27 +199,26 @@ model Auctions {
   doors           Int
   seats           Int
 
-  startingPrice   Int
+  startDate       DateTime @default(now())
+  endDate         DateTime
+  startPrice      Int
   maxPrice        Int
   reservePrice    Int
   bidIncrement    Int      @default(100)
-  startDate       DateTime @default(now())
-  endDate         DateTime
   currentBid      Int      @default(0)
-  currentBidderId String
+  currentBidderId String?
   biddersCount    Int      @default(0)
-  winnerId        String
+  winnerId        String?
 
-  onlyForMerchants Boolean       @default(false)
-  auctionState     AuctionStatus @default(SCHEDULED)
-  status           OfferStatus   @default(ACTIVE)
+  onlyForMerchants Boolean     @default(false)
+  status           OfferStatus @default(ACTIVE)
 
   carId String
   car   Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
 
-  bids        Bid[]
-  likes       Like[]
-  offerImages OfferImages[]
+  bids         Bid[]
+  auctionLikes AuctionLike[]
+  offerImages  OfferImages[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

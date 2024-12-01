@@ -51,6 +51,41 @@ export const OffersSchema = z.object({
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
 });
 
+export const AuctionsSchema = z.object({
+    carMake: z.string().min(1, { message: "Car Make is required" }),
+    carModel: z.string().min(1, { message: "Car Model is required" }),
+    mileage: z.coerce.number().min(1, { message: "Mileage is required" }),
+    state: z.string().min(1, { message: "State of the car is required" }),
+    circulationDate: z.coerce.date().max(new Date(), { message: "Too new!" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    fuelType: z.string().min(1, { message: "Fuel type is required" }),
+    transmission: z.string().min(1, { message: "Transmission is required" }),
+    power: z.coerce.number().min(1, { message: "Power is required" }),
+    carBody: z.string().min(1, { message: "Car body is required" }),
+    gearBox: z.string().min(1, { message: "Gear box is required" }),
+    color: z.string().min(1, { message: "Color is required" }),
+    doors: z.coerce.number().min(1, { message: "Doors is required" }),
+    seats: z.coerce.number().min(1, { message: "Seats is required" }),
+    // auction specific
+    startDate: z.coerce
+        .date()
+        .min(new Date(), { message: "Start date is required" }),
+    endDate: z.coerce
+        .date()
+        .min(new Date(), { message: "End date is required" }),
+    startPrice: z.coerce
+        .number()
+        .min(1, { message: "Start price is required" }),
+    maxPrice: z.coerce.number().min(1, { message: "Max price is required" }),
+    reservePrice: z.coerce
+        .number()
+        .min(1, { message: "Reserve price is required" }),
+    bidIncrement: z.coerce
+        .number()
+        .min(100, { message: "Minimum bid is required" }),
+    onlyForMerchants: z.boolean(),
+});
+
 export const CreateCarSchema = z.object({
     make: z.string().min(1, { message: "Make is required" }),
     model: z.string().min(1, { message: "Model is required" }),

@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { OffersSchema } from "@/schemas";
+import { AuctionsSchema } from "@/schemas";
 import { useEffect, useState, useTransition, Fragment } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -65,6 +65,7 @@ import FormsButton from "./forms-button";
 import FileUpload from "./file-upload-modal";
 import DragAndDropImageSorter from "./drag&drop-image-sorter";
 import { useImages } from "@/store/images";
+import { Checkbox } from "../ui/checkbox";
 
 const steps = [
     {
@@ -100,9 +101,11 @@ const steps = [
         fields: [
             "startDate",
             "endDate",
-            "minPrice",
+            "startPrice",
             "maxPrice",
-            ,
+            "reservePrice",
+            "bidIncrement",
+            "onlyForMerchants",
             "description",
         ],
     },
@@ -118,12 +121,11 @@ export const AuctionsForm = () => {
 
     const { images, setObjects } = useImages();
 
-    const form = useForm<z.infer<typeof OffersSchema>>({
-        resolver: zodResolver(OffersSchema),
+    const form = useForm<z.infer<typeof AuctionsSchema>>({
+        resolver: zodResolver(AuctionsSchema),
         defaultValues: {
             carMake: "",
             carModel: "",
-            price: 0,
             mileage: 0,
             state: "",
             circulationDate: new Date(),
@@ -136,6 +138,13 @@ export const AuctionsForm = () => {
             color: "",
             doors: 0,
             seats: 0,
+            startDate: new Date(),
+            endDate: new Date(),
+            startPrice: 0,
+            maxPrice: 0,
+            reservePrice: 0,
+            bidIncrement: 0,
+            onlyForMerchants: false,
         },
     });
 
@@ -147,15 +156,15 @@ export const AuctionsForm = () => {
         isFirstStep,
         isLastStep,
         // @ts-ignore
-    } = useMulitstepForm(steps, OffersSchema, form);
+    } = useMulitstepForm(steps, AuctionsSchema, form);
 
-    const onSubmit = (values: z.infer<typeof OffersSchema>) => {
+    const onSubmit = (values: z.infer<typeof AuctionsSchema>) => {
         setError("");
         setSuccess("");
         console.log("submit", values);
         startTransition(() => {
             axios
-                .post("/api/offers", {
+                .post("/api/auctions", {
                     ...values,
                     images: images,
                 })
@@ -245,6 +254,7 @@ export const AuctionsForm = () => {
                     className="space-y-6"
                 >
                     <div className="space-y-4">
+                        {/* STEP 1 */}
                         {currentStepIndex === 0 && (
                             <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
                                 <FormField
@@ -433,6 +443,7 @@ export const AuctionsForm = () => {
                                 />
                             </div>
                         )}
+                        {/* STEP 2 */}
                         {currentStepIndex === 1 && (
                             <>
                                 <div className="flex flex-col md:flex-row justify-start gap-6">
@@ -836,7 +847,7 @@ export const AuctionsForm = () => {
                                 />
                             </>
                         )}
-
+                        {/* STEP 3 */}
                         {currentStepIndex === 2 && (
                             <>
                                 <FileUpload />
@@ -851,8 +862,247 @@ export const AuctionsForm = () => {
                                 {/* <FileUpload /> */}
                             </>
                         )}
+                        {/* STEP 4 */}
                         {currentStepIndex === 3 && (
                             <>
+                                <div className="flex flex-col md:flex-row gap-4">
+                                    <FormField
+                                        name="startDate"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem className="flex flex-col">
+                                                <FormLabel>
+                                                    Start Date
+                                                </FormLabel>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <FormControl>
+                                                            <Button
+                                                                variant={
+                                                                    "outline"
+                                                                }
+                                                                className={cn(
+                                                                    "w-[240px] pl-3 text-left font-normal border-0 dark:bg-neutral-200 text-black hover:bg-neutral-300",
+                                                                    !field.value &&
+                                                                        "text-muted-foreground"
+                                                                )}
+                                                            >
+                                                                {field.value ? (
+                                                                    format(
+                                                                        field.value,
+                                                                        "PPP"
+                                                                    )
+                                                                ) : (
+                                                                    <span>
+                                                                        Pick a
+                                                                        date
+                                                                    </span>
+                                                                )}
+                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                            </Button>
+                                                        </FormControl>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent
+                                                        className="w-auto p-0 border-0 dark:bg-neutral-200 text-black"
+                                                        align="start"
+                                                    >
+                                                        <Calendar
+                                                            captionLayout="dropdown-buttons"
+                                                            fromYear={new Date().getFullYear()}
+                                                            toYear={
+                                                                new Date().getFullYear() +
+                                                                1
+                                                            }
+                                                            selected={
+                                                                field.value
+                                                            }
+                                                            onSelect={
+                                                                field.onChange
+                                                            }
+                                                            onDayClick={
+                                                                field.onChange
+                                                            }
+                                                        />
+                                                    </PopoverContent>
+                                                </Popover>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        name="endDate"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem className="flex flex-col">
+                                                <FormLabel>End Date</FormLabel>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <FormControl>
+                                                            <Button
+                                                                variant={
+                                                                    "outline"
+                                                                }
+                                                                className={cn(
+                                                                    "w-[240px] pl-3 text-left font-normal border-0 dark:bg-neutral-200 text-black hover:bg-neutral-300",
+                                                                    !field.value &&
+                                                                        "text-muted-foreground"
+                                                                )}
+                                                            >
+                                                                {field.value ? (
+                                                                    format(
+                                                                        field.value,
+                                                                        "PPP"
+                                                                    )
+                                                                ) : (
+                                                                    <span>
+                                                                        Pick a
+                                                                        date
+                                                                    </span>
+                                                                )}
+                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                            </Button>
+                                                        </FormControl>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent
+                                                        className="w-auto p-0 border-0 dark:bg-neutral-200 text-black"
+                                                        align="start"
+                                                    >
+                                                        <Calendar
+                                                            captionLayout="dropdown-buttons"
+                                                            fromYear={1950}
+                                                            toYear={new Date().getFullYear()}
+                                                            selected={
+                                                                field.value
+                                                            }
+                                                            onSelect={
+                                                                field.onChange
+                                                            }
+                                                            onDayClick={
+                                                                field.onChange
+                                                            }
+                                                        />
+                                                    </PopoverContent>
+                                                </Popover>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-4 md:flex-row">
+                                    <FormField
+                                        name="startPrice"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Start Price
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <span className="relative">
+                                                        <Input
+                                                            {...field}
+                                                            disabled={isPending}
+                                                            placeholder="Start Price"
+                                                            type="number"
+                                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
+                                                            max={1000000}
+                                                            min={0}
+                                                        />
+                                                        <span className="absolute inset-y-0 right-0 pt-[22px] flex items-center mr-8 text-muted-foreground">
+                                                            €
+                                                        </span>
+                                                    </span>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        name="maxPrice"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Max Price</FormLabel>
+                                                <FormControl>
+                                                    <span className="relative">
+                                                        <Input
+                                                            {...field}
+                                                            disabled={isPending}
+                                                            placeholder="Max Price"
+                                                            type="number"
+                                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
+                                                            max={1000000}
+                                                            min={0}
+                                                        />
+                                                        <span className="absolute inset-y-0 right-0 pt-[22px] flex items-center mr-8 text-muted-foreground">
+                                                            €
+                                                        </span>
+                                                    </span>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-col md:flex-row gap-4">
+                                    <FormField
+                                        name="reservePrice"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Reserve Price
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <span className="relative">
+                                                        <Input
+                                                            {...field}
+                                                            disabled={isPending}
+                                                            placeholder="Reserve Price"
+                                                            type="number"
+                                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
+                                                            max={1000000}
+                                                            min={0}
+                                                        />
+                                                        <span className="absolute inset-y-0 right-0 pt-[22px] flex items-center mr-8 text-muted-foreground">
+                                                            €
+                                                        </span>
+                                                    </span>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    <FormField
+                                        name="bidIncrement"
+                                        control={form.control}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    Bid Increment
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <span className="relative">
+                                                        <Input
+                                                            {...field}
+                                                            disabled={isPending}
+                                                            placeholder="Bid Increment"
+                                                            type="number"
+                                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
+                                                            max={1000000}
+                                                            min={0}
+                                                        />
+                                                        <span className="absolute inset-y-0 right-0 pt-[22px] flex items-center mr-8 text-muted-foreground">
+                                                            €
+                                                        </span>
+                                                    </span>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
                                 <FormField
                                     name="description"
                                     control={form.control}
@@ -873,28 +1123,29 @@ export const AuctionsForm = () => {
                                 />
                                 <div className="flex flex-col md:flex-row justify-start gap-x-6">
                                     <FormField
-                                        name="price"
+                                        name="onlyForMerchants"
                                         control={form.control}
                                         render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Price</FormLabel>
+                                            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 bg-neutral-700">
                                                 <FormControl>
-                                                    <span className="relative">
-                                                        <Input
-                                                            {...field}
-                                                            disabled={isPending}
-                                                            placeholder="Price of the car"
-                                                            type="number"
-                                                            className="border-0 dark:bg-neutral-200 text-black min-w-44"
-                                                            max={1000000}
-                                                            min={0}
-                                                        />
-                                                        <span className="absolute inset-y-0 right-0 pt-[22px] flex items-center mr-8 text-muted-foreground">
-                                                            €
-                                                        </span>
-                                                    </span>
+                                                    <Checkbox
+                                                        checked={field.value}
+                                                        onCheckedChange={
+                                                            field.onChange
+                                                        }
+                                                    />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <div className="space-y-1 leading-none">
+                                                    <FormLabel>
+                                                        Only for Merchants
+                                                    </FormLabel>
+                                                    <FormDescription>
+                                                        If you want to make this
+                                                        auction only available
+                                                        for merchants, check
+                                                        this box.
+                                                    </FormDescription>
+                                                </div>
                                             </FormItem>
                                         )}
                                     />

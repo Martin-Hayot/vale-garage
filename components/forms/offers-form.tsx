@@ -48,8 +48,6 @@ import {
 } from "@/components/ui/select";
 
 import { format, set } from "date-fns";
-import Link from "next/link";
-import Image from "next/image";
 import { Car } from "@prisma/client";
 
 import {
@@ -145,10 +143,9 @@ export const OffersForm = () => {
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
         setSuccess("");
-        console.log("submit", values);
         startTransition(() => {
             axios
-                .post("/api/offers", {
+                .post("/api/sales", {
                     ...values,
                     images: images,
                 })

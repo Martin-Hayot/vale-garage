@@ -7,7 +7,8 @@ import { useState } from "react";
 interface CarouselProps {
     images: {
         id: string;
-        carBidId: string;
+        saleId?: string | null;
+        auctionId?: string | null;
         url: string;
         order: number;
     }[];

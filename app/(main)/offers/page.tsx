@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { useFilters } from "@/store/filters";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { gsap } from "gsap";
@@ -34,7 +34,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import useWebSocket from "@/hooks/use-websocket";
 import { useWebSocketStore } from "@/store/websocket";
 
-type CarSales = CarBid & { car: Car } & { offerImages: OfferImages[] };
+type CarSales = Sales & { car: Car } & { offerImages: OfferImages[] };
 
 type validFuels =
     | "Diesel"
@@ -178,7 +178,7 @@ const SalesPage = () => {
             params.status = "ACTIVE";
             params.page = currentPage.toString();
             params.limit = itemsPerPage.toString();
-            const { data } = await axios.get("/api/offers/sales", {
+            const { data } = await axios.get("/api/sales", {
                 params,
             });
 
@@ -238,7 +238,7 @@ const SalesPage = () => {
                                     </div>
                                 </div>
                                 <div
-                                    className="offers-grid gap-6 mx-4"
+                                    className="offers-grid gap-6 mx-4 ml-20"
                                     style={{ opacity: 1 }}
                                     ref={skeletonRef}
                                 >

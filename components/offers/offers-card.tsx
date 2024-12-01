@@ -3,7 +3,7 @@
 import { Fuel, Heart } from "lucide-react";
 import { TbAutomaticGearbox, TbManualGearbox } from "react-icons/tb";
 import Image from "next/image";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages } from "@prisma/client";
 import {
     Tooltip,
     TooltipContent,
@@ -15,12 +15,12 @@ import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
 import Carousel from "@/components/carousel";
-import { useLikes } from "@/store/likes";
+import { useSaleLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-type CarDetails = Car & CarBid & { offerImages: OfferImages[] };
+type CarDetails = Car & Sales & { offerImages: OfferImages[] };
 
 interface OffersCardProps {
     details: CarDetails;
@@ -28,7 +28,8 @@ interface OffersCardProps {
 
 const OffersCard = ({ details }: OffersCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
-    const { addLike, removeLike, likes, getLikes } = useLikes();
+    const { addSaleLike, removeSaleLike, saleLikes, getSaleLikes } =
+        useSaleLikes();
     const user = useCurrentUser();
     let params;
     let drawer;
@@ -39,9 +40,9 @@ const OffersCard = ({ details }: OffersCardProps) => {
 
     useEffect(() => {
         if (user) {
-            getLikes();
+            getSaleLikes();
         }
-    }, [getLikes, user]);
+    }, [getSaleLikes, user]);
 
     return (
         <Drawer
@@ -65,13 +66,13 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     return;
                                 }
                                 if (
-                                    likes.find(
-                                        (like) => like.carBidId === details.id
+                                    saleLikes.find(
+                                        (like) => like.saleId === details.id
                                     )
                                 ) {
-                                    removeLike(details.id);
+                                    removeSaleLike(details.id);
                                 } else {
-                                    addLike(details.id);
+                                    addSaleLike(details.id);
                                 }
                             }}
                             className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3 hover:scale-105 transition-all duration-100"
@@ -79,8 +80,8 @@ const OffersCard = ({ details }: OffersCardProps) => {
                             <Heart
                                 className={cn(
                                     "text-white w-5 h-5",
-                                    likes.find(
-                                        (like) => like.carBidId === details.id
+                                    saleLikes.find(
+                                        (like) => like.saleId === details.id
                                     )
                                         ? " fill-red-500 text-red-500"
                                         : "text-neutral-300"

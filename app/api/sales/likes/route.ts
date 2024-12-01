@@ -10,7 +10,7 @@ export const GET = async (req: Request) => {
     }
 
     try {
-        const likes = await db.like.findMany({
+        const likes = await db.saleLike.findMany({
             where: {
                 userId: user.id,
             },
@@ -24,7 +24,7 @@ export const GET = async (req: Request) => {
 };
 
 export const POST = async (req: Request) => {
-    const { carBidId } = await req.json();
+    const { saleId } = await req.json();
 
     const user = await currentUser();
 
@@ -35,11 +35,10 @@ export const POST = async (req: Request) => {
     }
 
     try {
-        const existingLike = await db.like.findFirst({
+        const existingLike = await db.saleLike.findFirst({
             where: {
                 userId: user.id,
-                auctionId: carBidId,
-                saleId: carBidId,
+                saleId: saleId,
             },
         });
 
@@ -47,10 +46,10 @@ export const POST = async (req: Request) => {
             return new NextResponse("Already liked", { status: 400 });
         }
 
-        const likes = await db.like.create({
+        const likes = await db.saleLike.create({
             data: {
                 userId: user.id,
-                carBidId: carBidId,
+                saleId: saleId,
             },
         });
         return NextResponse.json(likes);
@@ -61,7 +60,7 @@ export const POST = async (req: Request) => {
 };
 
 export const DELETE = async (req: Request) => {
-    const { carBidId } = await req.json();
+    const { saleId } = await req.json();
 
     const user = await currentUser();
 
@@ -70,10 +69,10 @@ export const DELETE = async (req: Request) => {
     }
 
     try {
-        const existingLike = await db.like.findFirst({
+        const existingLike = await db.saleLike.findFirst({
             where: {
                 userId: user.id,
-                carBidId: carBidId,
+                saleId: saleId,
             },
         });
 
@@ -81,7 +80,7 @@ export const DELETE = async (req: Request) => {
             return new NextResponse("Like not found", { status: 404 });
         }
 
-        const like = await db.like.delete({
+        const like = await db.saleLike.delete({
             where: {
                 id: existingLike.id,
             },
