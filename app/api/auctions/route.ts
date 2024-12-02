@@ -363,7 +363,7 @@ export const GET = async (req: Request) => {
     });
 
     if (auctions.length === 0) {
-        return new Response("No cars found", { status: 404 });
+        return new Response("No Auction found", { status: 404 });
     }
 
     return NextResponse.json({
