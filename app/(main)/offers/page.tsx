@@ -28,6 +28,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import useWebSocket from "@/hooks/use-websocket";
 import { useWebSocketStore } from "@/store/websocket";
 import OffersPagination from "@/components/offers/offers-pagination";
+import AuctionCard from "@/components/offers/auctions/auction-card";
 
 type CarSales = Sales & { car: Car } & { offerImages: OfferImages[] };
 
@@ -383,11 +384,10 @@ const AuctionTab = ({ searchParams }: AuctionTabProps) => {
                                         className="place-self-center"
                                         key={offer.id}
                                     >
-                                        <OffersCard
+                                        <AuctionCard
                                             details={{
                                                 ...offer.car,
                                                 ...offer,
-                                                price: offer.currentBid,
                                             }}
                                         />
                                     </div>

@@ -3,7 +3,7 @@
 import { Fuel, Heart } from "lucide-react";
 import { TbAutomaticGearbox, TbManualGearbox } from "react-icons/tb";
 import Image from "next/image";
-import { Car, Sales, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages, Auctions } from "@prisma/client";
 import {
     Tooltip,
     TooltipContent,
@@ -17,20 +17,22 @@ import { Maximize2 } from "lucide-react";
 import Carousel from "@/components/carousel";
 import { useSaleLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { Button } from "@/components/ui/button";
 
-type CarDetails = Car & Sales & { offerImages: OfferImages[] };
+type CarDetails = Car & Auctions & { offerImages: OfferImages[] };
 
-interface OffersCardProps {
+interface AuctionCardProps {
     details: CarDetails;
 }
 
-const OffersCard = ({ details }: OffersCardProps) => {
+const AuctionCard = ({ details }: AuctionCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
     const { addSaleLike, removeSaleLike, saleLikes, getSaleLikes } =
         useSaleLikes();
     const user = useCurrentUser();
+    const [timeLeft, setTimeLeft] = useState<number>(0);
     let params;
     let drawer;
     if (typeof window !== "undefined") {
@@ -43,6 +45,27 @@ const OffersCard = ({ details }: OffersCardProps) => {
             getSaleLikes();
         }
     }, [getSaleLikes, user]);
+
+    useEffect(() => {
+        const endTime = new Date(details.endDate).getTime();
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = endTime - now;
+            setTimeLeft(distance);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [details.endDate]);
+
+    const formatTimeLeft = (time: number) => {
+        const days = Math.floor(time / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+            (time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((time % (1000 * 60)) / 1000);
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    };
 
     return (
         <Drawer
@@ -136,9 +159,18 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 width={720}
                                 height={480}
                                 alt="car offer image"
-                                className="w-full rounded-xl object-cover aspect-[4/3]"
+                                className="w-full h-full rounded-xl object-cover aspect-[4/3]"
                                 draggable={false}
                             />
+                            <div className="absolute bottom-1 left-0 right-0 p-3 bg-neutral-700/80 rounded-b-xl">
+                                <div className="text-red-500 text-sm">
+                                    {timeLeft > 0
+                                        ? `Time left: ${formatTimeLeft(
+                                              timeLeft
+                                          )}`
+                                        : "Auction ended"}
+                                </div>
+                            </div>
                         </DrawerTrigger>
                     </div>
                     <DrawerTrigger>
@@ -154,7 +186,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     , {details.mileage} km
                                 </p>
                             </div>
-                            <p className="font-bold">{details.price} €</p>
+                            <p className="font-bold">{details.currentBid} €</p>
                         </div>
                     </DrawerTrigger>
                 </div>
@@ -165,16 +197,16 @@ const OffersCard = ({ details }: OffersCardProps) => {
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
                     </a>
                 </div>
-                <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
-                    <div className="w-full lg:w-[50%] max-h-56 md:max-h-96 lg:max-h-[600px] xl:max-h-[600px]">
+                <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
+                    <div className="w-full md:w-[50%] max-h-[25vh] md:max-h-[1000px] lg:max-h-[800px] aspect-video">
                         <Carousel images={details.offerImages} />
                     </div>
 
                     <div>
-                        <h2 className="font-semibold text-4xl">
+                        <h2 className="font-semibold text-xl md:text-4xl">
                             {details.make + " " + details.model}
                         </h2>
-                        <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
+                        <div className="text-blue-500/80 text-sm md:text-lg flex flex-row gap-x-4">
                             <p>
                                 {new Date(
                                     details.circulationDate
@@ -183,10 +215,10 @@ const OffersCard = ({ details }: OffersCardProps) => {
                             <p>{details.mileage} km</p>
                         </div>
 
-                        <div className="flex flex-col gap-x-2 w-full">
+                        <div className="flex flex-col gap-x-2 w-full text-sm md:text-lg">
                             <div className="flex flex-row gap-x-4">
-                                <p className="font-semibold">Price:</p>
-                                <p>{details.price} €</p>
+                                <p className="font-semibold">Current Bid:</p>
+                                <p>{details.currentBid} €</p>
                             </div>
                             <div className="flex flex-row gap-x-4">
                                 <p className="font-semibold">State:</p>
@@ -205,7 +237,13 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 <p className="font-semibold">Gear Box:</p>
                                 <p>{details.gearBox}</p>
                             </div>
-
+                            <div className="mt-4">
+                                <Button>
+                                    <a href={`/offers/${details.id}`}>
+                                        View Offer
+                                    </a>
+                                </Button>
+                            </div>
                             {/*not seen on drawer */}
                             {/* <div className="flex flex-row gap-x-4">
                                     <p className="font-semibold">Car Body:</p>
@@ -242,4 +280,4 @@ const OffersCard = ({ details }: OffersCardProps) => {
     );
 };
 
-export default OffersCard;
+export default AuctionCard;
