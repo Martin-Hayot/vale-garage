@@ -9,7 +9,7 @@ interface OffersIdPageProps {
 
 const OffersIdPage = async ({ params }: OffersIdPageProps) => {
     const { id } = params;
-    const offer = await db.carBid.findUnique({
+    const offer = await db.auctions.findUnique({
         where: {
             id: id,
         },
@@ -42,7 +42,7 @@ const OffersIdPage = async ({ params }: OffersIdPageProps) => {
                     <div className="flex flex-col gap-x-2 w-full">
                         <div className="flex flex-row gap-x-4">
                             <p className="font-semibold">Price:</p>
-                            <p>{offer?.price} €</p>
+                            <p>{offer?.currentBid} €</p>
                         </div>
                         <div className="flex flex-row gap-x-4">
                             <p className="font-semibold">State:</p>

@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type CarDetails = Car & Auctions & { offerImages: OfferImages[] };
 
@@ -193,7 +194,7 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
                 <div className="px-8 pt-2 pb-8 w-7">
-                    <a href={`/offers/${details.id}`}>
+                    <a href={`/offers/auctions/${details.id}`}>
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
                     </a>
                 </div>
@@ -238,10 +239,12 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
                                 <p>{details.gearBox}</p>
                             </div>
                             <div className="mt-4">
-                                <Button>
-                                    <a href={`/offers/${details.id}`}>
+                                <Button asChild>
+                                    <Link
+                                        href={`/offers/auctions/${details.id}`}
+                                    >
                                         View Offer
-                                    </a>
+                                    </Link>
                                 </Button>
                             </div>
                             {/*not seen on drawer */}

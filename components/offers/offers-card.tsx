@@ -19,6 +19,8 @@ import { useSaleLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 type CarDetails = Car & Sales & { offerImages: OfferImages[] };
 
@@ -161,20 +163,20 @@ const OffersCard = ({ details }: OffersCardProps) => {
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
                 <div className="px-8 pt-2 pb-8 w-7">
-                    <a href={`/offers/${details.id}`}>
+                    <a href={`/offers/sales/${details.id}`}>
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
                     </a>
                 </div>
-                <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
-                    <div className="w-full lg:w-[50%] max-h-56 md:max-h-96 lg:max-h-[600px] xl:max-h-[600px]">
+                <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
+                    <div className="w-full md:w-[50%] max-h-[25vh] md:max-h-[1000px] lg:max-h-[800px] aspect-video">
                         <Carousel images={details.offerImages} />
                     </div>
 
                     <div>
-                        <h2 className="font-semibold text-4xl">
+                        <h2 className="font-semibold text-xl md:text-4xl">
                             {details.make + " " + details.model}
                         </h2>
-                        <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
+                        <div className="text-blue-500/80 text-sm md:text-lg flex flex-row gap-x-4">
                             <p>
                                 {new Date(
                                     details.circulationDate
@@ -183,7 +185,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                             <p>{details.mileage} km</p>
                         </div>
 
-                        <div className="flex flex-col gap-x-2 w-full">
+                        <div className="flex flex-col gap-x-2 w-full text-sm md:text-lg">
                             <div className="flex flex-row gap-x-4">
                                 <p className="font-semibold">Price:</p>
                                 <p>{details.price} €</p>
@@ -205,7 +207,13 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 <p className="font-semibold">Gear Box:</p>
                                 <p>{details.gearBox}</p>
                             </div>
-
+                            <div className="mt-4">
+                                <Button asChild>
+                                    <Link href={`/offers/sales/${details.id}`}>
+                                        View Offer
+                                    </Link>
+                                </Button>
+                            </div>
                             {/*not seen on drawer */}
                             {/* <div className="flex flex-row gap-x-4">
                                     <p className="font-semibold">Car Body:</p>
