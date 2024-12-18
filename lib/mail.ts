@@ -1,8 +1,18 @@
 import { Resend } from "resend";
 import { EmailVerificationTemplate } from "@/components/mail/verification-template";
 import { getUserByEmail } from "@/data/user";
+import { AppointmentSchema } from "@/schemas";
+import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+
+if (!resendApiKey) {
+    throw new Error(
+        'Missing API key. Pass it to the constructor `new Resend("re_123")`'
+    );
+}
+
+const resend = new Resend(resendApiKey);
 
 export const sendTwoFactorEmail = async (email: string, token: string) => {
     await resend.emails.send({
@@ -50,5 +60,21 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
         to: email,
         subject: "Reset your password",
         html: `Click <a href="${resetLink}">here</a> to reset your password`,
+    });
+};
+
+export const sendAppointmentEmail = async (
+    data: z.infer<typeof AppointmentSchema>
+) => {
+    await resend.emails.send({
+        from: "noreply@martinhayot.com",
+        to: "mart.hyt2002@gmail.com",
+        subject: "New appointment",
+        html: `
+            <p>Hi Martin, you have a new appointment request from ${data.firstname} ${data.lastname} (${data.gender})</p>
+            <p>Email: ${data.email}</p>
+            <p>Phone: ${data.phone}</p>
+            <p>Message: ${data.message}</p>
+        `,
     });
 };

@@ -115,3 +115,30 @@ export const MerchantsSchema = z.object({
         .min(1, { message: "VAT number is required" })
         .max(12, { message: "VAT number is too long" }),
 });
+
+export const AppointmentSchema = z.object({
+    gender: z.string().min(1, {
+        message: "Must select a gender",
+    }),
+    firstname: z.string().min(2, {
+        message: "Firstname must be at least 2 characters.",
+    }),
+    lastname: z.string().min(2, {
+        message: "Lastname must be at least 2 characters.",
+    }),
+    email: z.string().email(),
+    phone: z.string().refine(
+        (val) => {
+            const phoneRegex =
+                /^\+(\d{1,3})[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}$/;
+
+            return phoneRegex.test(val);
+        },
+        {
+            message: "Invalid phone number.",
+        }
+    ),
+    message: z.string().min(10, {
+        message: "Message must be at least 10 characters.",
+    }),
+});

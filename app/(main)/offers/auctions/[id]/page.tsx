@@ -1,13 +1,14 @@
 import Carousel from "@/components/carousel";
+
 import { db } from "@/lib/db";
 
-interface OffersIdPageProps {
+interface AuctionsIdPageProps {
     params: {
         id: string;
     };
 }
 
-const OffersIdPage = async ({ params }: OffersIdPageProps) => {
+const AuctionsIdPage = async ({ params }: AuctionsIdPageProps) => {
     const { id } = params;
     const offer = await db.auctions.findUnique({
         where: {
@@ -39,53 +40,55 @@ const OffersIdPage = async ({ params }: OffersIdPageProps) => {
                         <p>{offer?.mileage} km</p>
                     </div>
 
-                    <div className="flex flex-col gap-x-2 w-full">
+                    <div className="p-3 bg-neutral-200 dark:bg-neutral-800 rounded-lg my-4 inline-block">
+                        Current Bid :
+                        <p className="text-xl">
+                            €{" "}
+                            <span className="text-xl font-bold">
+                                {offer?.currentBid}
+                            </span>
+                        </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 w-full">
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Price:</p>
-                            <p>{offer?.currentBid} €</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.state}
+                            </span>
                         </div>
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">State:</p>
-                            <p>{offer?.state}</p>
-                        </div>
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Fuel Type:</p>
-                            <p>{offer?.fuelType}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.fuelType}
+                            </span>
                         </div>
 
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Power:</p>
-                            <p>{offer?.power} HP</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.power} HP
+                            </span>
                         </div>
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Gear Box:</p>
-                            <p>{offer?.gearBox}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.gearBox}
+                            </span>
                         </div>
 
                         {/*not seen on drawer */}
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Car Body:</p>
-                            <p>{offer?.carBody}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.carBody}
+                            </span>
                         </div>
 
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Color:</p>
-                            <p>{offer?.color}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.color}
+                            </span>
                         </div>
 
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Doors:</p>
-                            <p>{offer?.doors}</p>
-                        </div>
-
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Seats:</p>
-                            <p>{offer?.seats}</p>
-                        </div>
-
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Transmission:</p>
-                            <p>{offer?.transmission}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.transmission}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -94,4 +97,4 @@ const OffersIdPage = async ({ params }: OffersIdPageProps) => {
     );
 };
 
-export default OffersIdPage;
+export default AuctionsIdPage;

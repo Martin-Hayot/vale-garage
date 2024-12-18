@@ -239,7 +239,10 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
                                 <p>{details.gearBox}</p>
                             </div>
                             <div className="mt-4">
-                                <Button asChild>
+                                <Button
+                                    asChild
+                                    className="text-white bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out px-8"
+                                >
                                     <Link
                                         href={`/offers/auctions/${details.id}`}
                                     >

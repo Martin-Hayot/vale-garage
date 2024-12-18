@@ -75,17 +75,18 @@ const HeroSection = () => {
                     }}
                     className="flex flex-row gap-6"
                 >
-                    <Link href={"/offers"}>
-                        <Button
-                            size="lg"
-                            className="px-5 py-4 mt-6 text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out shadow-lg transform hover:scale-105"
-                        >
+                    <Button
+                        asChild
+                        size="lg"
+                        className="px-5 py-4 mt-6 text-lg font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out shadow-lg transform hover:scale-105"
+                    >
+                        <Link href={"/offers"}>
                             See offers
                             <div>
                                 <ArrowUpRight className="w-7 h-7 ml-4 -mr-2" />
                             </div>
-                        </Button>
-                    </Link>
+                        </Link>
+                    </Button>
                 </motion.div>
             </div>
         </section>

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { motion } from "framer-motion";
 
 import {
     Carousel,
@@ -10,7 +9,6 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Button } from "../ui/button";
 import OffersCard from "./offers-card";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -23,30 +21,16 @@ interface NewOffersProps {
 }
 
 const NewOffers = ({ offers }: NewOffersProps) => {
-    const boxRef = useRef(null);
-
-    useEffect(() => {
-        gsap.set(boxRef.current, { scaleX: 0, transformOrigin: "left" });
-    }, []);
-
-    const handleMouseEnter = () => {
-        gsap.to(boxRef.current, { scaleX: 1, opacity: 1, duration: 0.8 });
-    };
-
-    const handleMouseLeave = () => {
-        gsap.to(boxRef.current, { scaleX: 0, opacity: 0, duration: 0.8 });
-    };
-
     return (
         <div>
             <div className="flex flex-row items-center justify-center lg:justify-between mb-16">
                 <h2 className="text-4xl pt-10 md:pt-0 text-center font-bold text-neutral-900 dark:text-white">
                     New Offers
                 </h2>
-                <div
+                <motion.div
                     className="group flex flex-col"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
+                    initial={{ opacity: 1 }}
+                    whileHover="hover"
                 >
                     <Link
                         className="hidden lg:block text-2xl font-semibold text-neutral-900 dark:text-white"
@@ -55,8 +39,15 @@ const NewOffers = ({ offers }: NewOffersProps) => {
                         See all offers
                         <ArrowRight className="inline ml-2" />
                     </Link>
-                    <div ref={boxRef} className="h-[2px] opacity-0 bg-accent" />
-                </div>
+                    <motion.div
+                        className="h-[2px] bg-accent"
+                        initial={{ width: 0, opacity: 0 }}
+                        variants={{
+                            hover: { width: "100%", opacity: 1 },
+                        }}
+                        transition={{ duration: 0.8 }}
+                    />
+                </motion.div>
             </div>
 
             <Carousel className="w-[300px] md:w-[600px] lg:w-[900px] 2xl:w-[1300px]">
@@ -77,13 +68,32 @@ const NewOffers = ({ offers }: NewOffersProps) => {
                         <CarouselPrevious className="static translate-y-0" />
                         <CarouselNext className="static translate-y-0" />
                     </div>
-                    <div className="lg:hidden flex justify-center mt-10">
-                        <Button className="btn btn-primary">
-                            See all offers
-                        </Button>
-                    </div>
                 </div>
             </Carousel>
+
+            <div className="flex lg:hidden flex-row items-center justify-center lg:justify-between mt-16">
+                <motion.div
+                    className="group flex flex-col"
+                    initial={{ opacity: 1 }}
+                    whileHover="hover"
+                >
+                    <Link
+                        className="lg:hidden text-2xl font-semibold text-neutral-900 dark:text-white"
+                        href={"/offers"}
+                    >
+                        See all offers
+                        <ArrowRight className="inline ml-2" />
+                    </Link>
+                    <motion.div
+                        className="h-[2px] bg-accent"
+                        initial={{ width: 0, opacity: 0 }}
+                        variants={{
+                            hover: { width: "100%", opacity: 1 },
+                        }}
+                        transition={{ duration: 0.8 }}
+                    />
+                </motion.div>
+            </div>
         </div>
     );
 };

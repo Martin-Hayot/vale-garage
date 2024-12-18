@@ -285,7 +285,7 @@ export const OffersForm = () => {
                                                                             key={
                                                                                 make
                                                                             }
-                                                                            className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                                                                            className="text-black hover:bg-neutral-200 dark:hover:bg-neutral-200 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground  data-[selected='true']:bg-neutral-200"
                                                                             onSelect={() => {
                                                                                 field.onChange(
                                                                                     make
@@ -388,7 +388,7 @@ export const OffersForm = () => {
                                                                                             key={
                                                                                                 car.model
                                                                                             }
-                                                                                            className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                                                                                            className="text-black hover:bg-neutral-200 dark:hover:bg-neutral-200 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground  data-[selected='true']:bg-neutral-200"
                                                                                             onSelect={() =>
                                                                                                 field.onChange(
                                                                                                     car.model

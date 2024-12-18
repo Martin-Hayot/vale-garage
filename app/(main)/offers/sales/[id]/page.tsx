@@ -1,13 +1,17 @@
 import Carousel from "@/components/carousel";
+import AppointmentsForm from "@/components/forms/appointments-form";
+import TestDriveForm from "@/components/forms/test-drive-form";
+import OffersLike from "@/components/offers/offers-like";
+import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 
-interface OffersIdPageProps {
+interface SalesIdPageProps {
     params: {
         id: string;
     };
 }
 
-const OffersIdPage = async ({ params }: OffersIdPageProps) => {
+const SalesIdPage = async ({ params }: SalesIdPageProps) => {
     const { id } = params;
     const offer = await db.sales.findUnique({
         where: {
@@ -38,54 +42,71 @@ const OffersIdPage = async ({ params }: OffersIdPageProps) => {
                         </p>
                         <p>{offer?.mileage} km</p>
                     </div>
+                    <div className="p-3 bg-neutral-200 dark:bg-neutral-800 rounded-lg my-4 inline-block">
+                        <p className="text-xl">
+                            €{" "}
+                            <span className="text-xl font-bold">
+                                {offer?.price}
+                            </span>
+                        </p>
+                        <div>Price include TVA</div>
+                    </div>
+                    <div className="flex flex-wrap gap-2 w-full">
+                        <div className="flex flex-row gap-x-4">
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.state}
+                            </span>
+                        </div>
+                        <div className="flex flex-row gap-x-4">
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.fuelType}
+                            </span>
+                        </div>
 
-                    <div className="flex flex-col gap-x-2 w-full">
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Price:</p>
-                            <p>{offer?.price} €</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.power} HP
+                            </span>
                         </div>
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">State:</p>
-                            <p>{offer?.state}</p>
-                        </div>
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Fuel Type:</p>
-                            <p>{offer?.fuelType}</p>
-                        </div>
-
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Power:</p>
-                            <p>{offer?.power} HP</p>
-                        </div>
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Gear Box:</p>
-                            <p>{offer?.gearBox}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.gearBox}
+                            </span>
                         </div>
 
                         {/*not seen on drawer */}
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Car Body:</p>
-                            <p>{offer?.carBody}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.carBody}
+                            </span>
                         </div>
 
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Color:</p>
-                            <p>{offer?.color}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.color}
+                            </span>
                         </div>
 
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Doors:</p>
-                            <p>{offer?.doors}</p>
+                            <span className="inline-block px-2 py-1 rounded text-neutral-800 bg-neutral-200 dark:bg-neutral-800 dark:text-white text-sm">
+                                {offer?.transmission}
+                            </span>
                         </div>
-
+                    </div>
+                    <div className="my-4 flex flex-col gap-4 w-full">
+                        <AppointmentsForm>
+                            <Button className="bg-blue-700 hover:bg-blue-800">
+                                Take an appointment
+                            </Button>
+                        </AppointmentsForm>
                         <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Seats:</p>
-                            <p>{offer?.seats}</p>
-                        </div>
+                            <TestDriveForm>
+                                <Button className="flex-1 bg-neutral-800 hover:bg-neutral-700">
+                                    Ask for a test drive
+                                </Button>
+                            </TestDriveForm>
 
-                        <div className="flex flex-row gap-x-4">
-                            <p className="font-semibold">Transmission:</p>
-                            <p>{offer?.transmission}</p>
+                            <OffersLike offerId={id} />
                         </div>
                     </div>
                 </div>
@@ -94,4 +115,4 @@ const OffersIdPage = async ({ params }: OffersIdPageProps) => {
     );
 };
 
-export default OffersIdPage;
+export default SalesIdPage;

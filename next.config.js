@@ -6,6 +6,10 @@ const localConfig = {
                 protocol: "https",
                 hostname: "vale-garage.s3.eu-central-1.amazonaws.com",
             },
+            {
+                protocol: "https",
+                hostname: "flagcdn.com",
+            },
         ],
     },
 };

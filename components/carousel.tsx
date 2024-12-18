@@ -24,6 +24,7 @@ const Carousel = ({ images }: CarouselProps) => {
                 }
                 width={1280}
                 height={720}
+                priority
                 alt="car images"
                 className="object-cover w-full h-full block rounded-lg"
             />
