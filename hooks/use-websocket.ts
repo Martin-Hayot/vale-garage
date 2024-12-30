@@ -1,48 +1,76 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { useWebSocketStore } from "@/store/websocket";
 
-const useWebSocket = (url: string, tab: string) => {
-    const setIsConnected = useWebSocketStore((state) => state.setIsConnected);
-    const addMessage = useWebSocketStore((state) => state.addMessage);
+const useWebSocket = (url: string) => {
+    const { setIsConnected, addMessage } = useWebSocketStore();
     const wsRef = useRef<WebSocket | null>(null);
+    const reconnectInterval = useRef<NodeJS.Timeout | null>(null);
+
+    const connect = useCallback(() => {
+        const ws = new WebSocket(url);
+        wsRef.current = ws;
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({ type: "join" }));
+            setIsConnected(true);
+            console.log("WebSocket connected.");
+            if (reconnectInterval.current) {
+                clearInterval(reconnectInterval.current);
+                reconnectInterval.current = null;
+            }
+        };
+
+        ws.onclose = () => {
+            setIsConnected(false);
+            console.log("WebSocket disconnected, attempting to reconnect...");
+            if (!reconnectInterval.current) {
+                reconnectInterval.current = setInterval(() => {
+                    connect();
+                }, 5000); // Attempt to reconnect every 5 seconds
+            }
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                // parse JSON recursively
+                const data = JSON.parse(event.data, (key, value) => {
+                    if (typeof value === "string" && value.startsWith("{")) {
+                        return JSON.parse(value);
+                    }
+                    return value;
+                });
+                console.log(data);
+                addMessage(data);
+            } catch (error) {
+                console.log("Failed to parse WebSocket message:", error);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.log("WebSocket error:", error);
+            setIsConnected(false);
+            ws.close();
+        };
+    }, [url, setIsConnected, addMessage]);
 
     useEffect(() => {
-        if (tab === "auctions") {
-            // Append the token to the WebSocket URL as a query parameter
-            const ws = new WebSocket(url);
-            wsRef.current = ws;
+        connect();
 
-            ws.onopen = () => {
-                ws.send(JSON.stringify({ type: "join" }));
-                setIsConnected(true);
-            };
-
-            ws.onclose = () => {
-                setIsConnected(false);
-            };
-
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                addMessage(data);
-            };
-
-            ws.onerror = (error) => {
-                console.error("WebSocket error:", error);
-                setIsConnected(false);
-            };
-
-            return () => {
-                ws.close();
-                wsRef.current = null;
-            };
-        }
-    }, [url, tab, setIsConnected, addMessage]);
+        return () => {
+            if (wsRef.current) {
+                wsRef.current.close();
+            }
+            if (reconnectInterval.current) {
+                clearInterval(reconnectInterval.current);
+            }
+        };
+    }, [connect]);
 
     const sendMessage = (message: object) => {
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
             wsRef.current.send(JSON.stringify(message));
         } else {
-            console.error("WebSocket is not connected.");
+            console.log("WebSocket is not connected.");
         }
     };
 

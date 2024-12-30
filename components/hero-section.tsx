@@ -18,6 +18,7 @@ const HeroSection = () => {
                 alt="Car in a garage"
                 width={2840}
                 height={1440}
+                priority
                 className="aspect-video object-cover w-full h-full brightness-50 md:brightness-100"
             />
             <div className="space-y-6 z-10 absolute top-0 left-0 lg:left-[20%] w-full h-full rounded flex flex-col mt-16 p-4 md:p-6 lg:p-10 text-white">

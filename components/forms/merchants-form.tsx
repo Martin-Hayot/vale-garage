@@ -18,8 +18,15 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { MerchantsSchema } from "@/schemas";
 import axios from "axios";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export const MerchantsForm = () => {
+    const user = useCurrentUser();
+
+    if (user?.role === "MERCHANT") {
+        // get the user's merchant data
+    }
+
     const form = useForm<z.infer<typeof MerchantsSchema>>({
         resolver: zodResolver(MerchantsSchema),
         defaultValues: {

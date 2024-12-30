@@ -54,9 +54,6 @@ const SalesPage = () => {
     const router = useRouter();
     const { id } = useDrawer();
 
-    const { sendMessage } = useWebSocket("ws://localhost:8080/ws/auction", tab);
-    const isConnected = useWebSocketStore((state) => state.isConnected);
-
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 

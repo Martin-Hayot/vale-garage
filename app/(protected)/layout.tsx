@@ -10,11 +10,7 @@ const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
     if (!user) {
         redirect("/auth/login");
     }
-    return (
-        <div className="h-full w-full flex flex-col items-center mx-auto">
-            {children}
-        </div>
-    );
+    return <div>{children}</div>;
 };
 
 export default ProtectedLayout;

@@ -110,22 +110,25 @@ const Navigation = () => {
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] dark:bg-neutral-900">
-                                        <Link href="/admin/dashboard">
-                                            <ListItem title="Dashboard">
-                                                Manage users and offers
-                                            </ListItem>
-                                        </Link>
-                                        <Link href="/admin/offers">
-                                            <ListItem title="Manage Offers">
-                                                Edit, delete or archive offers
-                                            </ListItem>
-                                        </Link>
-                                        <Link href="/admin/users">
-                                            <ListItem title="Manage Users Accounts">
-                                                Manage normal customers and
-                                                merchants accounts
-                                            </ListItem>
-                                        </Link>
+                                        <ListItem
+                                            title="Dashboard"
+                                            href="/admin/dashboard"
+                                        >
+                                            Manage users and offers
+                                        </ListItem>
+                                        <ListItem
+                                            title="Manage Offers"
+                                            href="/admin/offers"
+                                        >
+                                            Edit, delete or archive offers
+                                        </ListItem>
+                                        <ListItem
+                                            title="Manage Users Accounts"
+                                            href="/admin/users"
+                                        >
+                                            Manage normal customers and
+                                            merchants accounts
+                                        </ListItem>
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
