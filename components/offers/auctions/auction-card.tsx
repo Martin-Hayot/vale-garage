@@ -15,7 +15,7 @@ import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
 import Carousel from "@/components/carousel";
-import { useSaleLikes } from "@/store/likes";
+import { useAuctionLikes, useSaleLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -30,8 +30,8 @@ interface AuctionCardProps {
 
 const AuctionCard = ({ details }: AuctionCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
-    const { addSaleLike, removeSaleLike, saleLikes, getSaleLikes } =
-        useSaleLikes();
+    const { addAuctionLike, removeAuctionLike, auctionLikes, getAuctionLikes } =
+        useAuctionLikes();
     const user = useCurrentUser();
     const [timeLeft, setTimeLeft] = useState<number>(0);
     let params;
@@ -43,9 +43,9 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
 
     useEffect(() => {
         if (user) {
-            getSaleLikes();
+            getAuctionLikes();
         }
-    }, [getSaleLikes, user]);
+    }, [getAuctionLikes, user]);
 
     useEffect(() => {
         const endTime = new Date(details.endDate).getTime();
@@ -90,13 +90,13 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
                                     return;
                                 }
                                 if (
-                                    saleLikes.find(
-                                        (like) => like.saleId === details.id
+                                    auctionLikes.find(
+                                        (like) => like.auctionId === details.id
                                     )
                                 ) {
-                                    removeSaleLike(details.id);
+                                    removeAuctionLike(details.id);
                                 } else {
-                                    addSaleLike(details.id);
+                                    addAuctionLike(details.id);
                                 }
                             }}
                             className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3 hover:scale-105 transition-all duration-100"
@@ -104,8 +104,8 @@ const AuctionCard = ({ details }: AuctionCardProps) => {
                             <Heart
                                 className={cn(
                                     "text-white w-5 h-5",
-                                    saleLikes.find(
-                                        (like) => like.saleId === details.id
+                                    auctionLikes.find(
+                                        (like) => like.auctionId === details.id
                                     )
                                         ? " fill-red-500 text-red-500"
                                         : "text-neutral-300"

@@ -14,7 +14,7 @@ const TimeLeft = ({ auction }: TimeLeftProps) => {
     const [hasEnded, setHasEnded] = useState<boolean>(false);
     useEffect(() => {
         const endDate = new Date(auction.endDate); // Parse the date as is
-        const endTime = endDate.getTime() + endDate.getTimezoneOffset() * 60000; // Adjust for timezone offset
+        const endTime = endDate.getTime();
 
         const interval = setInterval(() => {
             const now = new Date().getTime();

@@ -1,34 +1,38 @@
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, LogOut, UserRoundX } from "lucide-react";
 import Link from "next/link";
-import { SidebarNav } from "./components/sidebar-nav";
+import { SidebarNav } from "../components/sidebar-nav";
 import { Button } from "@/components/ui/button";
 import { LogoutButton } from "@/components/auth/logout-button";
 
 const sidebarNavItems = [
     {
-        title: "Profile",
-        href: "/settings",
+        title: "Auctions",
+        href: "/profile/auctions",
+    },
+    {
+        title: "Likes",
+        href: "/profile/likes",
+    },
+    {
+        title: "Appointments",
+        href: "/profile/appointments",
+    },
+    {
+        title: "Settings",
+        href: "/profile/settings",
     },
     {
         title: "Merchants",
-        href: "/settings/merchants",
-    },
-    {
-        title: "Appearance",
-        href: "/examples/forms/appearance",
-    },
-    {
-        title: "Notifications",
-        href: "/examples/forms/notifications",
+        href: "/profile/merchants",
     },
 ];
 
-interface SettingsLayoutProps {
+interface ProfileLayoutProps {
     children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default function ProfileLayout({ children }: ProfileLayoutProps) {
     return (
         <div className="container mx-auto px-4 py-8 min-h-screen flex flex-col">
             {/* Header */}
@@ -38,10 +42,10 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
                 </Link>
                 <div>
                     <h2 className="text-2xl font-bold tracking-tight">
-                        Settings
+                        Profile
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                        Manage your account settings and set e-mail preferences.
+                        Manage your account settings, auctions, and more.
                     </p>
                 </div>
             </header>
@@ -56,13 +60,10 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
                 </aside>
 
                 {/* Main Content Area */}
-                <main className="flex-1 max-w-4xl">{children}</main>
+                <main className="flex-1 max-w-5xl">{children}</main>
                 {/* Mobile Actions */}
                 <div className="flex flex-col mt-6 space-y-3 md:hidden">
-                    <Button
-                        variant="destructive"
-                        className="w-full flex items-center gap-2"
-                    >
+                    <Button variant="destructive" className="w-full">
                         <UserRoundX className="h-4 w-4" />
                         Delete Account
                     </Button>

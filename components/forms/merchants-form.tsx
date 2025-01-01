@@ -72,7 +72,11 @@ export const MerchantsForm = () => {
                         <FormItem>
                             <FormLabel>Company Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Company name" {...field} />
+                                <Input
+                                    className="w-44 md:w-72 bg-neutral-200 text-black"
+                                    placeholder="Company name"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -87,6 +91,7 @@ export const MerchantsForm = () => {
                             <FormControl>
                                 <Input
                                     maxLength={12}
+                                    className="w-44 md:w-72 bg-neutral-200 text-black"
                                     placeholder="Your VAT number"
                                     {...field}
                                 />

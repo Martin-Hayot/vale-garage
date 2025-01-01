@@ -10,7 +10,7 @@ export const GET = async (req: Request) => {
     }
 
     try {
-        const likes = await db.saleLike.findMany({
+        const likes = await db.auctionLike.findMany({
             where: {
                 userId: user.id,
             },
@@ -24,21 +24,22 @@ export const GET = async (req: Request) => {
 };
 
 export const POST = async (req: Request) => {
-    const { saleId } = await req.json();
-
-    const user = await currentUser();
-
-    console.log("user", user);
-
-    if (!user) {
-        return new NextResponse("Unauthorized", { status: 401 });
-    }
-
     try {
-        const existingLike = await db.saleLike.findFirst({
+        const { auctionId } = await req.json();
+
+        const user = await currentUser();
+
+        if (!user) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        console.log("user", user);
+
+        // Your existing POST logic here...
+        const existingLike = await db.auctionLike.findFirst({
             where: {
                 userId: user.id,
-                saleId: saleId,
+                auctionId: auctionId,
             },
         });
 
@@ -50,21 +51,25 @@ export const POST = async (req: Request) => {
             return new NextResponse("User ID not found", { status: 400 });
         }
 
-        const likes = await db.saleLike.create({
+        const likes = await db.auctionLike.create({
             data: {
                 userId: user.id,
-                saleId: saleId,
+                auctionId: auctionId,
             },
         });
         return NextResponse.json(likes);
     } catch (error) {
-        console.log("[LIKES POST]", error);
+        // Safer error logging
+        console.error(
+            "[LIKES POST]",
+            error instanceof Error ? error.message : "Unknown error"
+        );
         return new NextResponse("Internal Error", { status: 500 });
     }
 };
 
 export const DELETE = async (req: Request) => {
-    const { saleId } = await req.json();
+    const { auctionId } = await req.json();
 
     const user = await currentUser();
 
@@ -73,10 +78,10 @@ export const DELETE = async (req: Request) => {
     }
 
     try {
-        const existingLike = await db.saleLike.findFirst({
+        const existingLike = await db.auctionLike.findFirst({
             where: {
                 userId: user.id,
-                saleId: saleId,
+                auctionId: auctionId,
             },
         });
 
@@ -84,7 +89,7 @@ export const DELETE = async (req: Request) => {
             return new NextResponse("Like not found", { status: 404 });
         }
 
-        const like = await db.saleLike.delete({
+        const like = await db.auctionLike.delete({
             where: {
                 id: existingLike.id,
             },

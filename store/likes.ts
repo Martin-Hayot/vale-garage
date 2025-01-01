@@ -49,33 +49,33 @@ export const useSaleLikes = create<SaleLikeState>((set) => ({
     },
 }));
 
-// export const useAuctionLikes = create<AuctionLikeState>((set) => ({
-//     auctionLikes: [],
-//     addAuctionLike: async (auctionId) => {
-//         console.log("auctionId", auctionId);
-//         const like = await axios.post("/api/auctions/likes", {
-//             auctionId: auctionId,
-//         });
-//         set((state) => ({
-//             auctionLikes: [...state.auctionLikes, like.data],
-//         }));
-//     },
-//     removeAuctionLike: async (auctionId) => {
-//         const unlike = await axios.delete("/api/auctions/likes", {
-//             data: {
-//                 auctionId: auctionId,
-//             },
-//         });
-//         set((state) => ({
-//             auctionLikes: state.auctionLikes.filter(
-//                 (like) => like.id !== unlike.data.id
-//             ),
-//         }));
-//     },
-//     setAuctionLikes: (likes) => set({ auctionLikes: likes }),
-//     getAuctionLikes: async () => {
-//         const likes = await axios.get("/api/auctions/likes");
+export const useAuctionLikes = create<AuctionLikeState>((set) => ({
+    auctionLikes: [],
+    addAuctionLike: async (auctionId) => {
+        console.log("auctionId", auctionId);
+        const like = await axios.post("/api/auctions/likes", {
+            auctionId: auctionId,
+        });
+        set((state) => ({
+            auctionLikes: [...state.auctionLikes, like.data],
+        }));
+    },
+    removeAuctionLike: async (auctionId) => {
+        const unlike = await axios.delete("/api/auctions/likes", {
+            data: {
+                auctionId: auctionId,
+            },
+        });
+        set((state) => ({
+            auctionLikes: state.auctionLikes.filter(
+                (like) => like.id !== unlike.data.id
+            ),
+        }));
+    },
+    setAuctionLikes: (likes) => set({ auctionLikes: likes }),
+    getAuctionLikes: async () => {
+        const likes = await axios.get("/api/auctions/likes");
 
-//         set({ auctionLikes: likes.data });
-//     },
-// }));
+        set({ auctionLikes: likes.data });
+    },
+}));

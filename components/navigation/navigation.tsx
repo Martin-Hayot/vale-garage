@@ -133,7 +133,7 @@ const Navigation = () => {
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         )}
-                        <Link href="/likes">
+                        <Link href="/profile/likes">
                             <Heart className="w-5 h-5 hover:fill-red-500 hover:text-red-500 transition-all duration-100" />
                         </Link>
                         <ModeToggle />

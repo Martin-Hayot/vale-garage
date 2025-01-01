@@ -103,7 +103,7 @@ export const SettingsForm = () => {
                                     name="isTwoFactorEnabled"
                                     control={form.control}
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row justify-between items-center">
+                                        <FormItem className="flex flex-row w-full max-w-xl justify-between items-center">
                                             <FormLabel className="text-md">
                                                 Enable Two Factor Authentication
                                             </FormLabel>
@@ -133,11 +133,7 @@ export const SettingsForm = () => {
 
                     <FormError message={error} />
                     <FormSuccess message={success} />
-                    <Button
-                        disabled={isPending}
-                        type="submit"
-                        className="w-full"
-                    >
+                    <Button disabled={isPending} type="submit">
                         Update
                     </Button>
                 </form>
