@@ -4,12 +4,19 @@ import { getVerificationTokenByEmail } from "@/data/verification-token";
 import { getPasswordResetTokenByEmail } from "@/data/password-reset-token";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { db } from "@/lib/db";
+import { getUserByEmail } from "@/data/user";
 
 export const generateTwoFactorToken = async (email: string) => {
     const token = crypto.randomInt(100_000, 1_000_000).toString();
     const expires = new Date(new Date().getTime() + 5 * 60 * 1000);
 
     const existingToken = await getTwoFactorTokenByEmail(email);
+
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) {
+        return null;
+    }
 
     if (existingToken) {
         await db.twoFactorToken.delete({
@@ -21,6 +28,7 @@ export const generateTwoFactorToken = async (email: string) => {
 
     const twoFactorToken = await db.twoFactorToken.create({
         data: {
+            userId: existingUser.id,
             email,
             token,
             expires,
@@ -36,6 +44,12 @@ export const generateVerificationToken = async (email: string) => {
 
     const existingToken = await getVerificationTokenByEmail(email);
 
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) {
+        return null;
+    }
+
     if (existingToken) {
         await db.verificationToken.delete({
             where: {
@@ -46,6 +60,7 @@ export const generateVerificationToken = async (email: string) => {
 
     const verificationToken = await db.verificationToken.create({
         data: {
+            userId: existingUser.id,
             email,
             token,
             expires,
@@ -60,6 +75,11 @@ export const generatePasswordResetToken = async (email: string) => {
     const expires = new Date(new Date().getTime() + 3600 * 1000);
 
     const existingToken = await getPasswordResetTokenByEmail(email);
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) {
+        return null;
+    }
 
     if (existingToken) {
         await db.passwordResetToken.delete({
@@ -71,6 +91,7 @@ export const generatePasswordResetToken = async (email: string) => {
 
     const passwordResetToken = await db.passwordResetToken.create({
         data: {
+            userId: existingUser.id,
             email,
             token,
             expires,

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { LogOut, UserRoundX } from "lucide-react";
+import DeleteUserButton from "@/components/auth/delete-use-button";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     items: {
@@ -45,10 +46,15 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
 
             <div className="hidden md:block border-t mt-auto">
                 <div className="flex flex-col space-y-3 p-4">
-                    <Button variant="destructive" className="relative w-full">
-                        <UserRoundX className="absolute left-3 h-4 w-4" />
-                        <span>Delete Account</span>
-                    </Button>
+                    <DeleteUserButton>
+                        <Button
+                            variant="destructive"
+                            className="relative w-full"
+                        >
+                            <UserRoundX className="absolute left-3 h-4 w-4" />
+                            <span>Delete Account</span>
+                        </Button>
+                    </DeleteUserButton>
                     <LogoutButton>
                         <Button
                             variant="outline"

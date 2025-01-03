@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SidebarNav } from "../components/sidebar-nav";
 import { Button } from "@/components/ui/button";
 import { LogoutButton } from "@/components/auth/logout-button";
+import DeleteUserButton from "@/components/auth/delete-use-button";
 
 const sidebarNavItems = [
     {
@@ -63,10 +64,12 @@ export default function ProfileLayout({ children }: ProfileLayoutProps) {
                 <main className="flex-1 max-w-5xl">{children}</main>
                 {/* Mobile Actions */}
                 <div className="flex flex-col mt-6 space-y-3 md:hidden">
-                    <Button variant="destructive" className="w-full">
-                        <UserRoundX className="h-4 w-4" />
-                        Delete Account
-                    </Button>
+                    <DeleteUserButton>
+                        <Button variant="destructive" className="w-full">
+                            <UserRoundX className="h-4 w-4" />
+                            Delete Account
+                        </Button>
+                    </DeleteUserButton>
 
                     <LogoutButton>
                         <Button

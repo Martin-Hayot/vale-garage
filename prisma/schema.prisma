@@ -44,10 +44,13 @@ model User {
   companyId String?
   company   Company? @relation(fields: [companyId], references: [id])
 
-  accounts     Account[]
-  biddings     Bid[]
-  auctionLikes AuctionLike[]
-  saleLikes    SaleLike[]
+  accounts           Account[]
+  biddings           Bid[]
+  auctionLikes       AuctionLike[]
+  saleLikes          SaleLike[]
+  VerificationToken  VerificationToken[]
+  PasswordResetToken PasswordResetToken[]
+  TwoFactorToken     TwoFactorToken[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -116,8 +119,10 @@ model VerificationToken {
   email   String
   token   String   @unique
   expires DateTime
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([email, token])
+  @@unique([userId, token])
 }
 
 model PasswordResetToken {
@@ -125,8 +130,10 @@ model PasswordResetToken {
   email   String
   token   String   @unique
   expires DateTime
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([email, token])
+  @@unique([userId, token])
 }
 
 model TwoFactorToken {
@@ -134,13 +141,14 @@ model TwoFactorToken {
   email   String
   token   String   @unique
   expires DateTime
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([email, token])
 }
 
 model TwoFactorConfirmation {
-  id String @id @default(cuid())
-
+  id     String @id @default(cuid())
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 

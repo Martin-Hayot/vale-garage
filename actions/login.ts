@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { sendVerificationEmail, sendTwoFactorEmail } from "@/lib/mail";
 import {
@@ -33,6 +32,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         const verificationToken = await generateVerificationToken(
             existingUser.email
         );
+
+        if (!verificationToken) {
+            return { error: "Error generating verification token" };
+        }
 
         const res = await sendVerificationEmail(
             verificationToken.email,
@@ -92,6 +95,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             const twoFactorToken = await generateTwoFactorToken(
                 existingUser.email
             );
+
+            if (!twoFactorToken) {
+                return { error: "Error generating two factor token" };
+            }
+
             await sendTwoFactorEmail(
                 twoFactorToken.email,
                 twoFactorToken.token
