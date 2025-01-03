@@ -51,6 +51,41 @@ export const OffersSchema = z.object({
     seats: z.coerce.number().min(1, { message: "Seats is required" }),
 });
 
+export const AuctionsSchema = z.object({
+    carMake: z.string().min(1, { message: "Car Make is required" }),
+    carModel: z.string().min(1, { message: "Car Model is required" }),
+    mileage: z.coerce.number().min(1, { message: "Mileage is required" }),
+    state: z.string().min(1, { message: "State of the car is required" }),
+    circulationDate: z.coerce.date().max(new Date(), { message: "Too new!" }),
+    description: z.string().min(1, { message: "Description is required" }),
+    fuelType: z.string().min(1, { message: "Fuel type is required" }),
+    transmission: z.string().min(1, { message: "Transmission is required" }),
+    power: z.coerce.number().min(1, { message: "Power is required" }),
+    carBody: z.string().min(1, { message: "Car body is required" }),
+    gearBox: z.string().min(1, { message: "Gear box is required" }),
+    color: z.string().min(1, { message: "Color is required" }),
+    doors: z.coerce.number().min(1, { message: "Doors is required" }),
+    seats: z.coerce.number().min(1, { message: "Seats is required" }),
+    // auction specific
+    startDate: z.coerce
+        .date()
+        .min(new Date(), { message: "Start date is required" }),
+    endDate: z.coerce
+        .date()
+        .min(new Date(), { message: "End date is required" }),
+    startPrice: z.coerce
+        .number()
+        .min(1, { message: "Start price is required" }),
+    maxPrice: z.coerce.number().min(1, { message: "Max price is required" }),
+    reservePrice: z.coerce
+        .number()
+        .min(1, { message: "Reserve price is required" }),
+    bidIncrement: z.coerce
+        .number()
+        .min(100, { message: "Minimum bid is required" }),
+    onlyForMerchants: z.boolean(),
+});
+
 export const CreateCarSchema = z.object({
     make: z.string().min(1, { message: "Make is required" }),
     model: z.string().min(1, { message: "Model is required" }),
@@ -79,4 +114,31 @@ export const MerchantsSchema = z.object({
         .string()
         .min(1, { message: "VAT number is required" })
         .max(12, { message: "VAT number is too long" }),
+});
+
+export const AppointmentSchema = z.object({
+    gender: z.string().min(1, {
+        message: "Must select a gender",
+    }),
+    firstname: z.string().min(2, {
+        message: "Firstname must be at least 2 characters.",
+    }),
+    lastname: z.string().min(2, {
+        message: "Lastname must be at least 2 characters.",
+    }),
+    email: z.string().email(),
+    phone: z.string().refine(
+        (val) => {
+            const phoneRegex =
+                /^\+(\d{1,3})[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{4}$/;
+
+            return phoneRegex.test(val);
+        },
+        {
+            message: "Invalid phone number.",
+        }
+    ),
+    message: z.string().min(10, {
+        message: "Message must be at least 10 characters.",
+    }),
 });

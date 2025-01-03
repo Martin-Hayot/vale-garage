@@ -3,24 +3,18 @@
 import OffersCard from "@/components/offers/offers-card";
 import OffersSkeleton from "@/components/offers/offers-skeleton";
 
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
-
 import { useFilters } from "@/store/filters";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages, Auctions } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
 import OffersSidebar from "@/components/offers/offers-sidebar";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+    ReadonlyURLSearchParams,
+    useRouter,
+    useSearchParams,
+} from "next/navigation";
 import { useDrawer } from "@/store/drawer";
 import {
     MILEAGE_OPTIONS,
@@ -31,8 +25,14 @@ import {
 import MainBar from "@/components/offers/offers-main-bar";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import useWebSocket from "@/hooks/use-websocket";
+import { useWebSocketStore } from "@/store/websocket";
+import OffersPagination from "@/components/offers/offers-pagination";
+import AuctionCard from "@/components/offers/auctions/auction-card";
 
-type CarSales = CarBid & { car: Car } & { offerImages: OfferImages[] };
+type CarSales = Sales & { car: Car } & { offerImages: OfferImages[] };
+
+type CarAuctions = Auctions & { car: Car } & { offerImages: OfferImages[] };
 
 type validFuels =
     | "Diesel"
@@ -173,7 +173,7 @@ const SalesPage = () => {
             params.status = "ACTIVE";
             params.page = currentPage.toString();
             params.limit = itemsPerPage.toString();
-            const { data } = await axios.get("/api/offers/sales", {
+            const { data } = await axios.get("/api/sales", {
                 params,
             });
 
@@ -205,11 +205,7 @@ const SalesPage = () => {
     return (
         <div>
             <MainBar tab={tab} setTab={setTab} />
-            {tab === "auctions" && (
-                <div className="flex justify-center text-4xl my-48">
-                    Coming soon...
-                </div>
-            )}
+            {tab === "auctions" && <AuctionTab searchParams={searchParams} />}
             {tab === "sales" && (
                 <div className="w-full flex flex-row justify-center gap-x-2 mb-64 mt-8">
                     <div>
@@ -229,7 +225,7 @@ const SalesPage = () => {
                                     </div>
                                 </div>
                                 <div
-                                    className="offers-grid gap-6 mx-4"
+                                    className="offers-grid gap-6 mx-4 ml-20"
                                     style={{ opacity: 1 }}
                                     ref={skeletonRef}
                                 >
@@ -267,96 +263,145 @@ const SalesPage = () => {
                                 </div>
                             </div>
                             <div className="mt-40">
-                                <Pagination>
-                                    <PaginationContent>
-                                        <PaginationItem>
-                                            <Button
-                                                className="bg-transparent"
-                                                onClick={() =>
-                                                    handlePageChange(
-                                                        currentPage + 1
-                                                    )
-                                                }
-                                                disabled={
-                                                    offers &&
-                                                    offers.data.length <
-                                                        itemsPerPage
-                                                }
-                                            >
-                                                <ChevronLeft className="mr-2 w-5 h-5" />
-                                                Previous
-                                            </Button>
-                                        </PaginationItem>
-                                        <PaginationItem>
-                                            <PaginationLink>
-                                                {currentPage}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                        {offers?.meta?.totalPages &&
-                                            offers.meta.totalPages > 1 &&
-                                            Array.from(
-                                                {
-                                                    length: Math.min(
-                                                        3,
-                                                        offers.meta.totalPages
-                                                    ),
-                                                },
-                                                (_, index) =>
-                                                    currentPage + index
-                                            ).map((page) => (
-                                                <PaginationItem key={page}>
-                                                    <PaginationLink
-                                                        onClick={() =>
-                                                            handlePageChange(
-                                                                page
-                                                            )
-                                                        }
-                                                    >
-                                                        {page}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                            ))}
-                                        {offers?.meta?.totalPages &&
-                                            offers.meta.totalPages > 4 && (
-                                                <>
-                                                    <PaginationLink
-                                                        onClick={() =>
-                                                            handlePageChange(
-                                                                offers.meta
-                                                                    .totalPages
-                                                            )
-                                                        }
-                                                    >
-                                                        {offers.meta.totalPages}
-                                                    </PaginationLink>
-                                                    <PaginationEllipsis />
-                                                </>
-                                            )}
-                                        <PaginationItem>
-                                            <Button
-                                                className="bg-transparent"
-                                                onClick={() =>
-                                                    handlePageChange(
-                                                        currentPage + 1
-                                                    )
-                                                }
-                                                disabled={
-                                                    offers &&
-                                                    offers.data.length <
-                                                        itemsPerPage
-                                                }
-                                            >
-                                                Next
-                                                <ChevronRight className="ml-2 w-5 h-5" />
-                                            </Button>
-                                        </PaginationItem>
-                                    </PaginationContent>
-                                </Pagination>
+                                <OffersPagination
+                                    currentPage={currentPage}
+                                    totalPages={offers?.meta?.totalPages}
+                                    handlePageChange={handlePageChange}
+                                    itemsPerPage={itemsPerPage}
+                                    dataLength={offers?.data.length}
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+        </div>
+    );
+};
+
+interface AuctionTabProps {
+    searchParams: ReadonlyURLSearchParams;
+}
+
+const AuctionTab = ({ searchParams }: AuctionTabProps) => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    type response = {
+        data: CarAuctions[];
+        meta: {
+            totalItems: number;
+            currentPage: number;
+            totalPages: number;
+        };
+    };
+
+    const {
+        data: offers,
+        isPending,
+        isLoading,
+        error,
+    } = useQuery<response, AxiosError>({
+        queryKey: ["auctions", searchParams.toString(), currentPage],
+        queryFn: async () => {
+            const url = new URL(window.location.href);
+            const searchParams = new URLSearchParams(url.search);
+            const params = Object.fromEntries(searchParams);
+            params.status = "ACTIVE";
+            params.page = currentPage.toString();
+            params.limit = itemsPerPage.toString();
+            const { data } = await axios.get("/api/auctions", {
+                params,
+            });
+
+            return data;
+        },
+    });
+
+    const handlePageChange = (newPage: number) => {
+        setCurrentPage(newPage);
+    };
+
+    const skeletonRef = useRef(null);
+    const dataRef = useRef(null);
+
+    useEffect(() => {
+        if (!isPending && !isLoading) {
+            gsap.to(skeletonRef.current, { opacity: 0, duration: 1 });
+            gsap.fromTo(
+                dataRef.current,
+                { opacity: 0 },
+                { opacity: 1, duration: 1 }
+            );
+        } else {
+            gsap.to(skeletonRef.current, { opacity: 1, duration: 1 });
+            gsap.to(dataRef.current, { opacity: 0, duration: 1 });
+        }
+    }, [offers, isLoading, isPending]);
+
+    return (
+        <div className="w-full flex flex-row justify-center gap-x-2 mb-64 mt-8">
+            <div>
+                <OffersSidebar />
+            </div>
+            <div className="flex flex-row justify-center items-start w-full basis-1/2">
+                <div className="w-full max-w-[1420px]">
+                    <div>
+                        <div className="flex flex-row justify-end items-end pb-4 pr-8">
+                            <div className="font-semibold text-2xl">
+                                {offers?.data.length ?? "..."} car
+                                {offers?.data.length && offers.data.length >= 1
+                                    ? ""
+                                    : "s"}{" "}
+                                found
+                            </div>
+                        </div>
+                        <div
+                            className="offers-grid gap-6 mx-4 ml-20"
+                            style={{ opacity: 1 }}
+                            ref={skeletonRef}
+                        >
+                            {isPending &&
+                                new Array(12)
+                                    .fill(null)
+                                    .map((_, index) => (
+                                        <OffersSkeleton key={index} />
+                                    ))}
+                        </div>
+                        {error && (
+                            <div className="flex justify-center text-4xl my-48">
+                                Error: {error.message}
+                            </div>
+                        )}
+                        <div className="offers-grid gap-6 mx-4" ref={dataRef}>
+                            {offers &&
+                                !isPending &&
+                                offers.data.map((offer) => (
+                                    <div
+                                        className="place-self-center"
+                                        key={offer.id}
+                                    >
+                                        <AuctionCard
+                                            details={{
+                                                ...offer.car,
+                                                ...offer,
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+                    <div className="mt-40">
+                        <OffersPagination
+                            currentPage={currentPage}
+                            totalPages={offers?.meta?.totalPages}
+                            handlePageChange={handlePageChange}
+                            itemsPerPage={itemsPerPage}
+                            dataLength={offers?.data.length}
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

@@ -7,7 +7,8 @@ import { useState } from "react";
 interface CarouselProps {
     images: {
         id: string;
-        carBidId: string;
+        saleId?: string | null;
+        auctionId?: string | null;
         url: string;
         order: number;
     }[];
@@ -23,6 +24,7 @@ const Carousel = ({ images }: CarouselProps) => {
                 }
                 width={1280}
                 height={720}
+                priority
                 alt="car images"
                 className="object-cover w-full h-full block rounded-lg"
             />

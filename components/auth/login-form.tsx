@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     InputOTP,
     InputOTPGroup,
@@ -28,9 +28,12 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export const LoginForm = () => {
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const { update } = useSession();
     const urlErorr =
         searchParams.get("error") === "OAuthAccountNotLinked"
             ? "Email already in use with another provider"
@@ -55,7 +58,8 @@ export const LoginForm = () => {
 
         startTransition(() => {
             login(values)
-                .then((data) => {
+                .then(async (data) => {
+                    console.log(data);
                     if (data?.error) {
                         form.reset();
                         setError(data.error);
@@ -63,12 +67,17 @@ export const LoginForm = () => {
                     if (data?.success) {
                         form.reset();
                         setSuccess(data.success);
+                        await update();
+                        router.push("/");
                     }
                     if (data?.twoFactor) {
                         setShowTwoFactor(true);
                     }
                 })
-                .catch(() => setError("Something went wrong"));
+                .catch((err) => {
+                    console.log(err);
+                    setError("Something went wrong");
+                });
         });
     };
 

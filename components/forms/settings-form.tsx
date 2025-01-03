@@ -11,7 +11,6 @@ import { settings, getSettingsByUserId } from "@/actions/settings";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
     Form,
     FormControl,
@@ -22,14 +21,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { CheckCircle, Settings } from "lucide-react";
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogTrigger,
-} from "../ui/dialog";
-import { MerchantsForm } from "./merchants-form";
 
 export const SettingsForm = () => {
     const { update, data } = useSession();
@@ -48,7 +39,7 @@ export const SettingsForm = () => {
 
     useEffect(() => {
         if (data?.user) {
-            getSettingsByUserId(data.user.id).then((settings) => {
+            getSettingsByUserId(data.user.id!).then((settings) => {
                 form.reset({
                     name: settings?.name || "",
                     isTwoFactorEnabled: settings?.isTwoFactorEnabled,
@@ -78,114 +69,75 @@ export const SettingsForm = () => {
     };
 
     return (
-        <Card className="w-[300px] md:w-[500px] lg:w-[600px]  bg-neutral-700">
-            <CardHeader className="text-2xl font-semibold flex justify-center items-center flex-row">
-                <Settings className="mr-2 h-8 w-8" />
-                Settings
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-6"
-                    >
-                        <div className="space-y-6">
-                            <FormField
-                                name="name"
-                                control={form.control}
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-md">
-                                            Name
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                className="w-44 md:w-72 bg-neutral-200 text-black"
-                                                placeholder="John Doe"
-                                                disabled={isPending}
-                                                type="text"
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            {data?.user.provider !== "github" &&
-                                data?.user.provider !== "google" && (
-                                    <FormField
-                                        name="isTwoFactorEnabled"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-row justify-between items-center">
-                                                <FormLabel className="text-md">
-                                                    Enable Two Factor
-                                                    Authentication
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Switch
-                                                        {...field}
-                                                        className="ml-2 data-[state=checked]:bg-primary data-[state=unchecked]:bg-neutral-300 "
-                                                        disabled={isPending}
-                                                        checked={field.value}
-                                                        onCheckedChange={
-                                                            field.onChange
-                                                        }
-                                                        value={
-                                                            field.value
-                                                                ? "true"
-                                                                : "false"
-                                                        } // Fix: Convert boolean value to string
-                                                        aria-readonly
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
-                        </div>
+        <div>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                >
+                    <div className="space-y-6">
+                        <FormField
+                            name="name"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-md">
+                                        Name
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            className="w-44 md:w-72 bg-neutral-200 text-black"
+                                            placeholder="John Doe"
+                                            disabled={isPending}
+                                            type="text"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {data?.user.provider !== "github" &&
+                            data?.user.provider !== "google" && (
+                                <FormField
+                                    name="isTwoFactorEnabled"
+                                    control={form.control}
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row w-full max-w-xl justify-between items-center">
+                                            <FormLabel className="text-md">
+                                                Enable Two Factor Authentication
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Switch
+                                                    {...field}
+                                                    className="ml-2 data-[state=checked]:bg-primary data-[state=unchecked]:bg-neutral-300 "
+                                                    disabled={isPending}
+                                                    checked={field.value}
+                                                    onCheckedChange={
+                                                        field.onChange
+                                                    }
+                                                    value={
+                                                        field.value
+                                                            ? "true"
+                                                            : "false"
+                                                    } // Fix: Convert boolean value to string
+                                                    aria-readonly
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
+                    </div>
 
-                        <FormError message={error} />
-                        <FormSuccess message={success} />
-                        <Button
-                            disabled={isPending}
-                            type="submit"
-                            className="w-full"
-                        >
-                            Update
-                        </Button>
-                    </form>
-                </Form>
-                <div className="mt-6">
-                    {data?.user.role === "MERCHANT" ? (
-                        <div className="flex flex-row justify-between items-center bg-green-300 bg-opacity-20 p-3 rounded">
-                            <p className="text-">
-                                You already have a merchant account
-                            </p>
-                            <CheckCircle className="h-6 w-6 text-green-600 " />
-                        </div>
-                    ) : (
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button type="button">
-                                    Become a B2B Merchant
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogTitle>Become a B2B Merchant</DialogTitle>
-                                <MerchantsForm />
-                            </DialogContent>
-                        </Dialog>
-                    )}
-                </div>
-                <div className="mt-10 space-x-4">
-                    <Button variant="outline">Sign out</Button>
-                    <Button className="" variant="destructive">
-                        Delete Account
+                    <FormError message={error} />
+                    <FormSuccess message={success} />
+                    <Button disabled={isPending} type="submit">
+                        Update
                     </Button>
-                </div>
-            </CardContent>
-        </Card>
+                </form>
+            </Form>
+        </div>
     );
 };

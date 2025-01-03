@@ -24,7 +24,7 @@ export default async function RootLayout({
     const session = await auth();
 
     return (
-        <SessionProvider session={session}>
+        <SessionProvider refetchOnWindowFocus session={session}>
             <html lang="en" suppressHydrationWarning>
                 <body className={inter.className}>
                     <ThemeProvider

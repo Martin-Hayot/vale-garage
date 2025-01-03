@@ -48,8 +48,6 @@ import {
 } from "@/components/ui/select";
 
 import { format, set } from "date-fns";
-import Link from "next/link";
-import Image from "next/image";
 import { Car } from "@prisma/client";
 
 import {
@@ -91,7 +89,7 @@ const steps = [
     },
     {
         id: "step-3",
-        title: "Car Images",
+        title: "Car Images & Models",
         fields: [],
     },
     {
@@ -145,10 +143,9 @@ export const OffersForm = () => {
     const onSubmit = (values: z.infer<typeof OffersSchema>) => {
         setError("");
         setSuccess("");
-        console.log("submit", values);
         startTransition(() => {
             axios
-                .post("/api/offers", {
+                .post("/api/sales", {
                     ...values,
                     images: images,
                 })
@@ -239,207 +236,192 @@ export const OffersForm = () => {
                 >
                     <div className="space-y-4">
                         {currentStepIndex === 0 && (
-                            <>
-                                <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
-                                    <FormField
-                                        control={form.control}
-                                        name="carMake"
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-col">
-                                                <FormLabel>Make</FormLabel>
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <FormControl>
-                                                            <Button
-                                                                variant="outline"
-                                                                role="combobox"
-                                                                className={cn(
-                                                                    "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
-                                                                    !field.value &&
-                                                                        "text-muted-foreground",
-                                                                    field.value &&
-                                                                        "text-black"
-                                                                )}
-                                                            >
-                                                                {field.value
-                                                                    ? field.value
-                                                                    : "Select a make..."}
-                                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                            </Button>
-                                                        </FormControl>
-                                                    </PopoverTrigger>
+                            <div className="flex flex-col md:flex-row justify-start gap-x-6 gap-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="carMake"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Make</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className={cn(
+                                                                "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
+                                                                !field.value &&
+                                                                    "text-muted-foreground",
+                                                                field.value &&
+                                                                    "text-black"
+                                                            )}
+                                                        >
+                                                            {field.value
+                                                                ? field.value
+                                                                : "Select a make..."}
+                                                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
 
-                                                    <PopoverContent className="w-full p-0 border-0">
-                                                        <Command className="dark:bg-white dark:text-black ">
-                                                            <CommandInput
-                                                                placeholder="Search Car Make..."
-                                                                className="h-9"
-                                                            />
-                                                            <CommandEmpty>
-                                                                No Make found.
-                                                            </CommandEmpty>
-                                                            <ScrollArea className="h-64">
-                                                                <CommandGroup>
-                                                                    {makes.map(
-                                                                        (
-                                                                            make
-                                                                        ) => (
-                                                                            <CommandItem
-                                                                                value={
-                                                                                    make
-                                                                                }
-                                                                                key={
-                                                                                    make
-                                                                                }
-                                                                                className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-                                                                                onSelect={() => {
-                                                                                    field.onChange(
-                                                                                        make
-                                                                                    );
-                                                                                    setSelectedMake(
-                                                                                        make
-                                                                                    );
-                                                                                }}
-                                                                            >
-                                                                                {
-                                                                                    make
-                                                                                }
-                                                                                <CheckIcon
-                                                                                    className={cn(
-                                                                                        "ml-auto h-4 w-4",
-                                                                                        make ===
-                                                                                            field.value
-                                                                                            ? "opacity-100"
-                                                                                            : "opacity-0"
-                                                                                    )}
-                                                                                />
-                                                                            </CommandItem>
-                                                                        )
-                                                                    )}
-                                                                </CommandGroup>
-                                                            </ScrollArea>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="carModel"
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-col">
-                                                <FormLabel>Model</FormLabel>
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <FormControl>
-                                                            <Button
-                                                                variant="outline"
-                                                                role="combobox"
-                                                                className={cn(
-                                                                    "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
-                                                                    !field.value &&
-                                                                        "text-muted-foreground",
-                                                                    field.value &&
-                                                                        "text-black"
-                                                                )}
-                                                            >
-                                                                {field.value
-                                                                    ? field.value
-                                                                    : "Select a Model..."}
-                                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                            </Button>
-                                                        </FormControl>
-                                                    </PopoverTrigger>
-
-                                                    <PopoverContent className="w-full h-56 p-0 border-0">
-                                                        <Command className="dark:bg-white dark:text-black ">
-                                                            <CommandInput
-                                                                placeholder="Search Car Model..."
-                                                                className="h-9"
-                                                            />
-                                                            <CommandEmpty>
-                                                                No Model found.
-                                                            </CommandEmpty>
-                                                            {makes.map(
-                                                                (make) =>
-                                                                    make ===
-                                                                        selectedMake && (
-                                                                        <CommandGroup
+                                                <PopoverContent className="w-full p-0 border-0">
+                                                    <Command className="dark:bg-white dark:text-black ">
+                                                        <CommandInput
+                                                            placeholder="Search Car Make..."
+                                                            className="h-9"
+                                                        />
+                                                        <CommandEmpty>
+                                                            No Make found.
+                                                        </CommandEmpty>
+                                                        <ScrollArea className="h-64">
+                                                            <CommandGroup>
+                                                                {makes.map(
+                                                                    (make) => (
+                                                                        <CommandItem
+                                                                            value={
+                                                                                make
+                                                                            }
                                                                             key={
                                                                                 make
                                                                             }
-                                                                            heading={
+                                                                            className="text-black hover:bg-neutral-200 dark:hover:bg-neutral-200 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground  data-[selected='true']:bg-neutral-200"
+                                                                            onSelect={() => {
+                                                                                field.onChange(
+                                                                                    make
+                                                                                );
+                                                                                setSelectedMake(
+                                                                                    make
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            {
                                                                                 make
                                                                             }
-                                                                        >
-                                                                            <CommandList className="">
-                                                                                {cars
-                                                                                    .filter(
-                                                                                        (
-                                                                                            car
-                                                                                        ) =>
-                                                                                            car.make ===
-                                                                                            make
-                                                                                    )
-                                                                                    .map(
-                                                                                        (
-                                                                                            car
-                                                                                        ) => (
-                                                                                            <CommandItem
-                                                                                                value={
-                                                                                                    car.model
-                                                                                                }
-                                                                                                key={
-                                                                                                    car.model
-                                                                                                }
-                                                                                                className="dark:hover:bg-neutral-200 text-black relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-                                                                                                onSelect={() =>
-                                                                                                    field.onChange(
-                                                                                                        car.model
-                                                                                                    )
-                                                                                                }
-                                                                                            >
-                                                                                                {
-                                                                                                    car.model
-                                                                                                }
-                                                                                                <CheckIcon
-                                                                                                    className={cn(
-                                                                                                        "ml-auto h-4 w-4",
-                                                                                                        car.model ===
-                                                                                                            field.value
-                                                                                                            ? "opacity-100"
-                                                                                                            : "opacity-0"
-                                                                                                    )}
-                                                                                                />
-                                                                                            </CommandItem>
-                                                                                        )
-                                                                                    )}
-                                                                            </CommandList>
-                                                                        </CommandGroup>
+                                                                            <CheckIcon
+                                                                                className={cn(
+                                                                                    "ml-auto h-4 w-4",
+                                                                                    make ===
+                                                                                        field.value
+                                                                                        ? "opacity-100"
+                                                                                        : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                        </CommandItem>
                                                                     )
+                                                                )}
+                                                            </CommandGroup>
+                                                        </ScrollArea>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="carModel"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-col">
+                                            <FormLabel>Model</FormLabel>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <FormControl>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className={cn(
+                                                                "w-[200px] justify-between dark:bg-gray-200 border-0 hover:bg-primary hover:text-primary-foreground dark:hover:text-black",
+                                                                !field.value &&
+                                                                    "text-muted-foreground",
+                                                                field.value &&
+                                                                    "text-black"
                                                             )}
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                                <FormDescription className="dark:text-white">
-                                    {
-                                        "Can't find a car model ? Create a new one "
-                                    }
-                                    <Link
-                                        href="/admin/cars/models"
-                                        className="dark:text-accent text-primary underline"
-                                    >
-                                        here
-                                    </Link>
-                                </FormDescription>
-                            </>
+                                                        >
+                                                            {field.value
+                                                                ? field.value
+                                                                : "Select a Model..."}
+                                                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </FormControl>
+                                                </PopoverTrigger>
+
+                                                <PopoverContent className="w-full h-56 p-0 border-0">
+                                                    <Command className="dark:bg-white dark:text-black ">
+                                                        <CommandInput
+                                                            placeholder="Search Car Model..."
+                                                            className="h-9"
+                                                        />
+                                                        <CommandEmpty>
+                                                            No Model found.
+                                                        </CommandEmpty>
+                                                        {makes.map(
+                                                            (make) =>
+                                                                make ===
+                                                                    selectedMake && (
+                                                                    <CommandGroup
+                                                                        key={
+                                                                            make
+                                                                        }
+                                                                        heading={
+                                                                            make
+                                                                        }
+                                                                    >
+                                                                        <CommandList className="">
+                                                                            {cars
+                                                                                .filter(
+                                                                                    (
+                                                                                        car
+                                                                                    ) =>
+                                                                                        car.make ===
+                                                                                        make
+                                                                                )
+                                                                                .map(
+                                                                                    (
+                                                                                        car
+                                                                                    ) => (
+                                                                                        <CommandItem
+                                                                                            value={
+                                                                                                car.model
+                                                                                            }
+                                                                                            key={
+                                                                                                car.model
+                                                                                            }
+                                                                                            className="text-black hover:bg-neutral-200 dark:hover:bg-neutral-200 relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-neutral-200 aria-selected:text-accent-foreground  data-[selected='true']:bg-neutral-200"
+                                                                                            onSelect={() =>
+                                                                                                field.onChange(
+                                                                                                    car.model
+                                                                                                )
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                car.model
+                                                                                            }
+                                                                                            <CheckIcon
+                                                                                                className={cn(
+                                                                                                    "ml-auto h-4 w-4",
+                                                                                                    car.model ===
+                                                                                                        field.value
+                                                                                                        ? "opacity-100"
+                                                                                                        : "opacity-0"
+                                                                                                )}
+                                                                                            />
+                                                                                        </CommandItem>
+                                                                                    )
+                                                                                )}
+                                                                        </CommandList>
+                                                                    </CommandGroup>
+                                                                )
+                                                        )}
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
                         )}
                         {currentStepIndex === 1 && (
                             <>
@@ -855,6 +837,8 @@ export const OffersForm = () => {
                                         key={JSON.stringify(images)}
                                     />
                                 )}
+
+                                {/* <FileUpload /> */}
                             </>
                         )}
                         {currentStepIndex === 3 && (
@@ -910,14 +894,16 @@ export const OffersForm = () => {
                     </div>
                     <FormError message={error} />
                     <FormSuccess message={success} />
-                    <FormsButton
-                        currentStepIndex={currentStepIndex}
-                        isFirstStep={isFirstStep}
-                        isLastStep={isLastStep}
-                        disabled={isPending}
-                        next={next}
-                        back={back}
-                    />
+                    <div className="">
+                        <FormsButton
+                            currentStepIndex={currentStepIndex}
+                            isFirstStep={isFirstStep}
+                            isLastStep={isLastStep}
+                            disabled={isPending}
+                            next={next}
+                            back={back}
+                        />
+                    </div>
                 </form>
             </Form>
         </div>

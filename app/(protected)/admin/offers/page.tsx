@@ -14,7 +14,7 @@ import { db } from "@/lib/db";
 import OffersTable from "@/components/offers/offers-table";
 
 const AdminOffersPage = async () => {
-    const offers = await db.carBid.findMany({
+    const offers = await db.sales.findMany({
         include: {
             car: true,
             offerImages: true,
