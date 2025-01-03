@@ -11,11 +11,7 @@ export const WebSocketProvider = ({
     children: React.ReactNode;
 }) => {
     const ws = useWebSocket(
-        `ws://${
-            process.env.NODE_ENV === "production"
-                ? "api.example.com"
-                : "localhost:8080"
-        }/ws/auction`
+        process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8080/ws/auction"
     );
 
     return (
