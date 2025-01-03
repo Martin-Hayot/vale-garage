@@ -7,9 +7,7 @@ import { db } from "@/lib/db";
 import { Info } from "lucide-react";
 
 interface AuctionsIdPageProps {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>;
 }
 
 const AuctionsIdPage = async ({ params }: AuctionsIdPageProps) => {

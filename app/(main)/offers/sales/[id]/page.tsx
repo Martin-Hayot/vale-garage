@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 
 interface SalesIdPageProps {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>;
 }
 
 const SalesIdPage = async ({ params }: SalesIdPageProps) => {
-    const { id } = params;
+    const { id } = await params;
     const offer = await db.sales.findUnique({
         where: {
             id: id,
