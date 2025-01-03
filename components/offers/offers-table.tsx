@@ -26,12 +26,12 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages } from "@prisma/client";
 import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-type Offer = CarBid & { car: Car } & { offerImages: OfferImages[] };
+type Offer = Sales & { car: Car } & { offerImages: OfferImages[] };
 
 interface OffersTableProps {
     offers: Offer[];
@@ -44,7 +44,7 @@ const OffersTable = ({ offers }: OffersTableProps) => {
         offerId: string,
         status: "ACTIVE" | "INACTIVE" | "ARCHIVED"
     ) => {
-        const response = await axios.patch(`/api/offers/status`, {
+        const response = await axios.patch(`/api/sales/status`, {
             data: {
                 offerId: offerId,
                 status: status,
@@ -57,9 +57,9 @@ const OffersTable = ({ offers }: OffersTableProps) => {
     return (
         <Card className="bg-background">
             <CardHeader>
-                <CardTitle className="">Offers</CardTitle>
+                <CardTitle className="">Sales</CardTitle>
                 <CardDescription>
-                    Manage your products and view their sales performance.
+                    Manage your sales and their status
                 </CardDescription>
             </CardHeader>
             <CardContent>

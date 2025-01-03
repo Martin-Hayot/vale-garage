@@ -3,7 +3,6 @@
 import * as z from "zod";
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 import { sendVerificationEmail, sendTwoFactorEmail } from "@/lib/mail";
 import {
@@ -34,10 +33,18 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             existingUser.email
         );
 
-        await sendVerificationEmail(
+        if (!verificationToken) {
+            return { error: "Error generating verification token" };
+        }
+
+        const res = await sendVerificationEmail(
             verificationToken.email,
             verificationToken.token
         );
+
+        if (res?.error) {
+            return { error: "Error sending verification email" };
+        }
         return { success: "Comfirmation email sent!" };
     }
 
@@ -88,6 +95,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             const twoFactorToken = await generateTwoFactorToken(
                 existingUser.email
             );
+
+            if (!twoFactorToken) {
+                return { error: "Error generating two factor token" };
+            }
+
             await sendTwoFactorEmail(
                 twoFactorToken.email,
                 twoFactorToken.token
@@ -101,7 +113,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT,
+            redirect: false,
         });
     } catch (error) {
         if (error instanceof AuthError) {

@@ -18,8 +18,15 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { MerchantsSchema } from "@/schemas";
 import axios from "axios";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 export const MerchantsForm = () => {
+    const user = useCurrentUser();
+
+    if (user?.role === "MERCHANT") {
+        // get the user's merchant data
+    }
+
     const form = useForm<z.infer<typeof MerchantsSchema>>({
         resolver: zodResolver(MerchantsSchema),
         defaultValues: {
@@ -65,7 +72,11 @@ export const MerchantsForm = () => {
                         <FormItem>
                             <FormLabel>Company Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Company name" {...field} />
+                                <Input
+                                    className="w-44 md:w-72 bg-neutral-200 text-black"
+                                    placeholder="Company name"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -80,6 +91,7 @@ export const MerchantsForm = () => {
                             <FormControl>
                                 <Input
                                     maxLength={12}
+                                    className="w-44 md:w-72 bg-neutral-200 text-black"
                                     placeholder="Your VAT number"
                                     {...field}
                                 />

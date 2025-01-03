@@ -22,8 +22,8 @@ const BreadCrumbAdmin = () => {
     });
 
     return (
-        <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
+        <Breadcrumb className="hidden md:flex ">
+            <BreadcrumbList className="text-xl">
                 {pathnames.map((name, index) => {
                     const href = `/${prefix}/${pathnames
                         .slice(0, index + 1)

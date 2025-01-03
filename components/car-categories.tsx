@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const categories = [
     {
@@ -57,7 +58,18 @@ const CarCategories = () => {
         <div className="w-full">
             <div className="lg:grid lg:gap-10 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 justify-center text-white w-full space-y-6 lg:space-y-0">
                 {categories.map((category, index) => (
-                    <div
+                    <motion.div
+                        initial={{ opacity: 0, x: -100 }}
+                        transition={{
+                            duration: 1,
+                            delay: index * 0.1,
+                            ease: "easeInOut",
+                        }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{
+                            margin: "100px",
+                            once: true,
+                        }}
                         className={cn(
                             "group relative overflow-hidden h-64 lg:h-96 min-w-1/4",
                             index >= 3 && seeMore
@@ -82,7 +94,7 @@ const CarCategories = () => {
                                 {category.description}
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
             <div className="flex justify-center mt-10 lg:hidden">

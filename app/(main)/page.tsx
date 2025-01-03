@@ -9,7 +9,7 @@ import { db } from "@/lib/db";
 const font = Poppins({ subsets: ["latin"], weight: ["600"] });
 
 export default async function Home() {
-    const offers = await db.carBid.findMany({
+    const offers = await db.sales.findMany({
         where: {
             status: "ACTIVE",
         },

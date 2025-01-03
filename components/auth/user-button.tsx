@@ -1,6 +1,13 @@
 "use client";
 
-import { User2Icon, LogOut, Settings } from "lucide-react";
+import {
+    User2Icon,
+    LogOut,
+    Settings,
+    GavelIcon,
+    Heart,
+    Calendar,
+} from "lucide-react";
 
 import {
     DropdownMenu,
@@ -41,7 +48,34 @@ export const UserButton = ({
                 <DropdownMenuItem className="dark:hover:bg-gray-200">
                     <Link
                         className="flex flex-row items-center"
-                        href="/settings"
+                        href="/profile/auctions"
+                    >
+                        <GavelIcon className="mr-2 h-4 w-4" />
+                        Auctions
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="dark:hover:bg-gray-200">
+                    <Link
+                        className="flex flex-row items-center"
+                        href="/profile/likes"
+                    >
+                        <Heart className="mr-2 h-4 w-4" />
+                        Likes
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="dark:hover:bg-gray-200">
+                    <Link
+                        className="flex flex-row items-center"
+                        href="/profile/appointments"
+                    >
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Appointments
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="dark:hover:bg-gray-200">
+                    <Link
+                        className="flex flex-row items-center"
+                        href="/profile/settings"
                     >
                         <Settings className="mr-2 h-4 w-4" />
                         Settings

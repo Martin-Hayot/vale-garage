@@ -10,18 +10,18 @@ import { currentUser } from "@/lib/auth";
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const user = await currentUser();
 
-    if (!user) {
+    if (!user || !user.id) {
         return { error: "Unauthorized" };
     }
 
-    const dbUser = await getUserById(user.id);
+    const existingUser = await getUserById(user.id);
 
-    if (!dbUser) {
+    if (!existingUser) {
         return { error: "Unauthorized" };
     }
 
     await db.user.update({
-        where: { id: dbUser.id },
+        where: { id: existingUser.id },
         data: { ...values },
     });
 

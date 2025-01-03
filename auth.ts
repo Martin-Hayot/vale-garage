@@ -6,12 +6,7 @@ import { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";
 import { getUserById } from "./data/user";
 
-export const {
-    handlers: { GET, POST },
-    auth,
-    signIn,
-    signOut,
-} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
     pages: {
         signIn: "/auth/login",
         error: "/auth/error",
@@ -33,7 +28,7 @@ export const {
             // Allow OAuth without email verification
             if (account?.provider !== "credentials") return true;
 
-            const existingUser = await getUserById(user.id);
+            const existingUser = await getUserById(user.id!);
             if (!existingUser || !existingUser.emailVerified) return false;
 
             if (existingUser.isTwoFactorEnabled) {
@@ -62,7 +57,7 @@ export const {
 
             if (session.user) {
                 session.user.name = token.name;
-                session.user.email = token.email;
+                session.user.email = token.email ?? "";
             }
 
             return session;
@@ -70,7 +65,6 @@ export const {
         async jwt({ token }) {
             if (!token.sub) return token;
             const existingUser = await getUserById(token.sub);
-
             if (!existingUser) return token;
 
             token.name = existingUser.name;
@@ -78,6 +72,12 @@ export const {
             token.role = existingUser.role;
             return token;
         },
+    },
+    logger: {
+        error: console.error,
+        warn: console.warn,
+        info: console.log,
+        debug: console.log,
     },
     adapter: PrismaAdapter(db),
     session: { strategy: "jwt" },

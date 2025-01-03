@@ -62,7 +62,7 @@ const CarsSearch = ({ carsData, canDelete }: CarsSearchProps) => {
             });
     };
     return (
-        <div className="flex items-center">
+        <div className="flex items-center overflow-auto h-60">
             <Command className="dark:bg-neutral-200 dark:text-black">
                 <CommandInput placeholder="Search a car model" />
                 <CommandList>

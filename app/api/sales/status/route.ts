@@ -20,7 +20,7 @@ export async function PATCH(req: Request) {
         return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const updatedOffer = await db.carBid.update({
+    const updatedOffer = await db.sales.update({
         where: { id: offerId },
         data: { status: status },
     });

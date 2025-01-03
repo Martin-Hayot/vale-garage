@@ -3,7 +3,7 @@
 import { Fuel, Heart } from "lucide-react";
 import { TbAutomaticGearbox, TbManualGearbox } from "react-icons/tb";
 import Image from "next/image";
-import { Car, CarBid, OfferImages } from "@prisma/client";
+import { Car, Sales, OfferImages } from "@prisma/client";
 import {
     Tooltip,
     TooltipContent,
@@ -15,12 +15,14 @@ import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
 import Carousel from "@/components/carousel";
-import { useLikes } from "@/store/likes";
+import { useSaleLikes } from "@/store/likes";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
-type CarDetails = Car & CarBid & { offerImages: OfferImages[] };
+type CarDetails = Car & Sales & { offerImages: OfferImages[] };
 
 interface OffersCardProps {
     details: CarDetails;
@@ -28,7 +30,8 @@ interface OffersCardProps {
 
 const OffersCard = ({ details }: OffersCardProps) => {
     const { id, toggleDrawer, isOpen, setId } = useDrawer();
-    const { addLike, removeLike, likes, getLikes } = useLikes();
+    const { addSaleLike, removeSaleLike, saleLikes, getSaleLikes } =
+        useSaleLikes();
     const user = useCurrentUser();
     let params;
     let drawer;
@@ -39,9 +42,9 @@ const OffersCard = ({ details }: OffersCardProps) => {
 
     useEffect(() => {
         if (user) {
-            getLikes();
+            getSaleLikes();
         }
-    }, [getLikes, user]);
+    }, [getSaleLikes, user]);
 
     return (
         <Drawer
@@ -65,13 +68,13 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                     return;
                                 }
                                 if (
-                                    likes.find(
-                                        (like) => like.carBidId === details.id
+                                    saleLikes.find(
+                                        (like) => like.saleId === details.id
                                     )
                                 ) {
-                                    removeLike(details.id);
+                                    removeSaleLike(details.id);
                                 } else {
-                                    addLike(details.id);
+                                    addSaleLike(details.id);
                                 }
                             }}
                             className="bg-neutral-700/50 rounded-full p-2 absolute z-10 top-3 left-3 hover:scale-105 transition-all duration-100"
@@ -79,8 +82,8 @@ const OffersCard = ({ details }: OffersCardProps) => {
                             <Heart
                                 className={cn(
                                     "text-white w-5 h-5",
-                                    likes.find(
-                                        (like) => like.carBidId === details.id
+                                    saleLikes.find(
+                                        (like) => like.saleId === details.id
                                     )
                                         ? " fill-red-500 text-red-500"
                                         : "text-neutral-300"
@@ -135,7 +138,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 width={720}
                                 height={480}
                                 alt="car offer image"
-                                className="w-full rounded-xl object-cover"
+                                className="w-full rounded-xl object-cover aspect-[4/3]"
                                 draggable={false}
                             />
                         </DrawerTrigger>
@@ -160,20 +163,20 @@ const OffersCard = ({ details }: OffersCardProps) => {
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
                 <div className="px-8 pt-2 pb-8 w-7">
-                    <a href={`/offers/${details.id}`}>
+                    <a href={`/offers/sales/${details.id}`}>
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />
                     </a>
                 </div>
-                <div className="flex flex-col xl:flex-row gap-x-8 gap-y-5 px-5">
-                    <div className="w-full lg:w-[50%] max-h-56 md:max-h-96 lg:max-h-[600px] xl:max-h-[600px]">
+                <div className="flex flex-col md:flex-row gap-x-8 gap-y-5 px-5">
+                    <div className="w-full md:w-[50%] max-h-[25vh] md:max-h-[1000px] lg:max-h-[800px] aspect-video">
                         <Carousel images={details.offerImages} />
                     </div>
 
                     <div>
-                        <h2 className="font-semibold text-4xl">
+                        <h2 className="font-semibold text-xl md:text-4xl">
                             {details.make + " " + details.model}
                         </h2>
-                        <div className="text-blue-500/80 text-lg flex flex-row gap-x-4">
+                        <div className="text-blue-500/80 text-sm md:text-lg flex flex-row gap-x-4">
                             <p>
                                 {new Date(
                                     details.circulationDate
@@ -182,7 +185,7 @@ const OffersCard = ({ details }: OffersCardProps) => {
                             <p>{details.mileage} km</p>
                         </div>
 
-                        <div className="flex flex-col gap-x-2 w-full">
+                        <div className="flex flex-col gap-x-2 w-full text-sm md:text-lg">
                             <div className="flex flex-row gap-x-4">
                                 <p className="font-semibold">Price:</p>
                                 <p>{details.price} €</p>
@@ -204,7 +207,16 @@ const OffersCard = ({ details }: OffersCardProps) => {
                                 <p className="font-semibold">Gear Box:</p>
                                 <p>{details.gearBox}</p>
                             </div>
-
+                            <div className="mt-4">
+                                <Button
+                                    asChild
+                                    className="text-white bg-blue-700 hover:bg-blue-800 transition-all duration-300 ease-in-out px-8"
+                                >
+                                    <Link href={`/offers/sales/${details.id}`}>
+                                        View Offer
+                                    </Link>
+                                </Button>
+                            </div>
                             {/*not seen on drawer */}
                             {/* <div className="flex flex-row gap-x-4">
                                     <p className="font-semibold">Car Body:</p>

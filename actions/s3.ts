@@ -27,13 +27,21 @@ const allowedImageTypes = [
     "image/jpg",
 ];
 
+const allowedModelTypes = [
+    "model/gltf+json",
+    "model/gltf-binary",
+    "model/obj",
+    "model/stl",
+];
+
 type GetSignedURLParams = {
     fileType: string;
     fileSize: number;
     checksum: string;
 };
 
-const maxFileSize = 1048576; // 1 MB
+const maxImageFileSize = 1048576; // 1 MB
+const maxModelFileSize = 5242880; // 5 MB
 
 export async function getSignedURL({
     fileType,
@@ -46,11 +54,14 @@ export async function getSignedURL({
         return { error: "Not authenticated" };
     }
 
-    if (!allowedImageTypes.includes(fileType)) {
+    if (![...allowedImageTypes, ...allowedModelTypes].includes(fileType)) {
         return { error: "File type not allowed" };
     }
 
-    if (fileSize > maxFileSize) {
+    if (
+        (allowedImageTypes.includes(fileType) && fileSize > maxImageFileSize) ||
+        (allowedModelTypes.includes(fileType) && fileSize > maxModelFileSize)
+    ) {
         return { error: "File size too large" };
     }
 
