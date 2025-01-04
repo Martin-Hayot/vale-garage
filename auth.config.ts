@@ -9,6 +9,19 @@ import type { NextAuthConfig } from "next-auth";
 import { getUserByEmail } from "./data/user";
 
 export default {
+    cookies: {
+        sessionToken: {
+            options: {
+                httpOnly: true,
+                sameSite: "none",
+                secure: process.env.NODE_ENV === "production" ? true : false,
+                domain:
+                    process.env.NODE_ENV === "production"
+                        ? ".vale-garage.com"
+                        : "localhost",
+            },
+        },
+    },
     trustHost: true,
     providers: [
         GitHub({
