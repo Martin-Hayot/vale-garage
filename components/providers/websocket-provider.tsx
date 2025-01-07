@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext } from "react";
 import useWebSocket from "@/hooks/use-websocket";
 

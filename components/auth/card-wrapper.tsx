@@ -10,6 +10,7 @@ import { Header } from "./header";
 import { Socials } from "./socials";
 import { BackButton } from "./back-button";
 import Link from "next/link";
+import { Separator } from "../ui/separator";
 
 interface CardWrapperProps {
     children: React.ReactNode;
@@ -35,7 +36,8 @@ export const CardWrapper = ({
             </CardHeader>
             <CardContent>{children}</CardContent>
             {showSocials && (
-                <CardFooter>
+                <CardFooter className="flex flex-col items-center">
+                    <Separator className="w-[90%] mb-4" />
                     <Socials />
                 </CardFooter>
             )}

@@ -66,7 +66,7 @@ const Navigation = () => {
                                 </NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
+                        {/* <NavigationMenuItem>
                             <Link href="/about" legacyBehavior passHref>
                                 <NavigationMenuLink
                                     className={navigationMenuTriggerStyle()}
@@ -74,7 +74,7 @@ const Navigation = () => {
                                     About us
                                 </NavigationMenuLink>
                             </Link>
-                        </NavigationMenuItem>
+                        </NavigationMenuItem> */}
                         {!user && (
                             <>
                                 <NavigationMenuItem>
