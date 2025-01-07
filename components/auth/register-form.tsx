@@ -20,6 +20,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { Checkbox } from "../ui/checkbox";
+import Link from "next/link";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -31,6 +33,7 @@ export const RegisterForm = () => {
         defaultValues: {
             name: "",
             email: "",
+            acceptTerms: false,
             password: "",
         },
     });
@@ -38,6 +41,11 @@ export const RegisterForm = () => {
     const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         setError("");
         setSuccess("");
+
+        if (values.acceptTerms === false) {
+            setError("You must accept the terms and conditions");
+            return;
+        }
 
         startTransition(() => {
             register(values).then((data) => {
@@ -123,6 +131,41 @@ export const RegisterForm = () => {
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="acceptTerms"
+                            control={form.control}
+                            render={({ field }) => (
+                                <div>
+                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 p-4 ">
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                        <div className="space-y-1 leading-none text-secondary-foreground dark:text-secondary-foreground">
+                                            <FormLabel className="text-secondary-foreground ">
+                                                I agree to the{" "}
+                                                <Link
+                                                    className="text-blue-800"
+                                                    href="/terms-of-service"
+                                                >
+                                                    Terms of Service
+                                                </Link>{" "}
+                                                and{" "}
+                                                <Link
+                                                    className="text-blue-800"
+                                                    href={"/privacy-policy"}
+                                                >
+                                                    Privacy Policy
+                                                </Link>
+                                            </FormLabel>
+                                        </div>
+                                    </FormItem>
+                                    <FormMessage />
+                                </div>
                             )}
                         />
                     </div>

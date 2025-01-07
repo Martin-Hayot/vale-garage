@@ -10,7 +10,13 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
 import { useDrawer } from "@/store/drawer";
 
 import { Maximize2 } from "lucide-react";
@@ -162,6 +168,11 @@ const OffersCard = ({ details }: OffersCardProps) => {
                 </div>
             </TooltipProvider>
             <DrawerContent className="border-0 h-[80vh] outline-none focus-within:ring-0">
+                <DrawerHeader>
+                    <DrawerTitle hidden>
+                        {details.make + " " + details.model}
+                    </DrawerTitle>
+                </DrawerHeader>
                 <div className="px-8 pt-2 pb-8 w-7">
                     <a href={`/offers/sales/${details.id}`}>
                         <Maximize2 className="w-6 h-6 rotate-90 hover:scale-125 transition-all duration-100" />

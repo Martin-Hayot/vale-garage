@@ -1,137 +1,64 @@
+import Image from "next/image";
 import { Separator } from "./ui/separator";
 
 const Footer = () => {
     return (
-        <footer className="mx-6 xl:mx-64 py-8">
-            <div className="dark:bg-neutral-800 bg-neutral-100 rounded-lg p-8 md:p-16">
-                <div className="text-center md:text-left">
-                    <h3 className="text-2xl md:text-4xl font-bold mb-2">
-                        Vale Garage
-                    </h3>
-                    <p className="text-sm md:text-base">© 2024 Vale Garage</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                    <div>
-                        <h4 className="text-xl md:text-2xl font-semibold mb-2">
-                            Company
-                        </h4>
-                        <ul className="space-y-2">
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    About
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Contact
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Careers
-                                </a>
-                            </li>
-                        </ul>
+        <footer>
+            <div className="w-[80%] mx-auto m-6 p-8 dark:bg-neutral-800 bg-neutral-100 rounded-lg md:p-16">
+                <div className=" flex flex-col md:flex-row justify-between items-center">
+                    <div className="text-center md:text-left">
+                        <h3 className="text-2xl md:text-4xl font-bold mb-2">
+                            Vale Garage
+                        </h3>
+                        <p className="text-sm md:text-base">
+                            The best place to find your next car
+                        </p>
                     </div>
-
                     <div>
-                        <h4 className="text-xl md:text-2xl font-semibold mb-2">
-                            Resources
-                        </h4>
-                        <ul className="space-y-2">
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Support
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Privacy Policy
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Terms of Service
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 className="text-xl md:text-2xl font-semibold mb-2">
-                            Community
-                        </h4>
-                        <ul className="space-y-2">
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Forum
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-accent transition-colors"
-                                >
-                                    Meetups
-                                </a>
-                            </li>
-                        </ul>
+                        <Image
+                            src={"/vale-garage-logo.png"}
+                            alt="VaLe Garage Logo"
+                            width={150}
+                            height={150}
+                            className="dark:bg-white rounded-full py-4 w-24 h-24"
+                        />
                     </div>
                 </div>
-
                 <Separator className="bg-neutral-700 my-8 mt-12" />
-
-                <div>
-                    <p className="text-center text-sm md:text-base">
-                        Built with{" "}
-                        <a
-                            href="https://nextjs.org"
-                            className="text-accent hover:underline"
-                        >
-                            Next.js
-                        </a>{" "}
-                        and{" "}
-                        <a
-                            href="https://tailwindcss.com"
-                            className="text-accent hover:underline"
-                        >
-                            Tailwind CSS
-                        </a>
+                <div className="flex flex-col md:flex-row items-center justify-between">
+                    <ul className="flex flex-1 flex-col gap-8 mt-8 lg:flex-row justify-start items-center  md:mt-0">
+                        <li>
+                            <a
+                                href="mailto:m.hayot@students.ephec.be"
+                                className="hover:text-accent transition-colors"
+                            >
+                                Support
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/privacy-policy"
+                                className="hover:text-accent transition-colors"
+                            >
+                                Privacy Policy
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="/terms-of-service"
+                                className="hover:text-accent transition-colors"
+                            >
+                                Terms of Service
+                            </a>
+                        </li>
+                    </ul>
+                    <p className="text-sm md:text-base">
+                        © {new Date().getFullYear()} VaLe Garage. All rights
+                        reserved.
                     </p>
                 </div>
             </div>
-
-            <div className="h-10" />
+            <div className="h-1" />
         </footer>
     );
 };
