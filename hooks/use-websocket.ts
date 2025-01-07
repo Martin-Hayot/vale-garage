@@ -1,8 +1,15 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useWebSocketStore } from "@/store/websocket";
+import { useCurrentUser } from "./use-current-user";
+import { redirect } from "next/navigation";
 
 const useWebSocket = (url: string) => {
     const { setIsConnected, addMessage } = useWebSocketStore();
+    const user = useCurrentUser();
+
+    if (!user) {
+        redirect("/login");
+    }
     const wsRef = useRef<WebSocket | null>(null);
     const reconnectInterval = useRef<NodeJS.Timeout | null>(null);
 

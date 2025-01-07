@@ -3,9 +3,7 @@
 import { cn } from "@/lib/utils";
 import OffersSearchBar from "./offers-searchbar";
 import SortDropdown from "./sort-dropdown";
-import { MobileToggle } from "../mobile-toggle";
 import { MobileFiltersToggle } from "../mobile-filters-toggle";
-import { useWebSocketStore } from "@/store/websocket";
 
 const TabButton = ({
     tab,
@@ -35,7 +33,7 @@ interface MainBarProps {
 }
 
 const MainBar = ({ tab, setTab }: MainBarProps) => {
-    const { isConnected } = useWebSocketStore();
+    // const { isConnected } = useWebSocketStore();
 
     return (
         <div className="border-b dark:bg-neutral-900 dark:border-neutral-800 py-3 px-4 flex justify-center ">
@@ -57,16 +55,26 @@ const MainBar = ({ tab, setTab }: MainBarProps) => {
                         label="Auctions"
                     />
                 </div>
+                {/* Mobile Tab switcher */}
+                <div className="lg:hidden flex-1 flex justify-center items-center text-xl cursor-pointer">
+                    {tab === "sales" ? (
+                        <div onClick={() => setTab("auctions")}>
+                            Go to Auctions
+                        </div>
+                    ) : (
+                        <div onClick={() => setTab("sales")}>Go to Sales</div>
+                    )}
+                </div>
                 <div className="hidden">
                     <OffersSearchBar />
                 </div>
                 <SortDropdown />
             </div>
-            {isConnected ? (
+            {/* {isConnected ? (
                 <div className="rounded-full bg-green-500 w-[0.6em] h-[0.6em] flex justify-center self-center shadow-[0_0_5px_1px_rgba(34,197,94,0.5)]"></div>
             ) : (
                 <div className="rounded-full bg-red-500  w-[0.6em] h-[0.6em] flex justify-center self-center shadow-[0_0_5px_1px_rgba(239,68,68,0.5)]"></div>
-            )}
+            )} */}
         </div>
     );
 };

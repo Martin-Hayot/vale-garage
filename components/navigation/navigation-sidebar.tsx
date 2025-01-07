@@ -15,7 +15,7 @@ const NavigationSidebar = ({ setOpen }: { setOpen: Function }) => {
             <div className="flex flex-row gap-x-6 items-center">
                 {user && <UserButton align="start" />}
                 <ModeToggle />
-                <Link href="/likes">
+                <Link href="/profile/likes">
                     <Heart className="w-5 h-5 hover:fill-red-500 hover:text-red-500 transition-all duration-100" />
                 </Link>
             </div>
@@ -35,13 +35,13 @@ const NavigationSidebar = ({ setOpen }: { setOpen: Function }) => {
                 >
                     Offers
                 </Link>
-                <Link
+                {/* <Link
                     href="/about"
                     className="hover:text-accent dark:hover:text-accent duration-150"
                     onClick={closeSidebar}
                 >
                     About us
-                </Link>
+                </Link> */}
                 <Link
                     href="/auth/login"
                     className="hover:text-accent dark:hover:text-accent duration-150"
