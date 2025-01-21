@@ -159,13 +159,18 @@ const SalesPage = () => {
             totalPages: number;
         };
     };
+
+    const searchParamsWithoutDrawer = searchParams
+        .toString()
+        .replace(/drawer=[^&]*&?/g, "")
+        .replace(/&$/, ""); // Remove trailing & if it exists
     const {
         data: offers,
         isPending,
         isLoading,
         error,
     } = useQuery<response, AxiosError>({
-        queryKey: ["sales", searchParams.toString(), currentPage],
+        queryKey: ["sales", searchParamsWithoutDrawer, currentPage],
         queryFn: async () => {
             const url = new URL(window.location.href);
             const searchParams = new URLSearchParams(url.search);

@@ -831,7 +831,6 @@ export const OffersForm = () => {
                             <>
                                 <FileUpload />
 
-                                {JSON.stringify(images)}
                                 {images.length > 0 && (
                                     <DragAndDropImageSorter
                                         key={JSON.stringify(images)}

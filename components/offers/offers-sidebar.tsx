@@ -54,7 +54,7 @@ const OffersSidebar = () => {
                     </div>
                     <CommandGroup>
                         <Accordion className="w-full" type="multiple">
-                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 ">
                                 <AccordionItem
                                     className="w-full border-none"
                                     value="price"
@@ -85,7 +85,7 @@ const OffersSidebar = () => {
                                     </AccordionContent>
                                 </AccordionItem>
                             </CommandItem>
-                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 ">
                                 <AccordionItem
                                     className="w-full border-none"
                                     value="mileage"
@@ -113,7 +113,7 @@ const OffersSidebar = () => {
                                     </AccordionContent>
                                 </AccordionItem>
                             </CommandItem>
-                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 ">
                                 <AccordionItem
                                     className="w-full border-none"
                                     value="year"
@@ -144,7 +144,7 @@ const OffersSidebar = () => {
                                     </AccordionContent>
                                 </AccordionItem>
                             </CommandItem>
-                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 ">
                                 <AccordionItem
                                     className="w-full border-none"
                                     value="power"
@@ -175,7 +175,7 @@ const OffersSidebar = () => {
                                     </AccordionContent>
                                 </AccordionItem>
                             </CommandItem>
-                            <CommandItem className="dark:text-white w-full transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 aria-selected:bg-neutral-200 aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                            <CommandItem className="dark:text-white transition-all py-2 pb-4 duration-200 flex flex-col items-start text-black relative  cursor-default select-none rounded-sm px-2 text-sm outline-none dark:aria-selected:bg-neutral-800 ">
                                 <AccordionItem
                                     className="w-full border-none"
                                     value="fuelTypes"
