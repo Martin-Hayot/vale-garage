@@ -67,6 +67,7 @@ export const ResetForm = () => {
                                         <Input
                                             {...field}
                                             placeholder="john.doe@example.com"
+                                            className="dark:bg-gray-200 border-0 dark:text-secondary-foreground"
                                             disabled={isPending}
                                             type="email"
                                         />

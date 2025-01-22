@@ -20,7 +20,7 @@ interface AdminDashboardLayoutProps {
 
 const AdminDashboardLayout = ({ children }: AdminDashboardLayoutProps) => {
     return (
-        <div className="flex flex-col w-full xl:h-full bg-muted/40">
+        <div className="flex w-full xl:h-screen flex-col bg-muted/40">
             {/* Dashboard view */}
             <div className="flex-1 flex flex-col sm:gap-4 sm:pl-14 overflow-hidden">
                 {/* Header */}

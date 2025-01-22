@@ -13,7 +13,8 @@ export default {
         sessionToken: {
             options: {
                 httpOnly: true,
-                sameSite: "none",
+                sameSite:
+                    process.env.NODE_ENV === "production" ? "none" : "lax",
                 secure: process.env.NODE_ENV === "production" ? true : false,
                 domain:
                     process.env.NODE_ENV === "production"
@@ -24,10 +25,10 @@ export default {
     },
     trustHost: true,
     providers: [
-        // GitHub({
-        //     clientId: process.env.GITHUB_CLIENT_ID,
-        //     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        // }),
+        GitHub({
+            clientId: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        }),
         Google({
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
