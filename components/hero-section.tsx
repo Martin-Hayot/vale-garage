@@ -47,7 +47,7 @@ const HeroSection = () => {
                     </h2>
                     <p
                         className={cn(
-                            "text-lg w-[20rem] lg:w-[30rem]",
+                            "text-lg pt-3 w-[20rem] lg:w-[30rem]",
                             font.className
                         )}
                     >

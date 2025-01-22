@@ -6,7 +6,7 @@ import { Car, GavelIcon } from "lucide-react";
 
 export function Dashboard() {
     return (
-        <div className="flex flex-col flex-grow p-8">
+        <div className="flex  flex-col flex-grow p-8">
             <div className="space-y-8">
                 {/* Row 1: Car Offers & Auctions */}
                 <div className="flex flex-col xl:flex-row gap-8">
